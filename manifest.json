@@ -1,0 +1,13 @@
+{
+  "name": "Information Visualization of Browser History",
+  "version": "1.0",
+  "description": "Reads your history, and use information visualization techniques to show graphically how you spend your time on the internet.",
+  "permissions": [
+    "history"
+  ],
+  "browser_action": {
+    "default_popup": "templates/index_page/index.html",
+    "default_icon": "clock.png"
+  },
+  "manifest_version": 2
+}

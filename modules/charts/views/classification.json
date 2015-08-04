@@ -1,0 +1,254 @@
+{
+  "mail.google": {
+    "productivity": "Neutral",
+    "classification": "unclassified"
+  },
+  "facebook": {
+    "productivity": "Unproductive",
+    "classification": "unclassified"
+  },
+  "overleaf": {
+    "productivity": "Productive",
+    "classification": "unclassified"
+  },
+  "filmesonlinegratis": {
+    "productivity": "Unproductive",
+    "classification": "unclassified"
+  },
+  "youtube": {
+    "productivity": "Unproductive",
+    "classification": "unclassified"
+  },
+  "javascript.info": {
+    "productivity": "Productive",
+    "classification": "unclassified"
+  },
+  "google": {
+    "productivity": "Neutral",
+    "classification": "unclassified"
+  },
+  "otempo": {
+    "productivity": "Unproductive",
+    "classification": "unclassified"
+  },
+  "stackoverflow": {
+    "productivity": "Productive",
+    "classification": "unclassified"
+  },
+  "groups.google": {
+    "productivity": "Productive",
+    "classification": "unclassified"
+  },
+  "htmlgoodies": {
+    "productivity": "Productive",
+    "classification": "unclassified"
+  },
+  "coderanch": {
+    "productivity": "Productive",
+    "classification": "unclassified"
+  },
+  "developer.mozilla": {
+    "productivity": "Productive",
+    "classification": "unclassified"
+  },
+  "accounts.google": {
+    "productivity": "Neutral",
+    "classification": "unclassified"
+  },
+  "w3schools": {
+    "productivity": "Productive",
+    "classification": "unclassified"
+  },
+  "msdn.microsoft": {
+    "productivity": "Productive",
+    "classification": "unclassified"
+  },
+  "pt.stackoverflow": {
+    "productivity": "Productive",
+    "classification": "unclassified"
+  },
+  "translate.google": {
+    "productivity": "Productive",
+    "classification": "unclassified"
+  },
+  "egghead.io": {
+    "productivity": "Productive",
+    "classification": "unclassified"
+  },
+  "dashingd3js": {
+    "productivity": "Productive",
+    "classification": "unclassified"
+  },
+  "bl.ocks": {
+    "productivity": "Productive",
+    "classification": "unclassified"
+  },
+  "bost.ocks": {
+    "productivity": "Productive",
+    "classification": "unclassified"
+  },
+  "mbostock.github.io": {
+    "productivity": "Productive",
+    "classification": "unclassified"
+  },
+  "alignedleft": {
+    "productivity": "Productive",
+    "classification": "unclassified"
+  },
+  "canalviva.globo": {
+    "productivity": "Unproductive",
+    "classification": "unclassified"
+  },
+  "globo": {
+    "productivity": "Unproductive",
+    "classification": "unclassified"
+  },
+  "kevintcoughlin": {
+    "productivity": "Productive",
+    "classification": "unclassified"
+  },
+  "christopheviau": {
+    "productivity": "Productive",
+    "classification": "unclassified"
+  },
+  "strongriley.github.io": {
+    "productivity": "Productive",
+    "classification": "unclassified"
+  },
+  "github": {
+    "productivity": "Productive",
+    "classification": "unclassified"
+  },
+  "d3js": {
+    "productivity": "Productive",
+    "classification": "unclassified"
+  },
+  "whiplash": {
+    "productivity": "Unproductive",
+    "classification": "unclassified"
+  },
+  "pt.wikipedia": {
+    "productivity": "Productive",
+    "classification": "unclassified"
+  },
+  "ironsummitmedia.github.io": {
+    "productivity": "Productive",
+    "classification": "unclassified"
+  },
+  "startbootstrap": {
+    "productivity": "Productive",
+    "classification": "unclassified"
+  },
+  "getbootstrap": {
+    "productivity": "Productive",
+    "classification": "unclassified"
+  },
+  "codefixer": {
+    "productivity": "Productive",
+    "classification": "unclassified"
+  },
+  "css-tricks": {
+    "productivity": "Productive",
+    "classification": "unclassified"
+  },
+  "programmers.stackexchange": {
+    "productivity": "Productive",
+    "classification": "unclassified"
+  },
+  "developer.chrome": {
+    "productivity": "Productive",
+    "classification": "unclassified"
+  },
+  "jquery": {
+    "productivity": "Productive",
+    "classification": "unclassified"
+  },
+  "nytimes": {
+    "productivity": "Neutral",
+    "classification": "unclassified"
+  },
+  "barrylavides.wordpress": {
+    "productivity": "Productive",
+    "classification": "unclassified"
+  },
+  "advancesharp": {
+    "productivity": "Productive",
+    "classification": "unclassified"
+  },
+  "docs.oracle": {
+    "productivity": "Productive",
+    "classification": "unclassified"
+  },
+  "codeproject": {
+    "productivity": "Productive",
+    "classification": "unclassified"
+  },
+  "help.dottoro": {
+    "productivity": "Productive",
+    "classification": "unclassified"
+  },
+  "objectmix": {
+    "productivity": "Productive",
+    "classification": "unclassified"
+  },
+  "codingforums": {
+    "productivity": "Productive",
+    "classification": "unclassified"
+  },
+  "codepen.io": {
+    "productivity": "Productive",
+    "classification": "unclassified"
+  },
+  "viralpatel": {
+    "productivity": "Productive",
+    "classification": "unclassified"
+  },
+  "zachhunter": {
+    "productivity": "Productive",
+    "classification": "unclassified"
+  },
+  "experts-exchange": {
+    "productivity": "Productive",
+    "classification": "unclassified"
+  },
+  "quirksmode": {
+    "productivity": "Productive",
+    "classification": "unclassified"
+  },
+  "mojavelinux": {
+    "productivity": "Productive",
+    "classification": "unclassified"
+  },
+  "jsfiddle": {
+    "productivity": "Productive",
+    "classification": "unclassified"
+  },
+  "json": {
+    "productivity": "Productive",
+    "classification": "unclassified"
+  },
+  "blog.xkoder": {
+    "productivity": "Productive",
+    "classification": "unclassified"
+  },
+  "devmedia": {
+    "productivity": "Productive",
+    "classification": "unclassified"
+  },
+  "phpied": {
+    "productivity": "Productive",
+    "classification": "unclassified"
+  },
+  "exame.abril": {
+    "productivity": "Unproductive",
+    "classification": "unclassified"
+  },
+  "linkedin": {
+    "productivity": "Unproductive",
+    "classification": "unclassified"
+  },
+  "br.linkedin": {
+    "productivity": "Unproductive",
+    "classification": "unclassified"
+  }
+}
