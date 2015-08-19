@@ -1,18 +1,26 @@
-function loadBubbleChart() {
-    buildBubbleChart();
-}
-
 function start() {
     document.getElementById("bubblechartlink").addEventListener("click", function () {
         $.ajax({
-            url: chrome.extension.getURL('templates/bubble_chart/bubble_chart.html'),
+            url: chrome.extension.getURL('templates/charts/bubble_chart.html'),
             async: false,
             dataType: 'html',
             success: function (BubbleChartHtml) {
                 $("#page-wrapper").html(BubbleChartHtml);
             }
         });
-        loadBubbleChart();
+        buildBubbleChart();
+    });
+
+    document.getElementById("zoomablecirclesofcategorieslink").addEventListener("click", function () {
+        $.ajax({
+            url: chrome.extension.getURL('templates/charts/zoomable_circles_of_website_categories.html'),
+            async: false,
+            dataType: 'html',
+            success: function (ZoomableCirclesOfCategories) {
+                $("#page-wrapper").html(ZoomableCirclesOfCategories);
+            }
+        });
+        buildZoomableCirclesOfCategories();
     });
 }
 

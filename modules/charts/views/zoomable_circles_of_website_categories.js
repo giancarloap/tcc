@@ -6,7 +6,7 @@ associativeArray = {};
 
 // Search history to find up to ten links that a user has typed in,
 // and show those links in a popup.
-function buildBubbleChart() {
+function buildZoomableCirclesOfCategories() {
     // To look for history items visited in the last week,
     // subtract a week of microseconds from the current time.
     // var microsecondsPerWeek = 1000 * 60 * 60 * 24 * 7;
@@ -27,8 +27,6 @@ function buildBubbleChart() {
             var associativeArray = {};
 
             for (var i = 0; i < historyItems.length; ++i) {
-                alert(historyItems.length);
-                alert(historyItems[i].url);
                 domain = historyItems[i].url.match(/^[\w-]+:\/*\[?([\w\.:-]+)\]?(?::\d+)?/)[1];
                 domain = domain.replace('www.', '');
                 domain = domain.replace('.com', '');
@@ -62,6 +60,19 @@ function buildBubbleChart() {
                     }
                 });
 
+                /*
+                Fazer consulta reversa. Todas as categorias que achar.
+
+                opção 1 - colocar a categoria como informação do dominio. Mais facil acho
+                opção 2 - criar um array com as categorias e inserir os dominios dentro
+
+                 */
+
+                /*
+                Adaptar o código que faz o zoomable circles
+
+                 */
+
                 associativeArray[domain]['radius'] = Math.log(associativeArray[domain]['domainVisitCount']) * 10 + domainVisitCountmphasis;
                 associativeArray[domain]['productivity'] = productivity;
                 associativeArray[domain]['classification'] = classification;
@@ -77,7 +88,7 @@ function buildBubbleChart() {
                         .size([diameter, diameter])
                         .padding(1.5);
 
-                    var svg = d3.select("#bubblechartcontent").append("svg")
+                    var svg = d3.select("#zoomablecirclesofcategoriescontent").append("svg")
                         .attr("width", diameter)
                         .attr("height", diameter)
                         .attr("class", "bubble");
