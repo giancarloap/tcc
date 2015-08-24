@@ -6,7 +6,7 @@
     "history"
   ],
   "browser_action": {
-    "default_popup": "templates/index_page/index.html",
+    "default_popup": "templates/master_page/index.html",
     "default_icon": "clock.png"
   },
   "manifest_version": 2
