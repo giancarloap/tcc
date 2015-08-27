@@ -85,7 +85,7 @@ function buildZoomableCirclesOfCategories() {
                     associativeArray[domain]['domainVisitCount'] = 1;
                 }
             }
-            domainVisitCountmphasis = 20;
+            domainVisitCountEmphasis = 20;
 
             for (var domain in associativeArray) {
                 var productivity = null;
@@ -116,7 +116,7 @@ function buildZoomableCirclesOfCategories() {
 
                  */
 
-                associativeArray[domain]['radius'] = Math.log(associativeArray[domain]['domainVisitCount']) * 10 + domainVisitCountmphasis;
+                associativeArray[domain]['radius'] = Math.log(associativeArray[domain]['domainVisitCount']) * 10 + domainVisitCountEmphasis;
                 associativeArray[domain]['productivity'] = productivity;
                 associativeArray[domain]['category'] = category;
                 if ( category === null){
@@ -232,7 +232,7 @@ function buildZoomableCirclesOfCategories() {
 
                 var node = svg.selectAll("circle,text");
 
-                d3.select("body")
+                d3.select("#zoomablecirclesofcategoriescontent")
                     .style("background", color(-1))
                     .on("click", function() { zoom(root); });
 

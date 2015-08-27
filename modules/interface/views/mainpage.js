@@ -22,6 +22,18 @@ function start() {
         });
         buildZoomableCirclesOfCategories();
     });
+
+    document.getElementById("zoomablecirclesofproductivitylink").addEventListener("click", function () {
+        $.ajax({
+            url: chrome.extension.getURL('templates/charts/zoomable_circles_of_website_productivity.html'),
+            async: false,
+            dataType: 'html',
+            success: function (ZoomableCirclesOfProductivity) {
+                $("#page-wrapper").html(ZoomableCirclesOfProductivity);
+            }
+        });
+        buildZoomableCirclesOfProductivity();
+    });
 }
 
 document.addEventListener('DOMContentLoaded', function () {

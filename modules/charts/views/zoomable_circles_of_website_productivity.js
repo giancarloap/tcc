@@ -6,12 +6,17 @@ associativeArray = {};
 
 // Search history to find up to ten links that a user has typed in,
 // and show those links in a popup.
-function buildZoomableCirclesOfCategories() {
+function buildZoomableCirclesOfProductivity() {
+    productivity_list = {
+        "name": "History",
+        "children": []
+    };
+    //alert(true);
     // To look for history items visited in the last week,
     // subtract a week of microseconds from the current time.
     // var microsecondsPerWeek = 1000 * 60 * 60 * 24 * 7;
     // var oneWeekAgo = (new Date).getTime() - microsecondsPerWeek;
-    // alert(oneWeekAgo);
+    // //alert(oneWeekAgo);
     var oneWeekAgo = 0;
 
     // Track the number of callbacks from chrome.history.getVisits()
@@ -44,7 +49,7 @@ function buildZoomableCirclesOfCategories() {
                     associativeArray[domain]['domainVisitCount'] = 1;
                 }
             }
-            domainVisitCountmphasis = 20;
+            domainVisitCountEmphasis = 20;
 
             for (var domain in associativeArray) {
                 var productivity = null;
@@ -75,12 +80,74 @@ function buildZoomableCirclesOfCategories() {
 
                  */
 
-                associativeArray[domain]['radius'] = Math.log(associativeArray[domain]['domainVisitCount']) * 10 + domainVisitCountmphasis;
+                associativeArray[domain]['radius'] = Math.log(associativeArray[domain]['domainVisitCount']) * 10 + domainVisitCountEmphasis;
                 associativeArray[domain]['productivity'] = productivity;
                 associativeArray[domain]['category'] = category;
+                if ( productivity === null){
+                    productivity = "Uncategorized";
+                }
                 associativeArray[domain]['color'] = productivity === "Productive" ? "rgba(46, 204, 113, 1)" : (productivity === 'Unproductive' ? "rgba(230, 85, 13, 1.0)" : (productivity === 'Neutral' ? "rgba(255, 255, 0, 1.0)" : "rgba(107, 174, 214, 1.0)"));
                 associativeArray[domain]['text'] = associativeArray[domain]['domain'] + '  Visits: ' + associativeArray[domain]['domainVisitCount'] + ' ' + (typeof productivity === 'undefined' ? 'Unclassified' : productivity)
+
+                //alert(categories);
+                prodExists = false;
+                for (var i = 0; i < productivity_list['children'].length; ++i) {
+                //for(var cat in categories['children'] ){
+                //    alert('categories');
+                //    alert(dump(categories));
+                //    alert('categories[children]');
+                //    alert(dump(categories['children']));
+                //    alert('categories[children][i]');
+                //    alert(dump(categories['children'][i]));
+                    //alert("categories['children'][i]['name'] " + categories['children'][i]['name']);
+                    //alert("category" + category);
+                    if (productivity_list['children'][i]['name'] === productivity ){
+                        prodExists = true;
+                        alert('prod exists');
+                        //cat['children'][][ name ] = [domain];
+                        children = {};
+                        children['name'] = domain;
+                        children['size'] = 3812;
+                        alert(dump(children));
+                        alert(dump(productivity_list['children'][i]['children']));
+                        productivity_list['children'][i]['children'].push(children);
+                        break;
+                        //alert(dump(cat, 3));
+                    }
+
+                }
+                if (!prodExists){
+                    //alert('not cat exists');
+                    new_prod = {};
+                    new_prod['name'] = productivity;
+                    if ( productivity === null){
+                        alert("nulo" + productivity);
+                    }
+                    new_prod['children'] = [];
+
+                    new_domain = {};
+                    new_domain['name'] = domain;
+                    new_domain['size'] = 3938;
+
+                    new_prod['children'].push(new_domain);
+                    //alert(new_cat);
+                    //cat_and_domain = "name": "Communication",
+                    //    "children": [
+                    //    {
+                    //        "name": "mail.google",
+                    //        "size": 3938
+                    //    },
+                    productivity_list['children'].push(new_prod);
+                    //categories['children'] = new_cat;
+                    //alert(dump(categories));
+                    //alert(dump(new_cat, 0));
+                    //alert(dump(categories, 0));
+                }
+                alert(dump(productivity_list));
+
             }
+
+            //alert(dump(categories, 3));
 
             var margin = 20,
                 diameter = 960;
@@ -95,18 +162,21 @@ function buildZoomableCirclesOfCategories() {
                 .size([diameter - margin, diameter - margin])
                 .value(function(d) { return d.size; })
 
-            var svg = d3.select("body").append("svg")
+            var svg = d3.select("#zoomablecirclesofproductivitycontent").append("svg")
                 .attr("width", diameter)
                 .attr("height", diameter)
                 .append("g")
                 .attr("transform", "translate(" + diameter / 2 + "," + diameter / 2 + ")");
 
-            //d3.json("../../modules/charts/views/flare.json", function(error, root) {
-            //    alert(window.location.pathname);
-            //    if (error) throw error;
-
-                var focus = classes(),
-                    nodes = pack.nodes(classes()),
+            d3.json("../../modules/charts/views/category2.json", function(error, root) {
+                //alert(root);
+                //alert(associativeArray);
+                if (error) throw error;
+                root = productivity_list;
+                alert(dump(root));
+                alert(dump(productivity_list));
+                var focus = root,
+                    nodes = pack.nodes(root),
                     view;
 
                 var circle = svg.selectAll("circle")
@@ -126,7 +196,7 @@ function buildZoomableCirclesOfCategories() {
 
                 var node = svg.selectAll("circle,text");
 
-                d3.select("body")
+                d3.select("#zoomablecirclesofproductivitycontent")
                     .style("background", color(-1))
                     .on("click", function() { zoom(root); });
 
@@ -154,22 +224,7 @@ function buildZoomableCirclesOfCategories() {
                     node.attr("transform", function(d) { return "translate(" + (d.x - v[0]) * k + "," + (d.y - v[1]) * k + ")"; });
                     circle.attr("r", function(d) { return d.r * k; });
                 }
-            //});
-            // Returns a flattened hierarchy containing all leaf nodes under the root.
-            function classes() {
-                var classes = [];
-
-                for (var domain in associativeArray) {
-                    classes.push({
-                        className: associativeArray[domain]['domain'],
-                        value: associativeArray[domain]['radius'],
-                        color: associativeArray[domain]['color']
-                    });
-                }
-                alert(classes);
-                alert(children);
-                return {children: classes};
-            }
+            });
 
             d3.select(self.frameElement).style("height", diameter + "px");
 
