@@ -9,12 +9,16 @@ associativeArray = {};
 function buildBubbleChart() {
     // To look for history items visited in the last week,
     // subtract a week of microseconds from the current time.
-    //var microsecondsPerWeek = 1000 * 60 * 60 * 24 * 7;
-    //var oneWeekAgo = (new Date).getTime();
+    // var microsecondsPerWeek = 1000 * 60 * 60 * 24 * 7;
+    // var oneWeekAgo = (new Date).getTime() - microsecondsPerWeek;
+    // alert(oneWeekAgo);
+    var oneWeekAgo = 0;
+
     // Track the number of callbacks from chrome.history.getVisits()
     // that we expect to get.  When it reaches zero, we have all results.
     chrome.history.search({
-            'text': '',
+            'text': '',              // Return every history item....
+            'startTime': oneWeekAgo,  // that was accessed less than one week ago.
             'maxResults': 999999999
         },
         function (historyItems) {
@@ -23,6 +27,8 @@ function buildBubbleChart() {
             var associativeArray = {};
 
             for (var i = 0; i < historyItems.length; ++i) {
+                alert(historyItems.length);
+                alert(historyItems[i].url);
                 domain = historyItems[i].url.match(/^[\w-]+:\/*\[?([\w\.:-]+)\]?(?::\d+)?/)[1];
                 domain = domain.replace('www.', '');
                 domain = domain.replace('.com', '');
@@ -44,21 +50,21 @@ function buildBubbleChart() {
 
             for (var domain in associativeArray) {
                 var productivity = null;
-                var classification = null;
+                var category = null;
 
                 $.ajax({
-                    url: chrome.extension.getURL('modules/charts/views/classification.json'),
+                    url: chrome.extension.getURL('modules/charts/views/category.json'),
                     async: false,
                     dataType: 'json',
                     success: function (json) {
                         productivity = json[domain]['productivity'];
-                        classification = json[domain]['classification'];
+                        category = json[domain]['category'];
                     }
                 });
 
                 associativeArray[domain]['radius'] = Math.log(associativeArray[domain]['domainVisitCount']) * 10 + domainVisitCountmphasis;
                 associativeArray[domain]['productivity'] = productivity;
-                associativeArray[domain]['classification'] = classification;
+                associativeArray[domain]['category'] = category;
                 associativeArray[domain]['color'] = productivity === "Productive" ? "rgba(46, 204, 113, 1)" : (productivity === 'Unproductive' ? "rgba(230, 85, 13, 1.0)" : (productivity === 'Neutral' ? "rgba(255, 255, 0, 1.0)" : "rgba(107, 174, 214, 1.0)"));
                 associativeArray[domain]['text'] = associativeArray[domain]['domain'] + '  Visits: ' + associativeArray[domain]['domainVisitCount'] + ' ' + (typeof productivity === 'undefined' ? 'Unclassified' : productivity)
             }

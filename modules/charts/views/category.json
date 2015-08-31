@@ -1,254 +1,210 @@
 {
   "mail.google": {
     "productivity": "Neutral",
-    "classification": "unclassified"
+    "category": "Communication"
   },
   "facebook": {
     "productivity": "Unproductive",
-    "classification": "unclassified"
+    "category": "Social Networking"
   },
   "overleaf": {
     "productivity": "Productive",
-    "classification": "unclassified"
+    "category": "Learning"
   },
   "filmesonlinegratis": {
     "productivity": "Unproductive",
-    "classification": "unclassified"
+    "category": "Entertainment"
   },
   "youtube": {
     "productivity": "Unproductive",
-    "classification": "unclassified"
+    "category": "Entertainment"
   },
   "javascript.info": {
     "productivity": "Productive",
-    "classification": "unclassified"
+    "category": "Software Development"
   },
   "google": {
     "productivity": "Neutral",
-    "classification": "unclassified"
-  },
-  "otempo": {
-    "productivity": "Unproductive",
-    "classification": "unclassified"
+    "category": "Search"
   },
   "stackoverflow": {
     "productivity": "Productive",
-    "classification": "unclassified"
+    "category": "Software Development"
   },
   "groups.google": {
     "productivity": "Productive",
-    "classification": "unclassified"
+    "category": "Communication"
   },
   "htmlgoodies": {
     "productivity": "Productive",
-    "classification": "unclassified"
+    "category": "Software Development"
   },
   "coderanch": {
     "productivity": "Productive",
-    "classification": "unclassified"
+    "category": "Software Development"
   },
   "developer.mozilla": {
     "productivity": "Productive",
-    "classification": "unclassified"
+    "category": "Software Development"
   },
   "accounts.google": {
     "productivity": "Neutral",
-    "classification": "unclassified"
+    "category": "Uncategorized"
   },
   "w3schools": {
     "productivity": "Productive",
-    "classification": "unclassified"
+    "category": "Software Development"
   },
   "msdn.microsoft": {
     "productivity": "Productive",
-    "classification": "unclassified"
+    "category": "Software Development"
   },
   "pt.stackoverflow": {
     "productivity": "Productive",
-    "classification": "unclassified"
+    "category": "Software Development"
   },
   "translate.google": {
     "productivity": "Productive",
-    "classification": "unclassified"
+    "category": "Languages"
   },
   "egghead.io": {
     "productivity": "Productive",
-    "classification": "unclassified"
+    "category": "Software Development"
   },
   "dashingd3js": {
     "productivity": "Productive",
-    "classification": "unclassified"
+    "category": "Software Development"
   },
   "bl.ocks": {
     "productivity": "Productive",
-    "classification": "unclassified"
+    "category": "Software Development"
   },
   "bost.ocks": {
     "productivity": "Productive",
-    "classification": "unclassified"
+    "category": "Software Development"
   },
   "mbostock.github.io": {
     "productivity": "Productive",
-    "classification": "unclassified"
+    "category": "Software Development"
   },
   "alignedleft": {
     "productivity": "Productive",
-    "classification": "unclassified"
+    "category": "Software Development"
   },
   "canalviva.globo": {
     "productivity": "Unproductive",
-    "classification": "unclassified"
+    "category": "Entertainment"
   },
   "globo": {
     "productivity": "Unproductive",
-    "classification": "unclassified"
+    "category": "News & Opinion"
   },
   "kevintcoughlin": {
     "productivity": "Productive",
-    "classification": "unclassified"
+    "category": "Software Development"
   },
   "christopheviau": {
     "productivity": "Productive",
-    "classification": "unclassified"
+    "category": "Software Development"
   },
   "strongriley.github.io": {
     "productivity": "Productive",
-    "classification": "unclassified"
+    "category": "Software Development"
   },
   "github": {
     "productivity": "Productive",
-    "classification": "unclassified"
+    "category": "Software Development"
   },
   "d3js": {
     "productivity": "Productive",
-    "classification": "unclassified"
+    "category": "Software Development"
   },
   "whiplash": {
     "productivity": "Unproductive",
-    "classification": "unclassified"
+    "category": "News & Opinion"
   },
   "pt.wikipedia": {
     "productivity": "Productive",
-    "classification": "unclassified"
+    "category": "Learning"
   },
   "ironsummitmedia.github.io": {
     "productivity": "Productive",
-    "classification": "unclassified"
+    "category": "Software Development"
   },
   "startbootstrap": {
     "productivity": "Productive",
-    "classification": "unclassified"
+    "category": "Software Development"
   },
   "getbootstrap": {
     "productivity": "Productive",
-    "classification": "unclassified"
+    "category": "Software Development"
   },
   "codefixer": {
     "productivity": "Productive",
-    "classification": "unclassified"
+    "category": "Software Development"
   },
   "css-tricks": {
     "productivity": "Productive",
-    "classification": "unclassified"
+    "category": "Software Development"
   },
   "programmers.stackexchange": {
     "productivity": "Productive",
-    "classification": "unclassified"
+    "category": "Software Development"
   },
   "developer.chrome": {
     "productivity": "Productive",
-    "classification": "unclassified"
+    "category": "Software Development"
   },
   "jquery": {
     "productivity": "Productive",
-    "classification": "unclassified"
+    "category": "Software Development"
   },
   "nytimes": {
     "productivity": "Neutral",
-    "classification": "unclassified"
-  },
-  "barrylavides.wordpress": {
-    "productivity": "Productive",
-    "classification": "unclassified"
+    "category": "News & Opinion"
   },
   "advancesharp": {
     "productivity": "Productive",
-    "classification": "unclassified"
+    "category": "Software Development"
   },
   "docs.oracle": {
     "productivity": "Productive",
-    "classification": "unclassified"
+    "category": "Software Development"
   },
   "codeproject": {
     "productivity": "Productive",
-    "classification": "unclassified"
-  },
-  "help.dottoro": {
-    "productivity": "Productive",
-    "classification": "unclassified"
-  },
-  "objectmix": {
-    "productivity": "Productive",
-    "classification": "unclassified"
+    "category": "Software Development"
   },
   "codingforums": {
     "productivity": "Productive",
-    "classification": "unclassified"
+    "category": "Software Development"
   },
   "codepen.io": {
     "productivity": "Productive",
-    "classification": "unclassified"
+    "category": "Software Development"
   },
   "viralpatel": {
     "productivity": "Productive",
-    "classification": "unclassified"
-  },
-  "zachhunter": {
-    "productivity": "Productive",
-    "classification": "unclassified"
-  },
-  "experts-exchange": {
-    "productivity": "Productive",
-    "classification": "unclassified"
-  },
-  "quirksmode": {
-    "productivity": "Productive",
-    "classification": "unclassified"
-  },
-  "mojavelinux": {
-    "productivity": "Productive",
-    "classification": "unclassified"
+    "category": "Software Development"
   },
   "jsfiddle": {
     "productivity": "Productive",
-    "classification": "unclassified"
-  },
-  "json": {
-    "productivity": "Productive",
-    "classification": "unclassified"
-  },
-  "blog.xkoder": {
-    "productivity": "Productive",
-    "classification": "unclassified"
+    "category": "Software Development"
   },
   "devmedia": {
     "productivity": "Productive",
-    "classification": "unclassified"
-  },
-  "phpied": {
-    "productivity": "Productive",
-    "classification": "unclassified"
+    "category": "Software Development"
   },
   "exame.abril": {
     "productivity": "Unproductive",
-    "classification": "unclassified"
+    "category": "unclassified"
   },
   "linkedin": {
     "productivity": "Unproductive",
-    "classification": "unclassified"
+    "category": "Social Networking"
   },
   "br.linkedin": {
     "productivity": "Unproductive",
-    "classification": "unclassified"
+    "category": "Social Networking"
   }
 }

@@ -116,15 +116,15 @@ function start() {
         chrome.tabs.create({url: $(member2linkedin).attr('href')});
     });
 
-    document.getElementById("member3googleplus").addEventListener("click", function () {
-        chrome.tabs.create({url: $(member3googleplus).attr('href')});
-    });
-    document.getElementById("member3facebook").addEventListener("click", function () {
-        chrome.tabs.create({url: $(member3facebook).attr('href')});
-    });
-    document.getElementById("member3linkedin").addEventListener("click", function () {
-        chrome.tabs.create({url: $(member3linkedin).attr('href')});
-    });
+    //document.getElementById("member3googleplus").addEventListener("click", function () {
+    //    chrome.tabs.create({url: $(member3googleplus).attr('href')});
+    //});
+    //document.getElementById("member3facebook").addEventListener("click", function () {
+    //    chrome.tabs.create({url: $(member3facebook).attr('href')});
+    //});
+    //document.getElementById("member3linkedin").addEventListener("click", function () {
+    //    chrome.tabs.create({url: $(member3linkedin).attr('href')});
+    //});
 }
 
 document.addEventListener('DOMContentLoaded', function () {
