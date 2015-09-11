@@ -5,8 +5,12 @@
   "permissions": [
     "history"
   ],
+  "background": {
+    "scripts": ["modules/interface/views/main.js"],
+    "persistent": false
+  },
   "browser_action": {
-    "default_popup": "templates/master_page/index.html",
+    "default_title": "Make this page red",
     "default_icon": "clock.png"
   },
   "manifest_version": 2
