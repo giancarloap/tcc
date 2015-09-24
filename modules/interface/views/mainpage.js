@@ -44,7 +44,6 @@ function start() {
                 $("#page-wrapper").html(DirectedGraphOfUrlsAndReferers);
             }
         });
-        alert('test');
         buildDirectedGraphOfVisitedUrlsAndReferers();
     });
 }

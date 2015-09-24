@@ -27,8 +27,6 @@ function buildBubbleChart() {
             var associativeArray = {};
 
             for (var i = 0; i < historyItems.length; ++i) {
-                alert(historyItems.length);
-                alert(historyItems[i].url);
                 domain = historyItems[i].url.match(/^[\w-]+:\/*\[?([\w\.:-]+)\]?(?::\d+)?/)[1];
                 domain = domain.replace('www.', '');
                 domain = domain.replace('.com', '');

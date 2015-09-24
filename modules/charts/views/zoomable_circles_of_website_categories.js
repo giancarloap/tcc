@@ -47,7 +47,6 @@ function buildZoomableCirclesOfCategories() {
         "name": "History",
         "children": []
     };
-    //alert(true);
     // To look for history items visited in the last week,
     // subtract a week of microseconds from the current time.
     // var microsecondsPerWeek = 1000 * 60 * 60 * 24 * 7;
@@ -125,40 +124,20 @@ function buildZoomableCirclesOfCategories() {
                 associativeArray[domain]['color'] = productivity === "Productive" ? "rgba(46, 204, 113, 1)" : (productivity === 'Unproductive' ? "rgba(230, 85, 13, 1.0)" : (productivity === 'Neutral' ? "rgba(255, 255, 0, 1.0)" : "rgba(107, 174, 214, 1.0)"));
                 associativeArray[domain]['text'] = associativeArray[domain]['domain'] + '  Visits: ' + associativeArray[domain]['domainVisitCount'] + ' ' + (typeof productivity === 'undefined' ? 'Unclassified' : productivity)
 
-                //alert(categories);
                 catExists = false;
                 for (var i = 0; i < categories['children'].length; ++i) {
-                //for(var cat in categories['children'] ){
-                //    alert('categories');
-                //    alert(dump(categories));
-                //    alert('categories[children]');
-                //    alert(dump(categories['children']));
-                //    alert('categories[children][i]');
-                //    alert(dump(categories['children'][i]));
-                    //alert("categories['children'][i]['name'] " + categories['children'][i]['name']);
-                    //alert("category" + category);
                     if (categories['children'][i]['name'] === category ){
                         catExists = true;
-                        alert('cat exists');
-                        //cat['children'][][ name ] = [domain];
                         children = {};
                         children['name'] = domain;
                         children['size'] = 3812;
-                        alert(dump(children));
-                        alert(dump(categories['children'][i]['children']));
                         categories['children'][i]['children'].push(children);
                         break;
-                        //alert(dump(cat, 3));
                     }
-
                 }
                 if (!catExists){
-                    //alert('not cat exists');
                     new_cat = {};
                     new_cat['name'] = category;
-                    if ( category === null){
-                        alert("nulo" + category);
-                    }
                     new_cat['children'] = [];
 
                     new_domain = {};
@@ -166,24 +145,9 @@ function buildZoomableCirclesOfCategories() {
                     new_domain['size'] = 3938;
 
                     new_cat['children'].push(new_domain);
-                    //alert(new_cat);
-                    //cat_and_domain = "name": "Communication",
-                    //    "children": [
-                    //    {
-                    //        "name": "mail.google",
-                    //        "size": 3938
-                    //    },
                     categories['children'].push(new_cat);
-                    //categories['children'] = new_cat;
-                    //alert(dump(categories));
-                    //alert(dump(new_cat, 0));
-                    //alert(dump(categories, 0));
                 }
-                alert(dump(categories));
-
             }
-
-            //alert(dump(categories, 3));
 
             var margin = 20,
                 diameter = 960;
@@ -205,12 +169,8 @@ function buildZoomableCirclesOfCategories() {
                 .attr("transform", "translate(" + diameter / 2 + "," + diameter / 2 + ")");
 
             d3.json("../../modules/charts/views/category2.json", function(error, root) {
-                //alert(root);
-                //alert(associativeArray);
                 if (error) throw error;
                 root = categories;
-                alert(dump(root));
-                alert(dump(categories));
                 var focus = root,
                     nodes = pack.nodes(root),
                     view;
