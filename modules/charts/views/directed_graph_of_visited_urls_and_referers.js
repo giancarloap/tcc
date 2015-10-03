@@ -3,6 +3,7 @@
 // found in the LICENSE file.
 
 associativeArray = {};
+links = [];
 
 /**
  * Function : dump()
@@ -46,9 +47,7 @@ function buildDirectedGraphOfVisitedUrlsAndReferers() {
     console.log('message');
     // http://blog.thomsonreuters.com/index.php/mobile-patent-suits-graphic-of-the-day/
 
-    var links = [];
-
-    var links = [
+    links = [
         {source: "Microsoft", target: "Amazon", type: "licensing"},
         {source: "Microsoft", target: "HTC", type: "licensing"},
         {source: "Samsung", target: "Apple", type: "suit"},
@@ -78,10 +77,6 @@ function buildDirectedGraphOfVisitedUrlsAndReferers() {
         {source: "Kodak", target: "RIM", type: "suit"},
         {source: "Nokia", target: "Qualcomm", type: "suit"}
     ];
-    alert(dump(links));
-    //links=[];
-
-    var rtrefererid = -1;
 
     // To look for history items visited in the last week,
     // subtract a week of microseconds from the current time.
@@ -109,69 +104,35 @@ function buildDirectedGraphOfVisitedUrlsAndReferers() {
                 domain = domain.replace('.net', '');
                 domain = domain.replace('.gov', '');
 
-                //var s = domain;
-                //var rescuetime = null;
-                ////alert(rescuetime);
-                ////return;
-                //if (s.indexOf("rescuetime") > -1) {
-                //    // alert('tem rescuetime no dominio');
-                //    rescuetime = true;
-                //    //alert(rescuetime);
-                //}
-                //else {
-                //    rescuetime = false;
-                //    //alert(rescuetime);
-                //}
+                alert(historyItems.length);
+                alert(historyItems[i].url);
 
                 chrome.history.getVisits({url: historyItems[i].url}, function (visitItems) {
-                    for (var i = 0; i < visitItems.length; ++i) {
-                        //alert(rescuetime);
-                        //alert(rtrefererid);
-                        //alert(visitItems.length);
-                        //alert(visitItems[i].visitId + '' + visitItems[i].url);
-                        //if (visitItems[i].id == 0 ){
-                        //    alert(visitItems[i].url);
-                        //}
-                        //if (visitItems[i].visitId == rtrefererid) {
-                        //    //alert('referer do rescuetime');
-                        //    //alert('url do referer do rescuetime' + historyItems[i].url);
-                        //    //alert('id do referer do rescuetime' + visitItems[i].id);
-                        //    //alert('visitId do referer do rescuetime' + visitItems[i].visitId);
-                        //    //alert('transition do referer do rescuetime' + visitItems[i].transition);
-                        //    //alert('referringVisitId do referer do rescuetime' + visitItems[i].referringVisitId);
-                        //}
-                        //alert('antes do teste');
-                        //alert('rescuetime='+rescuetime);
-                        //alert(rescuetime);
-                        //if (rescuetime) {
-                        //    //alert('entrou no rescuetime');
-                        //    //alert('visititem do rescuetime');
-                        //    //alert('id ' + visitItems[i].id);
-                        //    //alert('visitId ' + visitItems[i].visitId);
-                        //    //alert('transition ' + visitItems[i].transition);
-                        //    //alert('referringVisitId ' + visitItems[i].referringVisitId);
-                        //    rtrefererid = referringVisitId;
-                        //    //alert(rtrefererid);
-                        //}
-                        associativeArray[visitItems[i].visitId] = {};
-                        associativeArray[visitItems[i].visitId]['visitId'] = visitItems[i].visitId;
-                        associativeArray[visitItems[i].visitId]['id'] = visitItems[i].id;
-                        associativeArray[visitItems[i].visitId]['url'] = historyItems[i].url;
-                        //associativeArray[visitItems[i].visitId]['domain'] = domain;
-                        associativeArray[visitItems[i].visitId]['transition'] = visitItems[i].transition;
-                        associativeArray[visitItems[i].visitId]['referringVisitId'] = visitItems[i].referringVisitId;
-                        //alert(visitItems[i].transition);
-                        //alert(visitItems[i].referringVisitId);
-                        //alert(associativeArray[referringVisitId]['url']);
-                        //if (domain in associativeArray[visitItems[i].visitId]['domain']) {
-                        //    associativeArray[visitItems[i].visitId]['domain']['domainVisitCount'] = associativeArray[domain]['domainVisitCount'] + 1;
+
+                    for (var j = 0; j < visitItems.length; ++j) {
+
+                        alert('visitItem.length=' + visitItems.length);
+                        alert(historyItems[i].url);
+                        alert('visitItem.visitid=' +visitItems[j].visitId);
+                        alert('visitItem.id='+visitItems[j].id);
+
+                        associativeArray[visitItems[j].visitId] = {};
+                        associativeArray[visitItems[j].visitId]['visitId'] = visitItems[j].visitId;
+                        associativeArray[visitItems[j].visitId]['id'] = visitItems[j].id;
+                        associativeArray[visitItems[j].visitId]['url'] = historyItems[i].url;
+                        //associativeArray[visitItems[j].visitId]['domain'] = domain;
+                        associativeArray[visitItems[j].visitId]['transition'] = visitItems[j].transition;
+                        associativeArray[visitItems[j].visitId]['referringVisitId'] = visitItems[j].referringVisitId;
+
+                        //if (domain in associativeArray[visitItems[j].visitId]['domain']) {
+                        //    associativeArray[visitItems[j].visitId]['domain']['domainVisitCount'] = associativeArray[domain]['domainVisitCount'] + 1;
                         //} else {
-                        associativeArray[visitItems[i].visitId]['domain'] = {};
-                        associativeArray[visitItems[i].visitId]['domain']['name'] = domain;
-                        associativeArray[visitItems[i].visitId]['domain']['title'] = historyItems[i].title;
-                        //associativeArray[visitItems[i].visitId]['domain']['domainVisitCount'] = 1;
+
+                        associativeArray[visitItems[j].visitId]['domain'] = {};
+                        associativeArray[visitItems[j].visitId]['domain']['name'] = domain;
+                        associativeArray[visitItems[j].visitId]['domain']['title'] = historyItems[j].title;
+                        //associativeArray[visitItems[j].visitId]['domain']['domainVisitCount'] = 1;
                         //}
-                        //alert(typeof associativeArray);
 
                         domainVisitCountmphasis = 20;
 
@@ -190,10 +151,10 @@ function buildDirectedGraphOfVisitedUrlsAndReferers() {
                         //    });
                         //
                         //    //associativeArray[domain]['radius'] = Math.log(associativeArray[domain]['domainVisitCount']) * 10 + domainVisitCountmphasis;
-                        //    //associativeArray[visitItems[i].visitId]['domain']['productivity'] = productivity;
-                        //    //associativeArray[visitItems[i].visitId]['domain']['category'] = category;
-                        //    //associativeArray[visitItems[i].visitId]['domain']['color'] = productivity === "Productive" ? "rgba(46, 204, 113, 1)" : (productivity === 'Unproductive' ? "rgba(230, 85, 13, 1.0)" : (productivity === 'Neutral' ? "rgba(255, 255, 0, 1.0)" : "rgba(107, 174, 214, 1.0)"));
-                        //    //associativeArray[visitItems[i].visitId]['domain']['text'] = associativeArray[domain]['domain'] + '  Visits: ' + associativeArray[domain]['domainVisitCount'] + ' ' + (typeof productivity === 'undefined' ? 'Unclassified' : productivity)
+                        //    //associativeArray[visitItems[j].visitId]['domain']['productivity'] = productivity;
+                        //    //associativeArray[visitItems[j].visitId]['domain']['category'] = category;
+                        //    //associativeArray[visitItems[j].visitId]['domain']['color'] = productivity === "Productive" ? "rgba(46, 204, 113, 1)" : (productivity === 'Unproductive' ? "rgba(230, 85, 13, 1.0)" : (productivity === 'Neutral' ? "rgba(255, 255, 0, 1.0)" : "rgba(107, 174, 214, 1.0)"));
+                        //    //associativeArray[visitItems[j].visitId]['domain']['text'] = associativeArray[domain]['domain'] + '  Visits: ' + associativeArray[domain]['domainVisitCount'] + ' ' + (typeof productivity === 'undefined' ? 'Unclassified' : productivity)
                         //}
                     }
                 })
@@ -202,22 +163,21 @@ function buildDirectedGraphOfVisitedUrlsAndReferers() {
 
 
     links = [];
-    alert(associativeArray.length);
 
-    for (var i = 0; i < associativeArray.length;i++) {
-        //alert(associativeArray)
-        alert(i);
-    }
-    //alert('test');
-    //console.log('message2');
-    //while (associativeArray){
-    //    console.log('message2b');
-    //    break;
+    //alert(associativeArray.length);
+
+    //for (var i = 0; i < associativeArray.length;i++) {
+    //    //alert(associativeArray)
+    //    alert(i);
     //}
+
+    alert('proximo alert eh o keys do assossiative array');
     alert(Object.keys(associativeArray).length);
     alert(dump(associativeArray));
-    i =0;
+    i = 0;
     for (var key in associativeArray) {
+        //alert('i' + i);
+        //i++;
         //if (i < 3900){
         //    i++;
         //    continue;
@@ -233,7 +193,7 @@ function buildDirectedGraphOfVisitedUrlsAndReferers() {
         }else{
             //alert('test2bb');
         //if (!source) {
-            source = "undefined" + i;
+            source = associativeArray[key]['transition'];
         }
         //alert('test2c');
         target = associativeArray[key]['domain']['name'];
@@ -243,10 +203,44 @@ function buildDirectedGraphOfVisitedUrlsAndReferers() {
         link = { "source": source, "target": target, "type": type };
         //alert('test2f');
         //alert(link['source']);
-        links.push(link);
+
+        links_contain_link = false;
+        if (links.length == 0){
+            links.push(link);
+            alert('entrou no links vazio');
+            continue;
+        }
+
+        links_length = links.length;
+        repeated = false;
+        for (var j = 0 ; j < links_length ; j++){
+            //alert(links_length + ' jotas');
+            //alert('j'+ j);
+            //alert(dump(links));
+            //alert('estou aqui!');
+            //alert(link['source']);
+            //alert(link['target']);
+            //alert(link['type']);
+            //alert(links[j]['source']);
+            //alert(links[j]['target']);
+            //alert(links[j]['type']);
+            if ( link['source'] === links[j]['source'] &&
+                 link['target'] === links[j]['target'] &&
+                 link['type'] === links[j]['type'] ) {
+                //alert('continue');
+                repeated = true;
+                break;
+            }
+        }
+        if (!repeated) {
+            links.push(link);
+        }
+
+
         //alert(dump(links));
-        i++;
+        //i++;
     }
+alert('passou do for. proximo alert eh o dump links');
 alert(dump(links));
 
         //reffererId = associativeArray[visitId][referringVisitId];
@@ -335,12 +329,653 @@ alert(dump(links));
     //    {source: "Kodak", target: "Samsung", type: "resolved"},
     //    {source: "Apple", target: "Samsung", type: "suit"},
     //    {source: "Kodak", target: "RIM", type: "suit"},
-    //    {source: "Nokia", target: "Qualcomm", type: "suit"}
+    //    {source: "Nokia", target: "Qualcomm", type: "suit"},
+    //    {source: "Microsoft2", target: "Amazon", type: "licensing"},
+    //    {source: "Microsoft2", target: "HTC", type: "licensing"},
+    //    {source: "Samsung2", target: "Apple", type: "suit"},
+    //    {source: "Motorola2", target: "Apple", type: "suit"},
+    //    {source: "Nokia2", target: "Apple", type: "resolved"},
+    //    {source: "HTC2", target: "Apple", type: "suit"},
+    //    {source: "Kodak2", target: "Apple", type: "suit"},
+    //    {source: "Microsoft2", target: "Barnes & Noble", type: "suit"},
+    //    {source: "Microsoft2", target: "Foxconn", type: "suit"},
+    //    {source: "Oracle2", target: "Google", type: "suit"},
+    //    {source: "Apple2", target: "HTC", type: "suit"},
+    //    {source: "Microsoft2", target: "Inventec", type: "suit"},
+    //    {source: "Samsung2", target: "Kodak", type: "resolved"},
+    //    {source: "LG2", target: "Kodak", type: "resolved"},
+    //    {source: "RIM2", target: "Kodak", type: "suit"},
+    //    {source: "Sony2", target: "LG", type: "suit"},
+    //    {source: "Kodak2", target: "LG", type: "resolved"},
+    //    {source: "Apple2", target: "Nokia", type: "resolved"},
+    //    {source: "Qualcomm2", target: "Nokia", type: "resolved"},
+    //    {source: "Apple2", target: "Motorola", type: "suit"},
+    //    {source: "Microsoft2", target: "Motorola", type: "suit"},
+    //    {source: "Motorola2", target: "Microsoft", type: "suit"},
+    //    {source: "Huawei2", target: "ZTE", type: "suit"},
+    //    {source: "Ericsson2", target: "ZTE", type: "suit"},
+    //    {source: "Kodak2", target: "Samsung", type: "resolved"},
+    //    {source: "Apple2", target: "Samsung", type: "suit"},
+    //    {source: "Kodak2", target: "RIM", type: "suit"},
+    //    {source: "Nokia2", target: "Qualcomm", type: "suit"},
+    //    {source: "Microsoft2", target: "Amazon", type: "licensing"},
+    //    {source: "Microsoft2", target: "HTC", type: "licensing"},
+    //    {source: "Samsung2", target: "Apple", type: "suit"},
+    //    {source: "Motorola2", target: "Apple", type: "suit"},
+    //    {source: "Nokia2", target: "Apple", type: "resolved"},
+    //    {source: "HTC2", target: "Apple", type: "suit"},
+    //    {source: "Kodak2", target: "Apple", type: "suit"},
+    //    {source: "Microsoft2", target: "Barnes & Noble", type: "suit"},
+    //    {source: "Microsoft2", target: "Foxconn", type: "suit"},
+    //    {source: "Oracle2", target: "Google", type: "suit"},
+    //    {source: "Apple2", target: "HTC", type: "suit"},
+    //    {source: "Microsoft2", target: "Inventec", type: "suit"},
+    //    {source: "Samsung2", target: "Kodak", type: "resolved"},
+    //    {source: "LG2", target: "Kodak", type: "resolved"},
+    //    {source: "RIM2", target: "Kodak", type: "suit"},
+    //    {source: "Sony2", target: "LG", type: "suit"},
+    //    {source: "Kodak2", target: "LG", type: "resolved"},
+    //    {source: "Apple2", target: "Nokia", type: "resolved"},
+    //    {source: "Qualcomm2", target: "Nokia", type: "resolved"},
+    //    {source: "Apple2", target: "Motorola", type: "suit"},
+    //    {source: "Microsoft2", target: "Motorola", type: "suit"},
+    //    {source: "Motorola2", target: "Microsoft", type: "suit"},
+    //    {source: "Huawei2", target: "ZTE", type: "suit"},
+    //    {source: "Ericsson2", target: "ZTE", type: "suit"},
+    //    {source: "Kodak2", target: "Samsung", type: "resolved"},
+    //    {source: "Apple2", target: "Samsung", type: "suit"},
+    //    {source: "Kodak2", target: "RIM", type: "suit"},
+    //    {source: "Nokia2", target: "Qualcomm", type: "suit"},
+    //    {source: "Microsoft2", target: "Amazon", type: "licensing"},
+    //    {source: "Microsoft2", target: "HTC", type: "licensing"},
+    //    {source: "Samsung2", target: "Apple", type: "suit"},
+    //    {source: "Motorola2", target: "Apple", type: "suit"},
+    //    {source: "Nokia2", target: "Apple", type: "resolved"},
+    //    {source: "HTC2", target: "Apple", type: "suit"},
+    //    {source: "Kodak2", target: "Apple", type: "suit"},
+    //    {source: "Microsoft2", target: "Barnes & Noble", type: "suit"},
+    //    {source: "Microsoft2", target: "Foxconn", type: "suit"},
+    //    {source: "Oracle2", target: "Google", type: "suit"},
+    //    {source: "Apple2", target: "HTC", type: "suit"},
+    //    {source: "Microsoft2", target: "Inventec", type: "suit"},
+    //    {source: "Samsung2", target: "Kodak", type: "resolved"},
+    //    {source: "LG2", target: "Kodak", type: "resolved"},
+    //    {source: "RIM2", target: "Kodak", type: "suit"},
+    //    {source: "Sony2", target: "LG", type: "suit"},
+    //    {source: "Kodak2", target: "LG", type: "resolved"},
+    //    {source: "Apple2", target: "Nokia", type: "resolved"},
+    //    {source: "Qualcomm2", target: "Nokia", type: "resolved"},
+    //    {source: "Apple2", target: "Motorola", type: "suit"},
+    //    {source: "Microsoft2", target: "Motorola", type: "suit"},
+    //    {source: "Motorola2", target: "Microsoft", type: "suit"},
+    //    {source: "Huawei2", target: "ZTE", type: "suit"},
+    //    {source: "Ericsson2", target: "ZTE", type: "suit"},
+    //    {source: "Kodak2", target: "Samsung", type: "resolved"},
+    //    {source: "Apple2", target: "Samsung", type: "suit"},
+    //    {source: "Kodak2", target: "RIM", type: "suit"},
+    //    {source: "Nokia2", target: "Qualcomm", type: "suit"},
+    //    {source: "Microsoft2", target: "Amazon", type: "licensing"},
+    //    {source: "Microsoft2", target: "HTC", type: "licensing"},
+    //    {source: "Samsung2", target: "Apple", type: "suit"},
+    //    {source: "Motorola2", target: "Apple", type: "suit"},
+    //    {source: "Nokia2", target: "Apple", type: "resolved"},
+    //    {source: "HTC2", target: "Apple", type: "suit"},
+    //    {source: "Kodak2", target: "Apple", type: "suit"},
+    //    {source: "Microsoft2", target: "Barnes & Noble", type: "suit"},
+    //    {source: "Microsoft2", target: "Foxconn", type: "suit"},
+    //    {source: "Oracle2", target: "Google", type: "suit"},
+    //    {source: "Apple2", target: "HTC", type: "suit"},
+    //    {source: "Microsoft2", target: "Inventec", type: "suit"},
+    //    {source: "Samsung2", target: "Kodak", type: "resolved"},
+    //    {source: "LG2", target: "Kodak", type: "resolved"},
+    //    {source: "RIM2", target: "Kodak", type: "suit"},
+    //    {source: "Sony2", target: "LG", type: "suit"},
+    //    {source: "Kodak2", target: "LG", type: "resolved"},
+    //    {source: "Apple2", target: "Nokia", type: "resolved"},
+    //    {source: "Qualcomm2", target: "Nokia", type: "resolved"},
+    //    {source: "Apple2", target: "Motorola", type: "suit"},
+    //    {source: "Microsoft2", target: "Motorola", type: "suit"},
+    //    {source: "Motorola2", target: "Microsoft", type: "suit"},
+    //    {source: "Huawei2", target: "ZTE", type: "suit"},
+    //    {source: "Ericsson2", target: "ZTE", type: "suit"},
+    //    {source: "Kodak2", target: "Samsung", type: "resolved"},
+    //    {source: "Apple2", target: "Samsung", type: "suit"},
+    //    {source: "Kodak2", target: "RIM", type: "suit"},
+    //    {source: "Nokia2", target: "Qualcomm", type: "suit"},
+    //    {source: "Microsoft2", target: "Amazon", type: "licensing"},
+    //    {source: "Microsoft2", target: "HTC", type: "licensing"},
+    //    {source: "Samsung2", target: "Apple", type: "suit"},
+    //    {source: "Motorola2", target: "Apple", type: "suit"},
+    //    {source: "Nokia2", target: "Apple", type: "resolved"},
+    //    {source: "HTC2", target: "Apple", type: "suit"},
+    //    {source: "Kodak2", target: "Apple", type: "suit"},
+    //    {source: "Microsoft2", target: "Barnes & Noble", type: "suit"},
+    //    {source: "Microsoft2", target: "Foxconn", type: "suit"},
+    //    {source: "Oracle2", target: "Google", type: "suit"},
+    //    {source: "Apple2", target: "HTC", type: "suit"},
+    //    {source: "Microsoft2", target: "Inventec", type: "suit"},
+    //    {source: "Samsung2", target: "Kodak", type: "resolved"},
+    //    {source: "LG2", target: "Kodak", type: "resolved"},
+    //    {source: "RIM2", target: "Kodak", type: "suit"},
+    //    {source: "Sony2", target: "LG", type: "suit"},
+    //    {source: "Kodak2", target: "LG", type: "resolved"},
+    //    {source: "Apple2", target: "Nokia", type: "resolved"},
+    //    {source: "Qualcomm2", target: "Nokia", type: "resolved"},
+    //    {source: "Apple2", target: "Motorola", type: "suit"},
+    //    {source: "Microsoft2", target: "Motorola", type: "suit"},
+    //    {source: "Motorola2", target: "Microsoft", type: "suit"},
+    //    {source: "Huawei2", target: "ZTE", type: "suit"},
+    //    {source: "Ericsson2", target: "ZTE", type: "suit"},
+    //    {source: "Kodak2", target: "Samsung", type: "resolved"},
+    //    {source: "Apple2", target: "Samsung", type: "suit"},
+    //    {source: "Kodak2", target: "RIM", type: "suit"},
+    //    {source: "Nokia2", target: "Qualcomm", type: "suit"},
+    //    {source: "Microsoft2", target: "Amazon", type: "licensing"},
+    //    {source: "Microsoft2", target: "HTC", type: "licensing"},
+    //    {source: "Samsung2", target: "Apple", type: "suit"},
+    //    {source: "Motorola2", target: "Apple", type: "suit"},
+    //    {source: "Nokia2", target: "Apple", type: "resolved"},
+    //    {source: "HTC2", target: "Apple", type: "suit"},
+    //    {source: "Kodak2", target: "Apple", type: "suit"},
+    //    {source: "Microsoft2", target: "Barnes & Noble", type: "suit"},
+    //    {source: "Microsoft2", target: "Foxconn", type: "suit"},
+    //    {source: "Oracle2", target: "Google", type: "suit"},
+    //    {source: "Apple2", target: "HTC", type: "suit"},
+    //    {source: "Microsoft2", target: "Inventec", type: "suit"},
+    //    {source: "Samsung2", target: "Kodak", type: "resolved"},
+    //    {source: "LG2", target: "Kodak", type: "resolved"},
+    //    {source: "RIM2", target: "Kodak", type: "suit"},
+    //    {source: "Sony2", target: "LG", type: "suit"},
+    //    {source: "Kodak2", target: "LG", type: "resolved"},
+    //    {source: "Apple2", target: "Nokia", type: "resolved"},
+    //    {source: "Qualcomm2", target: "Nokia", type: "resolved"},
+    //    {source: "Apple2", target: "Motorola", type: "suit"},
+    //    {source: "Microsoft2", target: "Motorola", type: "suit"},
+    //    {source: "Motorola2", target: "Microsoft", type: "suit"},
+    //    {source: "Huawei2", target: "ZTE", type: "suit"},
+    //    {source: "Ericsson2", target: "ZTE", type: "suit"},
+    //    {source: "Kodak2", target: "Samsung", type: "resolved"},
+    //    {source: "Apple2", target: "Samsung", type: "suit"},
+    //    {source: "Kodak2", target: "RIM", type: "suit"},
+    //    {source: "Nokia2", target: "Qualcomm", type: "suit"},
+    //    {source: "Microsoft2", target: "Amazon", type: "licensing"},
+    //    {source: "Microsoft2", target: "HTC", type: "licensing"},
+    //    {source: "Samsung2", target: "Apple", type: "suit"},
+    //    {source: "Motorola2", target: "Apple", type: "suit"},
+    //    {source: "Nokia2", target: "Apple", type: "resolved"},
+    //    {source: "HTC2", target: "Apple", type: "suit"},
+    //    {source: "Kodak2", target: "Apple", type: "suit"},
+    //    {source: "Microsoft2", target: "Barnes & Noble", type: "suit"},
+    //    {source: "Microsoft2", target: "Foxconn", type: "suit"},
+    //    {source: "Oracle2", target: "Google", type: "suit"},
+    //    {source: "Apple2", target: "HTC", type: "suit"},
+    //    {source: "Microsoft2", target: "Inventec", type: "suit"},
+    //    {source: "Samsung2", target: "Kodak", type: "resolved"},
+    //    {source: "LG2", target: "Kodak", type: "resolved"},
+    //    {source: "RIM2", target: "Kodak", type: "suit"},
+    //    {source: "Sony2", target: "LG", type: "suit"},
+    //    {source: "Kodak2", target: "LG", type: "resolved"},
+    //    {source: "Apple2", target: "Nokia", type: "resolved"},
+    //    {source: "Qualcomm2", target: "Nokia", type: "resolved"},
+    //    {source: "Apple2", target: "Motorola", type: "suit"},
+    //    {source: "Microsoft2", target: "Motorola", type: "suit"},
+    //    {source: "Motorola2", target: "Microsoft", type: "suit"},
+    //    {source: "Huawei2", target: "ZTE", type: "suit"},
+    //    {source: "Ericsson2", target: "ZTE", type: "suit"},
+    //    {source: "Kodak2", target: "Samsung", type: "resolved"},
+    //    {source: "Apple2", target: "Samsung", type: "suit"},
+    //    {source: "Kodak2", target: "RIM", type: "suit"},
+    //    {source: "Nokia2", target: "Qualcomm", type: "suit"},
+    //    {source: "Microsoft2", target: "Amazon", type: "licensing"},
+    //    {source: "Microsoft2", target: "HTC", type: "licensing"},
+    //    {source: "Samsung2", target: "Apple", type: "suit"},
+    //    {source: "Motorola2", target: "Apple", type: "suit"},
+    //    {source: "Nokia2", target: "Apple", type: "resolved"},
+    //    {source: "HTC2", target: "Apple", type: "suit"},
+    //    {source: "Kodak2", target: "Apple", type: "suit"},
+    //    {source: "Microsoft2", target: "Barnes & Noble", type: "suit"},
+    //    {source: "Microsoft2", target: "Foxconn", type: "suit"},
+    //    {source: "Oracle2", target: "Google", type: "suit"},
+    //    {source: "Apple2", target: "HTC", type: "suit"},
+    //    {source: "Microsoft2", target: "Inventec", type: "suit"},
+    //    {source: "Samsung2", target: "Kodak", type: "resolved"},
+    //    {source: "LG2", target: "Kodak", type: "resolved"},
+    //    {source: "RIM2", target: "Kodak", type: "suit"},
+    //    {source: "Sony2", target: "LG", type: "suit"},
+    //    {source: "Kodak2", target: "LG", type: "resolved"},
+    //    {source: "Apple2", target: "Nokia", type: "resolved"},
+    //    {source: "Qualcomm2", target: "Nokia", type: "resolved"},
+    //    {source: "Apple2", target: "Motorola", type: "suit"},
+    //    {source: "Microsoft2", target: "Motorola", type: "suit"},
+    //    {source: "Motorola2", target: "Microsoft", type: "suit"},
+    //    {source: "Huawei2", target: "ZTE", type: "suit"},
+    //    {source: "Ericsson2", target: "ZTE", type: "suit"},
+    //    {source: "Kodak2", target: "Samsung", type: "resolved"},
+    //    {source: "Apple2", target: "Samsung", type: "suit"},
+    //    {source: "Kodak2", target: "RIM", type: "suit"},
+    //    {source: "Nokia2", target: "Qualcomm", type: "suit"},
+    //    {source: "Microsoft2", target: "Amazon", type: "licensing"},
+    //    {source: "Microsoft2", target: "HTC", type: "licensing"},
+    //    {source: "Samsung2", target: "Apple", type: "suit"},
+    //    {source: "Motorola2", target: "Apple", type: "suit"},
+    //    {source: "Nokia2", target: "Apple", type: "resolved"},
+    //    {source: "HTC2", target: "Apple", type: "suit"},
+    //    {source: "Kodak2", target: "Apple", type: "suit"},
+    //    {source: "Microsoft2", target: "Barnes & Noble", type: "suit"},
+    //    {source: "Microsoft2", target: "Foxconn", type: "suit"},
+    //    {source: "Oracle2", target: "Google", type: "suit"},
+    //    {source: "Apple2", target: "HTC", type: "suit"},
+    //    {source: "Microsoft2", target: "Inventec", type: "suit"},
+    //    {source: "Samsung2", target: "Kodak", type: "resolved"},
+    //    {source: "LG2", target: "Kodak", type: "resolved"},
+    //    {source: "RIM2", target: "Kodak", type: "suit"},
+    //    {source: "Sony2", target: "LG", type: "suit"},
+    //    {source: "Kodak2", target: "LG", type: "resolved"},
+    //    {source: "Apple2", target: "Nokia", type: "resolved"},
+    //    {source: "Qualcomm2", target: "Nokia", type: "resolved"},
+    //    {source: "Apple2", target: "Motorola", type: "suit"},
+    //    {source: "Microsoft2", target: "Motorola", type: "suit"},
+    //    {source: "Motorola2", target: "Microsoft", type: "suit"},
+    //    {source: "Huawei2", target: "ZTE", type: "suit"},
+    //    {source: "Ericsson2", target: "ZTE", type: "suit"},
+    //    {source: "Kodak2", target: "Samsung", type: "resolved"},
+    //    {source: "Apple2", target: "Samsung", type: "suit"},
+    //    {source: "Kodak2", target: "RIM", type: "suit"},
+    //    {source: "Nokia2", target: "Qualcomm", type: "suit"},
+    //    {source: "Microsoft2", target: "Amazon", type: "licensing"},
+    //    {source: "Microsoft2", target: "HTC", type: "licensing"},
+    //    {source: "Samsung2", target: "Apple", type: "suit"},
+    //    {source: "Motorola2", target: "Apple", type: "suit"},
+    //    {source: "Nokia2", target: "Apple", type: "resolved"},
+    //    {source: "HTC2", target: "Apple", type: "suit"},
+    //    {source: "Kodak2", target: "Apple", type: "suit"},
+    //    {source: "Microsoft2", target: "Barnes & Noble", type: "suit"},
+    //    {source: "Microsoft2", target: "Foxconn", type: "suit"},
+    //    {source: "Oracle2", target: "Google", type: "suit"},
+    //    {source: "Apple2", target: "HTC", type: "suit"},
+    //    {source: "Microsoft2", target: "Inventec", type: "suit"},
+    //    {source: "Samsung2", target: "Kodak", type: "resolved"},
+    //    {source: "LG2", target: "Kodak", type: "resolved"},
+    //    {source: "RIM2", target: "Kodak", type: "suit"},
+    //    {source: "Sony2", target: "LG", type: "suit"},
+    //    {source: "Kodak2", target: "LG", type: "resolved"},
+    //    {source: "Apple2", target: "Nokia", type: "resolved"},
+    //    {source: "Qualcomm2", target: "Nokia", type: "resolved"},
+    //    {source: "Apple2", target: "Motorola", type: "suit"},
+    //    {source: "Microsoft2", target: "Motorola", type: "suit"},
+    //    {source: "Motorola2", target: "Microsoft", type: "suit"},
+    //    {source: "Huawei2", target: "ZTE", type: "suit"},
+    //    {source: "Ericsson2", target: "ZTE", type: "suit"},
+    //    {source: "Kodak2", target: "Samsung", type: "resolved"},
+    //    {source: "Apple2", target: "Samsung", type: "suit"},
+    //    {source: "Kodak2", target: "RIM", type: "suit"},
+    //    {source: "Nokia2", target: "Qualcomm", type: "suit"},
+    //    {source: "Microsoft2", target: "Amazon", type: "licensing"},
+    //    {source: "Microsoft2", target: "HTC", type: "licensing"},
+    //    {source: "Samsung2", target: "Apple", type: "suit"},
+    //    {source: "Motorola2", target: "Apple", type: "suit"},
+    //    {source: "Nokia2", target: "Apple", type: "resolved"},
+    //    {source: "HTC2", target: "Apple", type: "suit"},
+    //    {source: "Kodak2", target: "Apple", type: "suit"},
+    //    {source: "Microsoft2", target: "Barnes & Noble", type: "suit"},
+    //    {source: "Microsoft2", target: "Foxconn", type: "suit"},
+    //    {source: "Oracle2", target: "Google", type: "suit"},
+    //    {source: "Apple2", target: "HTC", type: "suit"},
+    //    {source: "Microsoft2", target: "Inventec", type: "suit"},
+    //    {source: "Samsung2", target: "Kodak", type: "resolved"},
+    //    {source: "LG2", target: "Kodak", type: "resolved"},
+    //    {source: "RIM2", target: "Kodak", type: "suit"},
+    //    {source: "Sony2", target: "LG", type: "suit"},
+    //    {source: "Kodak2", target: "LG", type: "resolved"},
+    //    {source: "Apple2", target: "Nokia", type: "resolved"},
+    //    {source: "Qualcomm2", target: "Nokia", type: "resolved"},
+    //    {source: "Apple2", target: "Motorola", type: "suit"},
+    //    {source: "Microsoft2", target: "Motorola", type: "suit"},
+    //    {source: "Motorola2", target: "Microsoft", type: "suit"},
+    //    {source: "Huawei2", target: "ZTE", type: "suit"},
+    //    {source: "Ericsson2", target: "ZTE", type: "suit"},
+    //    {source: "Kodak2", target: "Samsung", type: "resolved"},
+    //    {source: "Apple2", target: "Samsung", type: "suit"},
+    //    {source: "Kodak2", target: "RIM", type: "suit"},
+    //    {source: "Nokia2", target: "Qualcomm", type: "suit"},
+    //    {source: "Microsoft2", target: "Amazon", type: "licensing"},
+    //    {source: "Microsoft2", target: "HTC", type: "licensing"},
+    //    {source: "Samsung2", target: "Apple", type: "suit"},
+    //    {source: "Motorola2", target: "Apple", type: "suit"},
+    //    {source: "Nokia2", target: "Apple", type: "resolved"},
+    //    {source: "HTC2", target: "Apple", type: "suit"},
+    //    {source: "Kodak2", target: "Apple", type: "suit"},
+    //    {source: "Microsoft2", target: "Barnes & Noble", type: "suit"},
+    //    {source: "Microsoft2", target: "Foxconn", type: "suit"},
+    //    {source: "Oracle2", target: "Google", type: "suit"},
+    //    {source: "Apple2", target: "HTC", type: "suit"},
+    //    {source: "Microsoft2", target: "Inventec", type: "suit"},
+    //    {source: "Samsung2", target: "Kodak", type: "resolved"},
+    //    {source: "LG2", target: "Kodak", type: "resolved"},
+    //    {source: "RIM2", target: "Kodak", type: "suit"},
+    //    {source: "Sony2", target: "LG", type: "suit"},
+    //    {source: "Kodak2", target: "LG", type: "resolved"},
+    //    {source: "Apple2", target: "Nokia", type: "resolved"},
+    //    {source: "Qualcomm2", target: "Nokia", type: "resolved"},
+    //    {source: "Apple2", target: "Motorola", type: "suit"},
+    //    {source: "Microsoft2", target: "Motorola", type: "suit"},
+    //    {source: "Motorola2", target: "Microsoft", type: "suit"},
+    //    {source: "Huawei2", target: "ZTE", type: "suit"},
+    //    {source: "Ericsson2", target: "ZTE", type: "suit"},
+    //    {source: "Kodak2", target: "Samsung", type: "resolved"},
+    //    {source: "Apple2", target: "Samsung", type: "suit"},
+    //    {source: "Kodak2", target: "RIM", type: "suit"},
+    //    {source: "Nokia2", target: "Qualcomm", type: "suit"},
+    //    {source: "Microsoft2", target: "Amazon", type: "licensing"},
+    //    {source: "Microsoft2", target: "HTC", type: "licensing"},
+    //    {source: "Samsung2", target: "Apple", type: "suit"},
+    //    {source: "Motorola2", target: "Apple", type: "suit"},
+    //    {source: "Nokia2", target: "Apple", type: "resolved"},
+    //    {source: "HTC2", target: "Apple", type: "suit"},
+    //    {source: "Kodak2", target: "Apple", type: "suit"},
+    //    {source: "Microsoft2", target: "Barnes & Noble", type: "suit"},
+    //    {source: "Microsoft2", target: "Foxconn", type: "suit"},
+    //    {source: "Oracle2", target: "Google", type: "suit"},
+    //    {source: "Apple2", target: "HTC", type: "suit"},
+    //    {source: "Microsoft2", target: "Inventec", type: "suit"},
+    //    {source: "Samsung2", target: "Kodak", type: "resolved"},
+    //    {source: "LG2", target: "Kodak", type: "resolved"},
+    //    {source: "RIM2", target: "Kodak", type: "suit"},
+    //    {source: "Sony2", target: "LG", type: "suit"},
+    //    {source: "Kodak2", target: "LG", type: "resolved"},
+    //    {source: "Apple2", target: "Nokia", type: "resolved"},
+    //    {source: "Qualcomm2", target: "Nokia", type: "resolved"},
+    //    {source: "Apple2", target: "Motorola", type: "suit"},
+    //    {source: "Microsoft2", target: "Motorola", type: "suit"},
+    //    {source: "Motorola2", target: "Microsoft", type: "suit"},
+    //    {source: "Huawei2", target: "ZTE", type: "suit"},
+    //    {source: "Ericsson2", target: "ZTE", type: "suit"},
+    //    {source: "Kodak2", target: "Samsung", type: "resolved"},
+    //    {source: "Apple2", target: "Samsung", type: "suit"},
+    //    {source: "Kodak2", target: "RIM", type: "suit"},
+    //    {source: "Nokia2", target: "Qualcomm", type: "suit"},
+    //    {source: "Microsoft2", target: "Amazon", type: "licensing"},
+    //    {source: "Microsoft2", target: "HTC", type: "licensing"},
+    //    {source: "Samsung2", target: "Apple", type: "suit"},
+    //    {source: "Motorola2", target: "Apple", type: "suit"},
+    //    {source: "Nokia2", target: "Apple", type: "resolved"},
+    //    {source: "HTC2", target: "Apple", type: "suit"},
+    //    {source: "Kodak2", target: "Apple", type: "suit"},
+    //    {source: "Microsoft2", target: "Barnes & Noble", type: "suit"},
+    //    {source: "Microsoft2", target: "Foxconn", type: "suit"},
+    //    {source: "Oracle2", target: "Google", type: "suit"},
+    //    {source: "Apple2", target: "HTC", type: "suit"},
+    //    {source: "Microsoft2", target: "Inventec", type: "suit"},
+    //    {source: "Samsung2", target: "Kodak", type: "resolved"},
+    //    {source: "LG2", target: "Kodak", type: "resolved"},
+    //    {source: "RIM2", target: "Kodak", type: "suit"},
+    //    {source: "Sony2", target: "LG", type: "suit"},
+    //    {source: "Kodak2", target: "LG", type: "resolved"},
+    //    {source: "Apple2", target: "Nokia", type: "resolved"},
+    //    {source: "Qualcomm2", target: "Nokia", type: "resolved"},
+    //    {source: "Apple2", target: "Motorola", type: "suit"},
+    //    {source: "Microsoft2", target: "Motorola", type: "suit"},
+    //    {source: "Motorola2", target: "Microsoft", type: "suit"},
+    //    {source: "Huawei2", target: "ZTE", type: "suit"},
+    //    {source: "Ericsson2", target: "ZTE", type: "suit"},
+    //    {source: "Kodak2", target: "Samsung", type: "resolved"},
+    //    {source: "Apple2", target: "Samsung", type: "suit"},
+    //    {source: "Kodak2", target: "RIM", type: "suit"},
+    //    {source: "Nokia2", target: "Qualcomm", type: "suit"},
+    //    {source: "Microsoft2", target: "Amazon", type: "licensing"},
+    //    {source: "Microsoft2", target: "HTC", type: "licensing"},
+    //    {source: "Samsung2", target: "Apple", type: "suit"},
+    //    {source: "Motorola2", target: "Apple", type: "suit"},
+    //    {source: "Nokia2", target: "Apple", type: "resolved"},
+    //    {source: "HTC2", target: "Apple", type: "suit"},
+    //    {source: "Kodak2", target: "Apple", type: "suit"},
+    //    {source: "Microsoft2", target: "Barnes & Noble", type: "suit"},
+    //    {source: "Microsoft2", target: "Foxconn", type: "suit"},
+    //    {source: "Oracle2", target: "Google", type: "suit"},
+    //    {source: "Apple2", target: "HTC", type: "suit"},
+    //    {source: "Microsoft2", target: "Inventec", type: "suit"},
+    //    {source: "Samsung2", target: "Kodak", type: "resolved"},
+    //    {source: "LG2", target: "Kodak", type: "resolved"},
+    //    {source: "RIM2", target: "Kodak", type: "suit"},
+    //    {source: "Sony2", target: "LG", type: "suit"},
+    //    {source: "Kodak2", target: "LG", type: "resolved"},
+    //    {source: "Apple2", target: "Nokia", type: "resolved"},
+    //    {source: "Qualcomm2", target: "Nokia", type: "resolved"},
+    //    {source: "Apple2", target: "Motorola", type: "suit"},
+    //    {source: "Microsoft2", target: "Motorola", type: "suit"},
+    //    {source: "Motorola2", target: "Microsoft", type: "suit"},
+    //    {source: "Huawei2", target: "ZTE", type: "suit"},
+    //    {source: "Ericsson2", target: "ZTE", type: "suit"},
+    //    {source: "Kodak2", target: "Samsung", type: "resolved"},
+    //    {source: "Apple2", target: "Samsung", type: "suit"},
+    //    {source: "Kodak2", target: "RIM", type: "suit"},
+    //    {source: "Nokia2", target: "Qualcomm", type: "suit"},
+    //    {source: "Microsoft2", target: "Amazon", type: "licensing"},
+    //    {source: "Microsoft2", target: "HTC", type: "licensing"},
+    //    {source: "Samsung2", target: "Apple", type: "suit"},
+    //    {source: "Motorola2", target: "Apple", type: "suit"},
+    //    {source: "Nokia2", target: "Apple", type: "resolved"},
+    //    {source: "HTC2", target: "Apple", type: "suit"},
+    //    {source: "Kodak2", target: "Apple", type: "suit"},
+    //    {source: "Microsoft2", target: "Barnes & Noble", type: "suit"},
+    //    {source: "Microsoft2", target: "Foxconn", type: "suit"},
+    //    {source: "Oracle2", target: "Google", type: "suit"},
+    //    {source: "Apple2", target: "HTC", type: "suit"},
+    //    {source: "Microsoft2", target: "Inventec", type: "suit"},
+    //    {source: "Samsung2", target: "Kodak", type: "resolved"},
+    //    {source: "LG2", target: "Kodak", type: "resolved"},
+    //    {source: "RIM2", target: "Kodak", type: "suit"},
+    //    {source: "Sony2", target: "LG", type: "suit"},
+    //    {source: "Kodak2", target: "LG", type: "resolved"},
+    //    {source: "Apple2", target: "Nokia", type: "resolved"},
+    //    {source: "Qualcomm2", target: "Nokia", type: "resolved"},
+    //    {source: "Apple2", target: "Motorola", type: "suit"},
+    //    {source: "Microsoft2", target: "Motorola", type: "suit"},
+    //    {source: "Motorola2", target: "Microsoft", type: "suit"},
+    //    {source: "Huawei2", target: "ZTE", type: "suit"},
+    //    {source: "Ericsson2", target: "ZTE", type: "suit"},
+    //    {source: "Kodak2", target: "Samsung", type: "resolved"},
+    //    {source: "Apple2", target: "Samsung", type: "suit"},
+    //    {source: "Kodak2", target: "RIM", type: "suit"},
+    //    {source: "Nokia2", target: "Qualcomm", type: "suit"},
+    //    {source: "Microsoft2", target: "Amazon", type: "licensing"},
+    //    {source: "Microsoft2", target: "HTC", type: "licensing"},
+    //    {source: "Samsung2", target: "Apple", type: "suit"},
+    //    {source: "Motorola2", target: "Apple", type: "suit"},
+    //    {source: "Nokia2", target: "Apple", type: "resolved"},
+    //    {source: "HTC2", target: "Apple", type: "suit"},
+    //    {source: "Kodak2", target: "Apple", type: "suit"},
+    //    {source: "Microsoft2", target: "Barnes & Noble", type: "suit"},
+    //    {source: "Microsoft2", target: "Foxconn", type: "suit"},
+    //    {source: "Oracle2", target: "Google", type: "suit"},
+    //    {source: "Apple2", target: "HTC", type: "suit"},
+    //    {source: "Microsoft2", target: "Inventec", type: "suit"},
+    //    {source: "Samsung2", target: "Kodak", type: "resolved"},
+    //    {source: "LG2", target: "Kodak", type: "resolved"},
+    //    {source: "RIM2", target: "Kodak", type: "suit"},
+    //    {source: "Sony2", target: "LG", type: "suit"},
+    //    {source: "Kodak2", target: "LG", type: "resolved"},
+    //    {source: "Apple2", target: "Nokia", type: "resolved"},
+    //    {source: "Qualcomm2", target: "Nokia", type: "resolved"},
+    //    {source: "Apple2", target: "Motorola", type: "suit"},
+    //    {source: "Microsoft2", target: "Motorola", type: "suit"},
+    //    {source: "Motorola2", target: "Microsoft", type: "suit"},
+    //    {source: "Huawei2", target: "ZTE", type: "suit"},
+    //    {source: "Ericsson2", target: "ZTE", type: "suit"},
+    //    {source: "Kodak2", target: "Samsung", type: "resolved"},
+    //    {source: "Apple2", target: "Samsung", type: "suit"},
+    //    {source: "Kodak2", target: "RIM", type: "suit"},
+    //    {source: "Nokia2", target: "Qualcomm", type: "suit"},
+    //    {source: "Microsoft2", target: "Amazon", type: "licensing"},
+    //    {source: "Microsoft2", target: "HTC", type: "licensing"},
+    //    {source: "Samsung2", target: "Apple", type: "suit"},
+    //    {source: "Motorola2", target: "Apple", type: "suit"},
+    //    {source: "Nokia2", target: "Apple", type: "resolved"},
+    //    {source: "HTC2", target: "Apple", type: "suit"},
+    //    {source: "Kodak2", target: "Apple", type: "suit"},
+    //    {source: "Microsoft2", target: "Barnes & Noble", type: "suit"},
+    //    {source: "Microsoft2", target: "Foxconn", type: "suit"},
+    //    {source: "Oracle2", target: "Google", type: "suit"},
+    //    {source: "Apple2", target: "HTC", type: "suit"},
+    //    {source: "Microsoft2", target: "Inventec", type: "suit"},
+    //    {source: "Samsung2", target: "Kodak", type: "resolved"},
+    //    {source: "LG2", target: "Kodak", type: "resolved"},
+    //    {source: "RIM2", target: "Kodak", type: "suit"},
+    //    {source: "Sony2", target: "LG", type: "suit"},
+    //    {source: "Kodak2", target: "LG", type: "resolved"},
+    //    {source: "Apple2", target: "Nokia", type: "resolved"},
+    //    {source: "Qualcomm2", target: "Nokia", type: "resolved"},
+    //    {source: "Apple2", target: "Motorola", type: "suit"},
+    //    {source: "Microsoft2", target: "Motorola", type: "suit"},
+    //    {source: "Motorola2", target: "Microsoft", type: "suit"},
+    //    {source: "Huawei2", target: "ZTE", type: "suit"},
+    //    {source: "Ericsson2", target: "ZTE", type: "suit"},
+    //    {source: "Kodak2", target: "Samsung", type: "resolved"},
+    //    {source: "Apple2", target: "Samsung", type: "suit"},
+    //    {source: "Kodak2", target: "RIM", type: "suit"},
+    //    {source: "Nokia2", target: "Qualcomm", type: "suit"},
+    //    {source: "Microsoft2", target: "Amazon", type: "licensing"},
+    //    {source: "Microsoft2", target: "HTC", type: "licensing"},
+    //    {source: "Samsung2", target: "Apple", type: "suit"},
+    //    {source: "Motorola2", target: "Apple", type: "suit"},
+    //    {source: "Nokia2", target: "Apple", type: "resolved"},
+    //    {source: "HTC2", target: "Apple", type: "suit"},
+    //    {source: "Kodak2", target: "Apple", type: "suit"},
+    //    {source: "Microsoft2", target: "Barnes & Noble", type: "suit"},
+    //    {source: "Microsoft2", target: "Foxconn", type: "suit"},
+    //    {source: "Oracle2", target: "Google", type: "suit"},
+    //    {source: "Apple2", target: "HTC", type: "suit"},
+    //    {source: "Microsoft2", target: "Inventec", type: "suit"},
+    //    {source: "Samsung2", target: "Kodak", type: "resolved"},
+    //    {source: "LG2", target: "Kodak", type: "resolved"},
+    //    {source: "RIM2", target: "Kodak", type: "suit"},
+    //    {source: "Sony2", target: "LG", type: "suit"},
+    //    {source: "Kodak2", target: "LG", type: "resolved"},
+    //    {source: "Apple2", target: "Nokia", type: "resolved"},
+    //    {source: "Qualcomm2", target: "Nokia", type: "resolved"},
+    //    {source: "Apple2", target: "Motorola", type: "suit"},
+    //    {source: "Microsoft2", target: "Motorola", type: "suit"},
+    //    {source: "Motorola2", target: "Microsoft", type: "suit"},
+    //    {source: "Huawei2", target: "ZTE", type: "suit"},
+    //    {source: "Ericsson2", target: "ZTE", type: "suit"},
+    //    {source: "Kodak2", target: "Samsung", type: "resolved"},
+    //    {source: "Apple2", target: "Samsung", type: "suit"},
+    //    {source: "Kodak2", target: "RIM", type: "suit"},
+    //    {source: "Nokia2", target: "Qualcomm", type: "suit"},
+    //    {source: "Microsoft3", target: "Amazon", type: "licensing"},
+    //    {source: "Microsoft3", target: "HTC", type: "licensing"},
+    //    {source: "Samsung3", target: "Apple", type: "suit"},
+    //    {source: "Motorola3", target: "Apple", type: "suit"},
+    //    {source: "Nokia3", target: "Apple", type: "resolved"},
+    //    {source: "HTC3", target: "Apple", type: "suit"},
+    //    {source: "Kodak3", target: "Apple", type: "suit"},
+    //    {source: "Microsoft3", target: "Barnes & Noble", type: "suit"},
+    //    {source: "Microsoft3", target: "Foxconn", type: "suit"},
+    //    {source: "Oracle3", target: "Google", type: "suit"},
+    //    {source: "Apple3", target: "HTC", type: "suit"},
+    //    {source: "Microsoft3", target: "Inventec", type: "suit"},
+    //    {source: "Samsung3", target: "Kodak", type: "resolved"},
+    //    {source: "LG3", target: "Kodak", type: "resolved"},
+    //    {source: "RIM3", target: "Kodak", type: "suit"},
+    //    {source: "Sony3", target: "LG", type: "suit"},
+    //    {source: "Kodak3", target: "LG", type: "resolved"},
+    //    {source: "Apple3", target: "Nokia", type: "resolved"},
+    //    {source: "Qualcomm3", target: "Nokia", type: "resolved"},
+    //    {source: "Apple3", target: "Motorola", type: "suit"},
+    //    {source: "Microsoft3", target: "Motorola", type: "suit"},
+    //    {source: "Motorola3", target: "Microsoft", type: "suit"},
+    //    {source: "Huawei3", target: "ZTE", type: "suit"},
+    //    {source: "Ericsson3", target: "ZTE", type: "suit"},
+    //    {source: "Kodak3", target: "Samsung", type: "resolved"},
+    //    {source: "Apple3", target: "Samsung", type: "suit"},
+    //    {source: "Kodak3", target: "RIM", type: "suit"},
+    //    {source: "Nokia3", target: "Qualcomm", type: "suit"},
+    //    {source: "Microsoft4", target: "Amazon", type: "licensing"},
+    //    {source: "Microsoft4", target: "HTC", type: "licensing"},
+    //    {source: "Samsung4", target: "Apple", type: "suit"},
+    //    {source: "Motorola4", target: "Apple", type: "suit"},
+    //    {source: "Nokia4", target: "Apple", type: "resolved"},
+    //    {source: "HTC4", target: "Apple", type: "suit"},
+    //    {source: "Kodak4", target: "Apple", type: "suit"},
+    //    {source: "Microsoft4", target: "Barnes & Noble", type: "suit"},
+    //    {source: "Microsoft4", target: "Foxconn", type: "suit"},
+    //    {source: "Oracle4", target: "Google", type: "suit"},
+    //    {source: "Apple4", target: "HTC", type: "suit"},
+    //    {source: "Microsoft4", target: "Inventec", type: "suit"},
+    //    {source: "Samsung4", target: "Kodak", type: "resolved"},
+    //    {source: "LG4", target: "Kodak", type: "resolved"},
+    //    {source: "RIM4", target: "Kodak", type: "suit"},
+    //    {source: "Sony4", target: "LG", type: "suit"},
+    //    {source: "Kodak4", target: "LG", type: "resolved"},
+    //    {source: "Apple4", target: "Nokia", type: "resolved"},
+    //    {source: "Qualcomm4", target: "Nokia", type: "resolved"},
+    //    {source: "Apple4", target: "Motorola", type: "suit"},
+    //    {source: "Microsoft4", target: "Motorola", type: "suit"},
+    //    {source: "Motorola4", target: "Microsoft", type: "suit"},
+    //    {source: "Huawei4", target: "ZTE", type: "suit"},
+    //    {source: "Ericsson4", target: "ZTE", type: "suit"},
+    //    {source: "Kodak4", target: "Samsung", type: "resolved"},
+    //    {source: "Apple4", target: "Samsung", type: "suit"},
+    //    {source: "Kodak4", target: "RIM", type: "suit"},
+    //    {source: "Nokia4", target: "Qualcomm", type: "suit"},
+    //    {source: "Microsoft5", target: "Amazon", type: "licensing"},
+    //    {source: "Microsoft5", target: "HTC", type: "licensing"},
+    //    {source: "Samsung5", target: "Apple", type: "suit"},
+    //    {source: "Motorola5", target: "Apple", type: "suit"},
+    //    {source: "Nokia5", target: "Apple", type: "resolved"},
+    //    {source: "HTC5", target: "Apple", type: "suit"},
+    //    {source: "Kodak5", target: "Apple", type: "suit"},
+    //    {source: "Microsoft5", target: "Barnes & Noble", type: "suit"},
+    //    {source: "Microsoft5", target: "Foxconn", type: "suit"},
+    //    {source: "Oracle5", target: "Google", type: "suit"},
+    //    {source: "Apple5", target: "HTC", type: "suit"},
+    //    {source: "Microsoft5", target: "Inventec", type: "suit"},
+    //    {source: "Samsung5", target: "Kodak", type: "resolved"},
+    //    {source: "LG5", target: "Kodak", type: "resolved"},
+    //    {source: "RIM5", target: "Kodak", type: "suit"},
+    //    {source: "Sony5", target: "LG", type: "suit"},
+    //    {source: "Kodak5", target: "LG", type: "resolved"},
+    //    {source: "Apple5", target: "Nokia", type: "resolved"},
+    //    {source: "Qualcomm5", target: "Nokia", type: "resolved"},
+    //    {source: "Apple5", target: "Motorola", type: "suit"},
+    //    {source: "Microsoft5", target: "Motorola", type: "suit"},
+    //    {source: "Motorola5", target: "Microsoft", type: "suit"},
+    //    {source: "Huawei5", target: "ZTE", type: "suit"},
+    //    {source: "Ericsson5", target: "ZTE", type: "suit"},
+    //    {source: "Kodak5", target: "Samsung", type: "resolved"},
+    //    {source: "Apple5", target: "Samsung", type: "suit"},
+    //    {source: "Kodak5", target: "RIM", type: "suit"},
+    //    {source: "Nokia5", target: "Qualcomm", type: "suit"},
+    //    {source: "Microsoft6", target: "Amazon", type: "licensing"},
+    //    {source: "Microsoft6", target: "HTC", type: "licensing"},
+    //    {source: "Samsung6", target: "Apple", type: "suit"},
+    //    {source: "Motorola6", target: "Apple", type: "suit"},
+    //    {source: "Nokia6", target: "Apple", type: "resolved"},
+    //    {source: "HTC6", target: "Apple", type: "suit"},
+    //    {source: "Kodak6", target: "Apple", type: "suit"},
+    //    {source: "Microsoft6", target: "Barnes & Noble", type: "suit"},
+    //    {source: "Microsoft6", target: "Foxconn", type: "suit"},
+    //    {source: "Oracle6", target: "Google", type: "suit"},
+    //    {source: "Apple6", target: "HTC", type: "suit"},
+    //    {source: "Microsoft6", target: "Inventec", type: "suit"},
+    //    {source: "Samsung6", target: "Kodak", type: "resolved"},
+    //    {source: "LG6", target: "Kodak", type: "resolved"},
+    //    {source: "RIM6", target: "Kodak", type: "suit"},
+    //    {source: "Sony6", target: "LG", type: "suit"},
+    //    {source: "Kodak6", target: "LG", type: "resolved"},
+    //    {source: "Apple6", target: "Nokia", type: "resolved"},
+    //    {source: "Qualcomm6", target: "Nokia", type: "resolved"},
+    //    {source: "Apple6", target: "Motorola", type: "suit"},
+    //    {source: "Microsoft6", target: "Motorola", type: "suit"},
+    //    {source: "Motorola6", target: "Microsoft", type: "suit"},
+    //    {source: "Huawei6", target: "ZTE", type: "suit"},
+    //    {source: "Ericsson6", target: "ZTE", type: "suit"},
+    //    {source: "Kodak6", target: "Samsung", type: "resolved"},
+    //    {source: "Apple6", target: "Samsung", type: "suit"},
+    //    {source: "Kodak6", target: "RIM", type: "suit"},
+    //    {source: "Nokia6", target: "Qualcomm", type: "suit"}
     //];
-    //alert('test2');
-    //alert(typeof links);
-    //alert(links[0]);
-    console.log('message5');
+
     var nodes = {};
 
 // Compute the distinct nodes from the links.
@@ -356,8 +991,8 @@ alert(dump(links));
         .nodes(d3.values(nodes))
         .links(links)
         .size([width, height])
-        .linkDistance(60)
-        .charge(-300)
+        .linkDistance(60)//60
+        .charge(-300)//-300
         .on("tick", tick)
         .start();
 
