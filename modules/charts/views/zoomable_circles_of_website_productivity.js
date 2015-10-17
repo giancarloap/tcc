@@ -59,8 +59,10 @@ function buildZoomableCirclesOfProductivity() {
                     async: false,
                     dataType: 'json',
                     success: function (json) {
-                        productivity = json[domain]['productivity'];
-                        category = json[domain]['category'];
+                        if (domain in json) {
+                            productivity = json[domain]['productivity'];
+                            category = json[domain]['category'];
+                        }
                     }
                 });
 
