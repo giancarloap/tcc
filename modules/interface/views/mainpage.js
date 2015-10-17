@@ -34,6 +34,18 @@ function start() {
         });
         buildZoomableCirclesOfProductivity();
     });
+
+    document.getElementById("directedgraphofvisitedurlsandrefererslink").addEventListener("click", function () {
+        $.ajax({
+            url: chrome.extension.getURL('templates/charts/directed_graph_of_visited_urls_and_referers.html'),
+            async: false,
+            dataType: 'html',
+            success: function (DirectedGraphOfUrlsAndReferers) {
+                $("#page-wrapper").html(DirectedGraphOfUrlsAndReferers);
+            }
+        });
+        buildDirectedGraphOfVisitedUrlsAndReferers();
+    });
 }
 
 document.addEventListener('DOMContentLoaded', function () {
