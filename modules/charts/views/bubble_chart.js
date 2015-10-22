@@ -43,6 +43,9 @@ function dump(arr, level) {
 // Search history to find up to ten links that a user has typed in,
 // and show those links in a popup.
 function buildBubbleChart() {
+        $(function () {
+            $('#datetimepicker1').datetimepicker();
+        });
     // To look for history items visited in the last week,
     // subtract a week of microseconds from the current time.
     // var microsecondsPerWeek = 1000 * 60 * 60 * 24 * 7;
