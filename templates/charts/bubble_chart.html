@@ -4,21 +4,6 @@
     }
 
 </style>
-<div class="container">
-    <div class="row">
-        <div class='col-sm-6'>
-            <div class="form-group">
-                <div class='input-group date' id='datetimepicker1'>
-                    <input type='text' class="form-control" />
-                    <span class="input-group-addon">
-                        <span class="glyphicon glyphicon-calendar"></span>
-                    </span>
-                </div>
-            </div>
-        </div>
-
-    </div>
-</div>
 <!--<div class="container-fluid">-->
     <!--<div class="row">-->
         <!--<div class="col-lg-12">-->
@@ -31,6 +16,56 @@
                     <img src="../charts/fig/bola_azul.jpg" title="Uncategorized" name="Uncategorized" >Uncategorized  <br>
                     *Note: Bubble size reference the number of visits
             	</div>
+
+<div class="panel panel-default">
+    <!-- Default panel contents -->
+    <div class="panel-heading">Filter</div>
+
+    <!-- Table -->
+    <table class="table">
+        <tr>
+            <td>Start Date and time (Limit results to those visited after this date. If not specified, this defaults to 24 hours in the past.)</td>
+            <td>End Date and Time (Limit results to those visited before this date)</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>
+            <div class='input-group date' id='datetimepicker1'>
+                <input type='text' class="form-control" />
+                    <span class="input-group-addon">
+                        <span class="glyphicon glyphicon-calendar"></span>
+                    </span>
+            </div>
+            </td>
+            <td>
+            <div class='input-group date' id='datetimepicker2'>
+                <input type='text' class="form-control" />
+                    <span class="input-group-addon">
+                        <span class="glyphicon glyphicon-calendar"></span>
+                    </span>
+            </div>
+            </td>
+            <td>botão</td>
+        </tr>
+    </table>
+</div>
+
+<!--<div class="container">-->
+    <!--<div class="row">-->
+        <!--<div class='col-sm-6'>-->
+            <!--<div class="form-group">-->
+                <!--<div class='input-group date' id='datetimepicker1'>-->
+                    <!--<input type='text' class="form-control" />-->
+                    <!--<span class="input-group-addon">-->
+                        <!--<span class="glyphicon glyphicon-calendar"></span>-->
+                    <!--</span>-->
+                <!--</div>-->
+            <!--</div>-->
+        <!--</div>-->
+
+    <!--</div>-->
+<!--</div>-->
+
     <div id="bubblechartcontent">
     </div>
 <!--</div>-->
