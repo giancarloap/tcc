@@ -6,9 +6,26 @@ function start() {
             dataType: 'html',
             success: function (BubbleChartHtml) {
                 $("#page-wrapper").html(BubbleChartHtml);
+
+                document.getElementById("filter").addEventListener("click", function () {
+                    if ($("#startTimeInput").val()){
+                        startTime = $("#startTimeInput").val();
+                    }else {
+                        startTime = -1;
+                    }
+                    if ($("#endTimeInput").val()){
+                        endTime = $("#endTimeInput").val();
+                    }else {
+                        endTime = -1;
+                    }
+                    buildBubbleChart(startTime, endTime);
+                });
             }
         });
-        buildBubbleChart();
+
+
+
+        buildBubbleChart(-1, -1);
     });
 
     document.getElementById("zoomablecirclesofcategorieslink").addEventListener("click", function () {

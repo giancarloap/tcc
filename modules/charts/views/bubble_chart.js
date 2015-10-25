@@ -42,22 +42,87 @@ function dump(arr, level) {
 
 // Search history to find up to ten links that a user has typed in,
 // and show those links in a popup.
-function buildBubbleChart() {
-        $(function () {
-            $('#datetimepicker1').datetimepicker();
-        });
+function buildBubbleChart(startTime, endTime) {
+    var startTimeDate = startTime;
+    if (startTime !== -1){
+        startTimeDate = startTimeDate.split(" ");
+
+        date = startTimeDate[0];
+        time = startTimeDate[1];
+        am_pm = startTimeDate[2];
+
+        date = date.split("/");
+        time = time.split(":");
+
+        time[0] = parseInt(time[0]);
+        time[1] = parseInt(time[1]);
+
+        if(am_pm == "PM" && time[0]<12) time[0] = time[0]+12;
+        if(am_pm == "AM" && time[0]==12) time[0] = time[0]-12;
+        var sHours = time[0].toString();
+        var sMinutes = time[1].toString();
+        if(time[0]<10) sHours = "0" + sHours;
+        if(time[1]<10) sMinutes = "0" + sMinutes;
+        //alert(sHours + ":" + sMinutes);
+        time[0] = sHours;
+        time[1] = sMinutes;
+
+        startTimeDate = new Date(date[2],date[0]-1,date[1], time[0], time[1]);
+        //alert(startTimeDate);
+        startTime = startTimeDate.getTime();
+    }else {
+        startTime = 0;
+    }
+
+
+    var endTimeDate = endTime;
+    if (endTime !== -1){
+        endTimeDate = endTimeDate.split(" ");
+
+        date = endTimeDate[0];
+        time = endTimeDate[1];
+        am_pm = endTimeDate[2];
+
+        date = date.split("/");
+        time = time.split(":");
+
+        time[0] = parseInt(time[0]);
+        time[1] = parseInt(time[1]);
+
+        if(am_pm == "PM" && time[0]<12) time[0] = time[0]+12;
+        if(am_pm == "AM" && time[0]==12) time[0] = time[0]-12;
+        var sHours = time[0].toString();
+        var sMinutes = time[1].toString();
+        if(time[0]<10) sHours = "0" + sHours;
+        if(time[1]<10) sMinutes = "0" + sMinutes;
+        //alert(sHours + ":" + sMinutes);
+        time[0] = sHours;
+        time[1] = sMinutes;
+
+        endTimeDate = new Date(date[2],date[0] -1,date[1], time[0], time[1]);
+        //alert(endTimeDate);
+        endTime = endTimeDate.getTime();
+    }else {
+        endTime = (new Date).getTime();
+    }
+
+    $(function () {
+        $('#datetimepicker1').datetimepicker();
+    });
+    $(function () {
+        $('#datetimepicker2').datetimepicker();
+    });
     // To look for history items visited in the last week,
     // subtract a week of microseconds from the current time.
     // var microsecondsPerWeek = 1000 * 60 * 60 * 24 * 7;
     // var oneWeekAgo = (new Date).getTime() - microsecondsPerWeek;
-    // alert(oneWeekAgo);
-    var oneWeekAgo = 0;
 
     // Track the number of callbacks from chrome.history.getVisits()
     // that we expect to get.  When it reaches zero, we have all results.
     chrome.history.search({
-            'text': '',              // Return every history item....
-            'startTime': oneWeekAgo,  // that was accessed less than one week ago.
+            'text': '',
+            'startTime': startTime,
+            'endTime': endTime,
             'maxResults': 999999999
         },
         function (historyItems) {
@@ -101,12 +166,16 @@ function buildBubbleChart() {
                     }
                 });
 
-                associativeArray[domain]['radius'] = Math.log(associativeArray[domain]['domainVisitCount']) * 10 + domainVisitCountmphasis;
+                //associativeArray[domain]['radius'] = Math.log(associativeArray[domain]['domainVisitCount']) * 10 + domainVisitCountmphasis;
+                associativeArray[domain]['radius'] = associativeArray[domain]['domainVisitCount'];
                 associativeArray[domain]['productivity'] = productivity;
                 associativeArray[domain]['category'] = category;
                 associativeArray[domain]['color'] = productivity === "Productive" ? "rgba(46, 204, 113, 1)" : (productivity === 'Unproductive' ? "rgba(230, 85, 13, 1.0)" : (productivity === 'Neutral' ? "rgba(255, 255, 0, 1.0)" : "rgba(107, 174, 214, 1.0)"));
                 associativeArray[domain]['text'] = associativeArray[domain]['domain'] + '  Visits: ' + associativeArray[domain]['domainVisitCount'] + ' ' + (typeof productivity === 'undefined' ? 'Unclassified' : productivity)
             }
+
+                    $("#bubblechartcontent").html("");
+
                     var diameter = 960,
                         format = d3.format(",d"),
                         color = d3.scale.category20c();
@@ -134,7 +203,8 @@ function buildBubbleChart() {
 
                     node.append("title")
                         .text(function (d) {
-                            return d.className + ": " + format(d.value);
+                            //return d.className + ": " + format(d.value);
+                            return d.className + "  Visited: " + format(associativeArray[d.className]['domainVisitCount']);
                         });
 
                     node.append("circle")
