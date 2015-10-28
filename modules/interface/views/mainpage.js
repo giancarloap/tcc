@@ -1,4 +1,7 @@
 function start() {
+    // Test First load on storage database.
+    data = test_first_load('data');
+
     document.getElementById("bubblechartlink").addEventListener("click", function () {
         $.ajax({
             url: chrome.extension.getURL('templates/charts/bubble_chart.html'),

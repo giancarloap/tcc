@@ -3,7 +3,8 @@
   "version": "1.0",
   "description": "Reads your history, and use information visualization techniques to show graphically how you spend your time on the internet.",
   "permissions": [
-    "history"
+    "history",
+    "storage"
   ],
   "background": {
     "scripts": ["modules/interface/views/main.js"],
