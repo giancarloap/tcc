@@ -63,12 +63,12 @@ function buildBubbleChart(startTime, endTime) {
         var sMinutes = time[1].toString();
         if(time[0]<10) sHours = "0" + sHours;
         if(time[1]<10) sMinutes = "0" + sMinutes;
-        //alert(sHours + ":" + sMinutes);
+
         time[0] = sHours;
         time[1] = sMinutes;
 
         startTimeDate = new Date(date[2],date[0]-1,date[1], time[0], time[1]);
-        //alert(startTimeDate);
+
         startTime = startTimeDate.getTime();
     }else {
         startTime = 0;
@@ -130,52 +130,60 @@ function buildBubbleChart(startTime, endTime) {
 
             var associativeArray = {};
 
-            for (var i = 0; i < historyItems.length; ++i) {
-                domain = historyItems[i].url.match(/^[\w-]+:\/*\[?([\w\.:-]+)\]?(?::\d+)?/)[1];
-                domain = domain.replace('www.', '');
-                domain = domain.replace('.com', '');
-                domain = domain.replace('.br', '');
-                domain = domain.replace('.org', '');
-                domain = domain.replace('.net', '');
-                domain = domain.replace('.gov', '');
-
-                if (domain in associativeArray) {
-                    associativeArray[domain]['domainVisitCount'] = associativeArray[domain]['domainVisitCount'] + 1;
-                } else {
-                    associativeArray[domain] = {};
-                    associativeArray[domain]['domain'] = domain;
-                    associativeArray[domain]['title'] = historyItems[i].title;
-                    associativeArray[domain]['domainVisitCount'] = 1;
+            chrome.storage.sync.get('data', function(result) {
+                try {
+                    data = result.data;
+                    //alert(data);
                 }
-            }
-            domainVisitCountmphasis = 20;
+                catch (err) {
+                    return 'key empty';
+                }
 
-            j = 0;
-            //colocar o domain dentro do storage.get callback;
-            for (var domain in associativeArray) {
-                //alert('cheguei aqui');
-                //alert(domain);
-                //alert(data);
-
-                var productivity = null;
-                var category = null;
-
-                chrome.storage.sync.get('data', function(result)
-                {
-                    try {
-                        data = result.data;
-                        //alert(data);
+                var obj = JSON.parse(data);
+                for(var key in obj){
+                    if (obj.hasOwnProperty(key)){
+                        var value=obj[key];
+                        // work with key and value
                     }
-                    catch(err) {
-                        return 'key empty';
+                }
+
+
+                //==========Comeca a iterar sobre o historyItems
+                for (var i = 0; i < historyItems.length; ++i) {
+                    domain = historyItems[i].url.match(/^[\w-]+:\/*\[?([\w\.:-]+)\]?(?::\d+)?/)[1];
+                    domain = domain.replace('www.', '');
+                    domain = domain.replace('.com', '');
+                    domain = domain.replace('.br', '');
+                    domain = domain.replace('.org', '');
+                    domain = domain.replace('.net', '');
+                    domain = domain.replace('.gov', '');
+
+                    if (domain in associativeArray) {
+                        associativeArray[domain]['domainVisitCount'] = associativeArray[domain]['domainVisitCount'] + 1;
+                    } else {
+                        associativeArray[domain] = {};
+                        associativeArray[domain]['domain'] = domain;
+                        associativeArray[domain]['title'] = historyItems[i].title;
+                        associativeArray[domain]['domainVisitCount'] = 1;
                     }
+                }
+                //==========Termina de iterar sobre o historyItems
 
-                    data = JSON.parse(data);
+                //==========Comeca a categorizar os dominios
 
-                    if (domain in data) {
-                        //alert('domain ta no data');
-                        productivity = data[domain]['productivity'];
-                        category = data[domain]['category'];
+                domainVisitCountmphasis = 20;
+
+
+
+                for (var domain in associativeArray) {
+                    var productivity = null;
+                    var category = null;
+
+                    //alert('cheguei aqui');
+                    //alert()
+                    if (domain in obj) {
+                        productivity = obj[domain]['productivity'];
+                        category = obj[domain]['category'];
                     }
 
                     //associativeArray[domain]['radius'] = Math.log(associativeArray[domain]['domainVisitCount']) * 10 + domainVisitCountmphasis;
@@ -184,116 +192,82 @@ function buildBubbleChart(startTime, endTime) {
                     associativeArray[domain]['category'] = category;
                     associativeArray[domain]['color'] = productivity === "Productive" ? "rgba(46, 204, 113, 1)" : (productivity === 'Unproductive' ? "rgba(230, 85, 13, 1.0)" : (productivity === 'Neutral' ? "rgba(255, 255, 0, 1.0)" : "rgba(107, 174, 214, 1.0)"));
                     associativeArray[domain]['text'] = associativeArray[domain]['domain'] + '  Visits: ' + associativeArray[domain]['domainVisitCount'] + ' ' + (typeof productivity === 'undefined' ? 'Unclassified' : productivity)
+                }
 
-                    if (j == Object.keys(associativeArray).length -1) {
-                        //faz o resto
-                        alert('chegou no ultimo');
-                        alert(dump(Object.keys(associativeArray)));
-                        $("#bubblechartcontent").html("");
+                //==========Termina de categorizar os dominios
 
-                        var diameter = 960,
-                            format = d3.format(",d"),
-                            color = d3.scale.category20c();
 
-                        var bubble = d3.layout.pack()
-                            .sort(null)
-                            .size([diameter, diameter])
-                            .padding(1.5);
+                //==========Comeca a criar o grafico
 
-                        var svg = d3.select("#bubblechartcontent").append("svg")
-                            .attr("width", diameter)
-                            .attr("height", diameter)
-                            .attr("class", "bubble");
+                $("#bubblechartcontent").html("");
 
-                        var node = svg.selectAll(".node")
-                            .data(bubble.nodes(classes())
-                                .filter(function (d) {
-                                    return !d.children;
-                                }))
-                            .enter().append("g")
-                            .attr("class", "node")
-                            .attr("transform", function (d) {
-                                return "translate(" + d.x + "," + d.y + ")";
-                            });
+                var diameter = 960,
+                    format = d3.format(",d"),
+                    color = d3.scale.category20c();
 
-                        node.append("title")
-                            .text(function (d) {
-                                //return d.className + ": " + format(d.value);
-                                return d.className + "  Visited: " + format(associativeArray[d.className]['domainVisitCount']);
-                            });
+                var bubble = d3.layout.pack()
+                    .sort(null)
+                    .size([diameter, diameter])
+                    .padding(1.5);
 
-                        node.append("circle")
-                            .attr("r", function (d) {
-                                return d.r;
-                            })
-                            .style("fill", function (d) {
-                                return d.color;
-                            })
-                        ;
+                var svg = d3.select("#bubblechartcontent").append("svg")
+                    .attr("width", diameter)
+                    .attr("height", diameter)
+                    .attr("class", "bubble");
 
-                        node.append("text")
-                            .attr("dy", ".3em")
-                            .style("text-anchor", "middle")
-                            .text(function (d) {
-                                return d.className.substring(0, d.r / 3);
-                            });
+                var node = svg.selectAll(".node")
+                    .data(bubble.nodes(classes())
+                        .filter(function (d) {
+                            return !d.children;
+                        }))
+                    .enter().append("g")
+                    .attr("class", "node")
+                    .attr("transform", function (d) {
+                        return "translate(" + d.x + "," + d.y + ")";
+                    });
 
-                        // Returns a flattened hierarchy containing all leaf nodes under the root.
-                        function classes() {
-                            var classes = [];
+                node.append("title")
+                    .text(function (d) {
+                        //return d.className + ": " + format(d.value);
+                        return d.className + "  Visited: " + format(associativeArray[d.className]['domainVisitCount']);
+                    });
 
-                            for (var domain_key in associativeArray) {
-                                //alert(domain_key);
-                                alert(dump(associativeArray));
-                                if (domain_key == 'support.google') {
-                                    alert(associativeArray[domain_key]['radius']);
-                                }
-                                classes.push({
-                                    className: associativeArray[domain_key]['domain'],
-                                    value: associativeArray[domain_key]['radius'],
-                                    color: associativeArray[domain_key]['color']
-                                });
-                            }
-                            return {children: classes};
-                        }
-                        d3.select(self.frameElement).style("height", diameter + "px");
-                        //break;
+                node.append("circle")
+                    .attr("r", function (d) {
+                        return d.r;
+                    })
+                    .style("fill", function (d) {
+                        return d.color;
+                    })
+                ;
+
+                node.append("text")
+                    .attr("dy", ".3em")
+                    .style("text-anchor", "middle")
+                    .text(function (d) {
+                        return d.className.substring(0, d.r / 3);
+                    });
+
+                // Returns a flattened hierarchy containing all leaf nodes under the root.
+                function classes() {
+                    var classes = [];
+
+                    for (var domain in associativeArray) {
+                        classes.push({
+                            className: associativeArray[domain]['domain'],
+                            value: associativeArray[domain]['radius'],
+                            color: associativeArray[domain]['color']
+                        });
                     }
-                    //j++;
-                });
-                //data = load_from_storage();
+                    return {children: classes};
+                }
+                d3.select(self.frameElement).style("height", diameter + "px");
+
+                //==========Termina de criar o grafico
+
+            });
 
 
-                //alert('cheguei aqui');
-                //alert(data);
-                //alert( typeof {} ); // 'object'
-                //alert(typeof data);
-                //alert(data[domain]['productivity']);
-                //alert(data[domain]['category']);
-
-                //$.ajax({
-                //    url: chrome.extension.getURL('modules/charts/views/category.json'),
-                //    async: false,
-                //    dataType: 'json',
-                //    success: function (json) {
-                //        alert('json');
-                //        alert(json)
-                //        if (domain in json) {
-                //            productivity = json[domain]['productivity'];
-                //            category = json[domain]['category'];
-                //        }
-                //    }
-                //});
-
-
-                ////associativeArray[domain]['radius'] = Math.log(associativeArray[domain]['domainVisitCount']) * 10 + domainVisitCountmphasis;
-                //associativeArray[domain]['radius'] = associativeArray[domain]['domainVisitCount'];
-                //associativeArray[domain]['productivity'] = productivity;
-                //associativeArray[domain]['category'] = category;
-                //associativeArray[domain]['color'] = productivity === "Productive" ? "rgba(46, 204, 113, 1)" : (productivity === 'Unproductive' ? "rgba(230, 85, 13, 1.0)" : (productivity === 'Neutral' ? "rgba(255, 255, 0, 1.0)" : "rgba(107, 174, 214, 1.0)"));
-                //associativeArray[domain]['text'] = associativeArray[domain]['domain'] + '  Visits: ' + associativeArray[domain]['domainVisitCount'] + ' ' + (typeof productivity === 'undefined' ? 'Unclassified' : productivity)
-                //j++;
-            }
 
 
         })
