@@ -5,10 +5,18 @@ function test_first_load() {
             data = result.data;
         }
         catch(err) {
-            storage_first_save();
-            return;
+            return err;
         }
+
+        if (typeof data == 'undefined') {
+            //alert('ta undefined');
+            //alert('primeira carga');
+            storage_first_save();
+        }
+        //alert('ja tem');
+        //alert(data);
         data = JSON.parse(data);
+        //alert(data);
         return data;
     });
 }
@@ -258,7 +266,7 @@ function load_from_storage() {
     {
         try {
             data = result.data;
-            alert(data);
+            //alert(data);
         }
         catch(err) {
             return 'key empty';

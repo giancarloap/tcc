@@ -150,92 +150,151 @@ function buildBubbleChart(startTime, endTime) {
             }
             domainVisitCountmphasis = 20;
 
+            j = 0;
+            //colocar o domain dentro do storage.get callback;
             for (var domain in associativeArray) {
+                //alert('cheguei aqui');
+                //alert(domain);
+                //alert(data);
+
                 var productivity = null;
                 var category = null;
 
-                $.ajax({
-                    url: chrome.extension.getURL('modules/charts/views/category.json'),
-                    async: false,
-                    dataType: 'json',
-                    success: function (json) {
-                        if (domain in json) {
-                            productivity = json[domain]['productivity'];
-                            category = json[domain]['category'];
-                        }
+                chrome.storage.sync.get('data', function(result)
+                {
+                    try {
+                        data = result.data;
+                        //alert(data);
                     }
-                });
+                    catch(err) {
+                        return 'key empty';
+                    }
 
-                //associativeArray[domain]['radius'] = Math.log(associativeArray[domain]['domainVisitCount']) * 10 + domainVisitCountmphasis;
-                associativeArray[domain]['radius'] = associativeArray[domain]['domainVisitCount'];
-                associativeArray[domain]['productivity'] = productivity;
-                associativeArray[domain]['category'] = category;
-                associativeArray[domain]['color'] = productivity === "Productive" ? "rgba(46, 204, 113, 1)" : (productivity === 'Unproductive' ? "rgba(230, 85, 13, 1.0)" : (productivity === 'Neutral' ? "rgba(255, 255, 0, 1.0)" : "rgba(107, 174, 214, 1.0)"));
-                associativeArray[domain]['text'] = associativeArray[domain]['domain'] + '  Visits: ' + associativeArray[domain]['domainVisitCount'] + ' ' + (typeof productivity === 'undefined' ? 'Unclassified' : productivity)
-            }
+                    data = JSON.parse(data);
 
-                    $("#bubblechartcontent").html("");
+                    if (domain in data) {
+                        //alert('domain ta no data');
+                        productivity = data[domain]['productivity'];
+                        category = data[domain]['category'];
+                    }
 
-                    var diameter = 960,
-                        format = d3.format(",d"),
-                        color = d3.scale.category20c();
+                    //associativeArray[domain]['radius'] = Math.log(associativeArray[domain]['domainVisitCount']) * 10 + domainVisitCountmphasis;
+                    associativeArray[domain]['radius'] = associativeArray[domain]['domainVisitCount'];
+                    associativeArray[domain]['productivity'] = productivity;
+                    associativeArray[domain]['category'] = category;
+                    associativeArray[domain]['color'] = productivity === "Productive" ? "rgba(46, 204, 113, 1)" : (productivity === 'Unproductive' ? "rgba(230, 85, 13, 1.0)" : (productivity === 'Neutral' ? "rgba(255, 255, 0, 1.0)" : "rgba(107, 174, 214, 1.0)"));
+                    associativeArray[domain]['text'] = associativeArray[domain]['domain'] + '  Visits: ' + associativeArray[domain]['domainVisitCount'] + ' ' + (typeof productivity === 'undefined' ? 'Unclassified' : productivity)
 
-                    var bubble = d3.layout.pack()
-                        .sort(null)
-                        .size([diameter, diameter])
-                        .padding(1.5);
+                    if (j == Object.keys(associativeArray).length -1) {
+                        //faz o resto
+                        alert('chegou no ultimo');
+                        alert(dump(Object.keys(associativeArray)));
+                        $("#bubblechartcontent").html("");
 
-                    var svg = d3.select("#bubblechartcontent").append("svg")
-                        .attr("width", diameter)
-                        .attr("height", diameter)
-                        .attr("class", "bubble");
+                        var diameter = 960,
+                            format = d3.format(",d"),
+                            color = d3.scale.category20c();
 
-                    var node = svg.selectAll(".node")
-                        .data(bubble.nodes(classes())
-                            .filter(function (d) {
-                                return !d.children;
-                            }))
-                        .enter().append("g")
-                        .attr("class", "node")
-                        .attr("transform", function (d) {
-                            return "translate(" + d.x + "," + d.y + ")";
-                        });
+                        var bubble = d3.layout.pack()
+                            .sort(null)
+                            .size([diameter, diameter])
+                            .padding(1.5);
 
-                    node.append("title")
-                        .text(function (d) {
-                            //return d.className + ": " + format(d.value);
-                            return d.className + "  Visited: " + format(associativeArray[d.className]['domainVisitCount']);
-                        });
+                        var svg = d3.select("#bubblechartcontent").append("svg")
+                            .attr("width", diameter)
+                            .attr("height", diameter)
+                            .attr("class", "bubble");
 
-                    node.append("circle")
-                        .attr("r", function (d) {
-                            return d.r;
-                        })
-                        .style("fill", function (d) {
-                            return d.color;
-                        })
+                        var node = svg.selectAll(".node")
+                            .data(bubble.nodes(classes())
+                                .filter(function (d) {
+                                    return !d.children;
+                                }))
+                            .enter().append("g")
+                            .attr("class", "node")
+                            .attr("transform", function (d) {
+                                return "translate(" + d.x + "," + d.y + ")";
+                            });
+
+                        node.append("title")
+                            .text(function (d) {
+                                //return d.className + ": " + format(d.value);
+                                return d.className + "  Visited: " + format(associativeArray[d.className]['domainVisitCount']);
+                            });
+
+                        node.append("circle")
+                            .attr("r", function (d) {
+                                return d.r;
+                            })
+                            .style("fill", function (d) {
+                                return d.color;
+                            })
                         ;
 
-                    node.append("text")
-                        .attr("dy", ".3em")
-                        .style("text-anchor", "middle")
-                        .text(function (d) {
-                            return d.className.substring(0, d.r / 3);
-                        });
-
-                    // Returns a flattened hierarchy containing all leaf nodes under the root.
-                    function classes() {
-                        var classes = [];
-
-                        for (var domain in associativeArray) {
-                            classes.push({
-                                className: associativeArray[domain]['domain'],
-                                value: associativeArray[domain]['radius'],
-                                color: associativeArray[domain]['color']
+                        node.append("text")
+                            .attr("dy", ".3em")
+                            .style("text-anchor", "middle")
+                            .text(function (d) {
+                                return d.className.substring(0, d.r / 3);
                             });
+
+                        // Returns a flattened hierarchy containing all leaf nodes under the root.
+                        function classes() {
+                            var classes = [];
+
+                            for (var domain_key in associativeArray) {
+                                //alert(domain_key);
+                                alert(dump(associativeArray));
+                                if (domain_key == 'support.google') {
+                                    alert(associativeArray[domain_key]['radius']);
+                                }
+                                classes.push({
+                                    className: associativeArray[domain_key]['domain'],
+                                    value: associativeArray[domain_key]['radius'],
+                                    color: associativeArray[domain_key]['color']
+                                });
+                            }
+                            return {children: classes};
                         }
-                        return {children: classes};
+                        d3.select(self.frameElement).style("height", diameter + "px");
+                        //break;
                     }
-                    d3.select(self.frameElement).style("height", diameter + "px");
+                    //j++;
+                });
+                //data = load_from_storage();
+
+
+                //alert('cheguei aqui');
+                //alert(data);
+                //alert( typeof {} ); // 'object'
+                //alert(typeof data);
+                //alert(data[domain]['productivity']);
+                //alert(data[domain]['category']);
+
+                //$.ajax({
+                //    url: chrome.extension.getURL('modules/charts/views/category.json'),
+                //    async: false,
+                //    dataType: 'json',
+                //    success: function (json) {
+                //        alert('json');
+                //        alert(json)
+                //        if (domain in json) {
+                //            productivity = json[domain]['productivity'];
+                //            category = json[domain]['category'];
+                //        }
+                //    }
+                //});
+
+
+                ////associativeArray[domain]['radius'] = Math.log(associativeArray[domain]['domainVisitCount']) * 10 + domainVisitCountmphasis;
+                //associativeArray[domain]['radius'] = associativeArray[domain]['domainVisitCount'];
+                //associativeArray[domain]['productivity'] = productivity;
+                //associativeArray[domain]['category'] = category;
+                //associativeArray[domain]['color'] = productivity === "Productive" ? "rgba(46, 204, 113, 1)" : (productivity === 'Unproductive' ? "rgba(230, 85, 13, 1.0)" : (productivity === 'Neutral' ? "rgba(255, 255, 0, 1.0)" : "rgba(107, 174, 214, 1.0)"));
+                //associativeArray[domain]['text'] = associativeArray[domain]['domain'] + '  Visits: ' + associativeArray[domain]['domainVisitCount'] + ' ' + (typeof productivity === 'undefined' ? 'Unclassified' : productivity)
+                //j++;
+            }
+
+
         })
 }
