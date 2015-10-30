@@ -213,15 +213,37 @@ function buildBubbleChart(startTime, endTime) {
                 var svg = d3.select("#bubblechartcontent").append("svg")
                     .attr("width", diameter)
                     .attr("height", diameter)
-                    .attr("class", "bubble");
+                    .attr("class", "bubble")
+                    ;
 
-                var node = svg.selectAll(".node")
+                var node;
+                node = svg.selectAll(".node")
                     .data(bubble.nodes(classes())
                         .filter(function (d) {
                             return !d.children;
                         }))
                     .enter().append("g")
                     .attr("class", "node")
+                    .on('mouseover', function (d) { // on mouse in show line, circles and text
+
+                        alert(d.color);
+                        alert(typeof d.color);
+                        if (d.color === 'rgba(107, 174, 214, 1.0)') {
+                            alert('é azul');
+                        }
+
+                        var typed_category = prompt("Please enter the category of the website: " + d.className + " (ex: Social Networking, Communication, News & Opinion, Learning, Search, etc.):", "News & Opinion");
+                        var typed_productivity = prompt("Please tell if the website " + d.className + " is Productive, Unproductive, or Neutral(neutral websites can be used in a productive or unproductive way (ex: Google, can be used to find source of knowledge for a research, or to find entertainment websites)", "Productive");
+                        var entry = {};
+                        var key = d.className;
+                        entry[key] = {
+                            "productivity": typed_productivity,
+                            "category": typed_category
+                        };
+                        alert(entry);
+                        alert(dump(entry));
+
+                    })
                     .attr("transform", function (d) {
                         return "translate(" + d.x + "," + d.y + ")";
                     });
