@@ -63,12 +63,12 @@ function buildBubbleChart(startTime, endTime) {
         var sMinutes = time[1].toString();
         if(time[0]<10) sHours = "0" + sHours;
         if(time[1]<10) sMinutes = "0" + sMinutes;
-        //alert(sHours + ":" + sMinutes);
+
         time[0] = sHours;
         time[1] = sMinutes;
 
         startTimeDate = new Date(date[2],date[0]-1,date[1], time[0], time[1]);
-        //alert(startTimeDate);
+
         startTime = startTimeDate.getTime();
     }else {
         startTime = 0;
@@ -130,112 +130,220 @@ function buildBubbleChart(startTime, endTime) {
 
             var associativeArray = {};
 
-            for (var i = 0; i < historyItems.length; ++i) {
-                domain = historyItems[i].url.match(/^[\w-]+:\/*\[?([\w\.:-]+)\]?(?::\d+)?/)[1];
-                domain = domain.replace('www.', '');
-                domain = domain.replace('.com', '');
-                domain = domain.replace('.br', '');
-                domain = domain.replace('.org', '');
-                domain = domain.replace('.net', '');
-                domain = domain.replace('.gov', '');
-
-                if (domain in associativeArray) {
-                    associativeArray[domain]['domainVisitCount'] = associativeArray[domain]['domainVisitCount'] + 1;
-                } else {
-                    associativeArray[domain] = {};
-                    associativeArray[domain]['domain'] = domain;
-                    associativeArray[domain]['title'] = historyItems[i].title;
-                    associativeArray[domain]['domainVisitCount'] = 1;
+            chrome.storage.sync.get('data', function(result) {
+                try {
+                    data = result.data;
+                    //alert(data);
                 }
-            }
-            domainVisitCountmphasis = 20;
+                catch (err) {
+                    return 'key empty';
+                }
 
-            for (var domain in associativeArray) {
-                var productivity = null;
-                var category = null;
-
-                $.ajax({
-                    url: chrome.extension.getURL('modules/charts/views/category.json'),
-                    async: false,
-                    dataType: 'json',
-                    success: function (json) {
-                        if (domain in json) {
-                            productivity = json[domain]['productivity'];
-                            category = json[domain]['category'];
-                        }
+                var obj = JSON.parse(data);
+                for(var key in obj){
+                    if (obj.hasOwnProperty(key)){
+                        var value=obj[key];
+                        // work with key and value
                     }
-                });
+                }
 
-                //associativeArray[domain]['radius'] = Math.log(associativeArray[domain]['domainVisitCount']) * 10 + domainVisitCountmphasis;
-                associativeArray[domain]['radius'] = associativeArray[domain]['domainVisitCount'];
-                associativeArray[domain]['productivity'] = productivity;
-                associativeArray[domain]['category'] = category;
-                associativeArray[domain]['color'] = productivity === "Productive" ? "rgba(46, 204, 113, 1)" : (productivity === 'Unproductive' ? "rgba(230, 85, 13, 1.0)" : (productivity === 'Neutral' ? "rgba(255, 255, 0, 1.0)" : "rgba(107, 174, 214, 1.0)"));
-                associativeArray[domain]['text'] = associativeArray[domain]['domain'] + '  Visits: ' + associativeArray[domain]['domainVisitCount'] + ' ' + (typeof productivity === 'undefined' ? 'Unclassified' : productivity)
-            }
+                //==========Comeca a iterar sobre o historyItems
+                for (var i = 0; i < historyItems.length; ++i) {
+                    domain = historyItems[i].url.match(/^[\w-]+:\/*\[?([\w\.:-]+)\]?(?::\d+)?/)[1];
+                    domain = domain.replace('www.', '');
+                    domain = domain.replace('.com', '');
+                    domain = domain.replace('.br', '');
+                    domain = domain.replace('.org', '');
+                    domain = domain.replace('.net', '');
+                    domain = domain.replace('.gov', '');
 
-                    $("#bubblechartcontent").html("");
+                    if (domain in associativeArray) {
+                        associativeArray[domain]['domainVisitCount'] = associativeArray[domain]['domainVisitCount'] + 1;
+                    } else {
+                        associativeArray[domain] = {};
+                        associativeArray[domain]['domain'] = domain;
+                        associativeArray[domain]['title'] = historyItems[i].title;
+                        associativeArray[domain]['domainVisitCount'] = 1;
+                    }
+                }
+                //==========Termina de iterar sobre o historyItems
 
-                    var diameter = 960,
-                        format = d3.format(",d"),
-                        color = d3.scale.category20c();
+                //==========Comeca a categorizar os dominios
 
-                    var bubble = d3.layout.pack()
-                        .sort(null)
-                        .size([diameter, diameter])
-                        .padding(1.5);
+                domainVisitCountmphasis = 20;
 
-                    var svg = d3.select("#bubblechartcontent").append("svg")
-                        .attr("width", diameter)
-                        .attr("height", diameter)
-                        .attr("class", "bubble");
 
-                    var node = svg.selectAll(".node")
-                        .data(bubble.nodes(classes())
-                            .filter(function (d) {
-                                return !d.children;
-                            }))
-                        .enter().append("g")
-                        .attr("class", "node")
-                        .attr("transform", function (d) {
-                            return "translate(" + d.x + "," + d.y + ")";
-                        });
 
-                    node.append("title")
-                        .text(function (d) {
-                            //return d.className + ": " + format(d.value);
-                            return d.className + "  Visited: " + format(associativeArray[d.className]['domainVisitCount']);
-                        });
+                for (var domain in associativeArray) {
+                    var productivity = null;
+                    var category = null;
 
-                    node.append("circle")
-                        .attr("r", function (d) {
-                            return d.r;
-                        })
-                        .style("fill", function (d) {
-                            return d.color;
-                        })
-                        ;
+                    //alert('cheguei aqui');
+                    //alert()
+                    if (domain in obj) {
+                        productivity = obj[domain]['productivity'];
+                        category = obj[domain]['category'];
+                    }
 
-                    node.append("text")
-                        .attr("dy", ".3em")
-                        .style("text-anchor", "middle")
-                        .text(function (d) {
-                            return d.className.substring(0, d.r / 3);
-                        });
+                    //associativeArray[domain]['radius'] = Math.log(associativeArray[domain]['domainVisitCount']) * 10 + domainVisitCountmphasis;
+                    associativeArray[domain]['radius'] = associativeArray[domain]['domainVisitCount'];
+                    associativeArray[domain]['productivity'] = productivity;
+                    associativeArray[domain]['category'] = category;
+                    associativeArray[domain]['color'] = productivity === "Productive" ? "rgba(46, 204, 113, 1)" : (productivity === 'Unproductive' ? "rgba(230, 85, 13, 1.0)" : (productivity === 'Neutral' ? "rgba(255, 255, 0, 1.0)" : "rgba(107, 174, 214, 1.0)"));
+                    associativeArray[domain]['text'] = associativeArray[domain]['domain'] + '  Visits: ' + associativeArray[domain]['domainVisitCount'] + ' ' + (typeof productivity === 'undefined' ? 'Unclassified' : productivity)
+                }
 
-                    // Returns a flattened hierarchy containing all leaf nodes under the root.
-                    function classes() {
-                        var classes = [];
+                //==========Termina de categorizar os dominios
 
-                        for (var domain in associativeArray) {
-                            classes.push({
-                                className: associativeArray[domain]['domain'],
-                                value: associativeArray[domain]['radius'],
-                                color: associativeArray[domain]['color']
+
+                //==========Comeca a criar o grafico
+
+                $("#bubblechartcontent").html("");
+
+                var diameter = 960,
+                    format = d3.format(",d"),
+                    color = d3.scale.category20c();
+
+                var bubble = d3.layout.pack()
+                    .sort(null)
+                    .size([diameter, diameter])
+                    .padding(1.5);
+
+                var svg = d3.select("#bubblechartcontent").append("svg")
+                    .attr("width", diameter)
+                    .attr("height", diameter)
+                    .attr("class", "bubble")
+                    ;
+
+                var node;
+                node = svg.selectAll(".node")
+                    .data(bubble.nodes(classes())
+                        .filter(function (d) {
+                            return !d.children;
+                        }))
+                    .enter().append("g")
+                    .attr("class", "node")
+                    .on('click', function (d) { // on mouse in show line, circles and text
+
+                        //alert(d.color);
+                        //alert(typeof d.color);
+                        //if (d.color === 'rgba(107, 174, 214, 1.0)') {
+                        //    alert('é azul');
+                        //}
+
+                        var typed_category = prompt("Please enter the category of the website: " + d.className + " (ex: Social Networking, Communication, News & Opinion, Learning, Search, etc.), or press cancel to set category of another website.", "News & Opinion");
+                        var typed_productivity = prompt("Please tell if the website " + d.className + " is Productive, Unproductive, or Neutral(neutral websites can be used in a productive or unproductive way (ex: Google, can be used to find source of knowledge for a research, or to find entertainment websites), or press cancel to set category of another website.", "Productive");
+
+                        if (typed_category == null || typed_productivity == null) {
+
+                        }
+                        else {
+                            chrome.storage.sync.get('data', function(result) {
+                                try {
+                                    data = result.data;
+                                    //alert(data);
+                                }
+                                catch (err) {
+                                    return 'key empty';
+                                }
+
+                                //alert(data);
+                                //alert(dump(data));
+                                var obj = JSON.parse(data);
+                                for (var key in obj) {
+                                    if (obj.hasOwnProperty(key)) {
+                                        var value = obj[key];
+                                        // work with key and value
+                                    }
+                                }
+
+                                var key = d.className;
+                                obj[key] = {
+                                    "productivity": typed_productivity,
+                                    "category": typed_category
+                                };
+
+                                //alert(obj);
+                                //alert(JSON.stringify(obj));
+
+                                //salvar no storage e atualizar tela.
+                                chrome.storage.sync.set({'data': JSON.stringify(obj)}, function() {
+                                    d.color = typed_productivity === "Productive" ? "rgba(46, 204, 113, 1)" : (typed_productivity === 'Unproductive' ? "rgba(230, 85, 13, 1.0)" : (typed_productivity === 'Neutral' ? "rgba(255, 255, 0, 1.0)" : "rgba(107, 174, 214, 1.0)"));
+
+                                    node.append("title")
+                                        .text(function (d) {
+                                            //return d.className + ": " + format(d.value);
+                                            return d.className + "  Visited: " + format(associativeArray[d.className]['domainVisitCount']) + " times. Category: " + typed_productivity;
+                                        });
+
+                                    node.append("circle")
+                                        .attr("r", function (d) {
+                                            return d.r;
+                                        })
+                                        .style("fill", function (d) {
+                                            return d.color;
+                                        })
+                                    ;
+
+                                    node.append("text")
+                                        .attr("dy", ".3em")
+                                        .style("text-anchor", "middle")
+                                        .text(function (d) {
+                                            return d.className.substring(0, d.r / 3);
+                                        });
+                                    return;
+                                });
                             });
                         }
-                        return {children: classes};
+
+                    })
+                    .attr("transform", function (d) {
+                        return "translate(" + d.x + "," + d.y + ")";
+                    });
+
+                node.append("title")
+                    .text(function (d) {
+                        //return d.className + ": " + format(d.value);
+                        return d.className + "  Visited: " + format(associativeArray[d.className]['domainVisitCount']) + " times. Category: " + associativeArray[d.className]['category'];;
+                    });
+
+                node.append("circle")
+                    .attr("r", function (d) {
+                        return d.r;
+                    })
+                    .style("fill", function (d) {
+                        return d.color;
+                    })
+                ;
+
+                node.append("text")
+                    .attr("dy", ".3em")
+                    .style("text-anchor", "middle")
+                    .text(function (d) {
+                        return d.className.substring(0, d.r / 3);
+                    });
+
+                // Returns a flattened hierarchy containing all leaf nodes under the root.
+                function classes() {
+                    var classes = [];
+
+                    for (var domain in associativeArray) {
+                        classes.push({
+                            className: associativeArray[domain]['domain'],
+                            value: associativeArray[domain]['radius'],
+                            color: associativeArray[domain]['color']
+                        });
                     }
-                    d3.select(self.frameElement).style("height", diameter + "px");
+                    return {children: classes};
+                }
+                d3.select(self.frameElement).style("height", diameter + "px");
+
+                //==========Termina de criar o grafico
+
+            });
+
+
+
+
         })
 }
