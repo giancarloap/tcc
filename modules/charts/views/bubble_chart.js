@@ -243,6 +243,12 @@ function buildBubbleChart(startTime, endTime) {
                         alert(entry);
                         alert(dump(entry));
 
+                        obj[key] = {
+                            "productivity": typed_productivity,
+                            "category": typed_category
+                        };
+                        //salvar no storage e atualizar tela.
+
                     })
                     .attr("transform", function (d) {
                         return "translate(" + d.x + "," + d.y + ")";
