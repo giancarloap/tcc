@@ -208,7 +208,11 @@ function buildZoomableCirclesOfCategories() {
                             return d.parent ? d.children ? "node" : "node node--leaf" : "node node--root";
                         })
                         .style("fill", function (d) {
-                            return d.children ? color(d.depth) : null;
+                            if(d.name in associativeArray) {
+                                return associativeArray[d.name]['color'];
+                            }else {
+                                return d.children ? color(d.depth) : null;
+                            }
                         })
                         .on("click", function (d) {
                             if (focus !== d) zoom(d), d3.event.stopPropagation();
