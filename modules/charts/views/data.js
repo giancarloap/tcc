@@ -84,11 +84,19 @@ function set_data() {
     // //alert(oneWeekAgo);
     var oneWeekAgo = 0;
 
+    var d = new Date(2015, 09, 15);
+    var oneWeekAgo = d.getTime();
+    alert(oneWeekAgo);
+    //endtime = new Date(year, month, day, hours, minutes, seconds, milliseconds);
+    d2 = new Date(2015, 09, 27);
+    endtime = d2.getTime();
+
     // Track the number of callbacks from chrome.history.getVisits()
     // that we expect to get.  When it reaches zero, we have all results.
     chrome.history.search({
             'text': '',              // Return every history item....
             'startTime': oneWeekAgo,  // that was accessed less than one week ago.
+            'endTime': endtime,
             'maxResults': 999999999
         },
         function (historyItems) {
