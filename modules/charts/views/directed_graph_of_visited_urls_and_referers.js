@@ -236,8 +236,6 @@ function buildDirectedGraphOfVisitedUrlsAndReferers() {
 
                                 links_length = links.length;
                                 repeated = false;
-
-                                m = 0;
                                 for (var j = 0 ; j < links_length ; j++){
                                     ////alert(links_length + ' jotas');
                                     ////alert('j'+ j);
@@ -256,14 +254,6 @@ function buildDirectedGraphOfVisitedUrlsAndReferers() {
                                         repeated = true;
                                         break;
                                     }
-
-                                        if (link['source'] === links[j]['source']){
-                                            if (m > 2) {
-                                                repeated = true;
-                                                break;
-                                            }
-                                            m++;
-                                        }
                                 }
                                 if (!repeated) {
                                     links.push(link);

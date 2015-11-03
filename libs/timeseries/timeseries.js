@@ -151,10 +151,12 @@
             .attr("cy", function(d, i) {
                 return (lessThanDay(padding.pad)) ? y(getDate(d.value)) : y(getTime(d.value));
             })
+            .style("stroke-width", 1)
             .style("fill", function (d) {
                 return "rgba(46, 204, 113, 1)";
             })
-            .style("opacity", 0.1)
+            //.style("opacity", 0.1)
+            .style("fill-opacity", .07)
             .attr("r", 9)
             .on("click", function(d) {
                 console.log(new Date(d.value));

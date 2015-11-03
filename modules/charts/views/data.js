@@ -84,11 +84,11 @@ function set_data() {
     // //alert(oneWeekAgo);
     var oneWeekAgo = 0;
 
-    var d = new Date(2015, 09, 15);
-    var oneWeekAgo = d.getTime();
-    alert(oneWeekAgo);
+    //var d = new Date(2015, 09, 15);
+    //var oneWeekAgo = d.getTime();
+    //alert(oneWeekAgo);
     //endtime = new Date(year, month, day, hours, minutes, seconds, milliseconds);
-    d2 = new Date(2015, 09, 27);
+    d2 = new Date(2015, 11, 02);
     endtime = d2.getTime();
 
     // Track the number of callbacks from chrome.history.getVisits()
