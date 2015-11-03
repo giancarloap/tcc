@@ -66,6 +66,20 @@ function start() {
         });
         buildDirectedGraphOfVisitedUrlsAndReferers();
     });
+
+    document.getElementById("chartofvisittimelink").addEventListener("click", function () {
+        $.ajax({
+            url: chrome.extension.getURL('templates/charts/chart_of_visit_time.html'),
+            async: false,
+            dataType: 'html',
+            success: function (ChartOfVisitTime) {
+                $("#page-wrapper").html(ChartOfVisitTime);
+                init_highlight();
+                set_data();
+            }
+        });
+        //buildDirectedGraphOfVisitedUrlsAndReferers();
+    });
 }
 
 document.addEventListener('DOMContentLoaded', function () {

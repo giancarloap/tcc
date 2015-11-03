@@ -30,13 +30,24 @@
     <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
 
+    <link rel="stylesheet" href="../../libs/timeseries/resources/default.css" />
+    <link rel="stylesheet" href="../../libs/timeseries/style.css" />
+
     <script src="../../libs/d3/3.5.5/d3.min.js"></script>
+    <!--<script src="../../libs/d3v3/d3.v3.min.js"></script>-->
 
     <!-- jQuery Version 1.11.1 -->
     <script src="../../libs/jquery-2.1.4.min/jquery-2.1.4.min.js"></script>
 
+    <script type="text/javascript" src="../../libs/lodash/lodash.min.js"></script>
 
     <script type="text/javascript" src="../../libs/moment-develop/min/moment.min.js"></script>
+
+    <!--<script type="text/javascript" src="../../libs/moment/moment.min.js"></script>-->
+
+    <script type="text/javascript" src="../../libs/highlight/highlight.min.js"></script>
+
+    <script src="../../libs/timeseries/timeseries.js"></script>
 
     <!-- Bootstrap Core JavaScript -->
     <script src="../../libs/bootstrap-3.3.5-dist/js/bootstrap.min.js"></script>
@@ -94,8 +105,7 @@
                                         <!--Productivity</a>-->
                                 <!--</li>-->
                                 <li>
-                                    <a href="../../modules/interface/views/morris.html">Bubble Chart of Visit Time and Visit
-                                        Qty</a>
+                                    <a id="chartofvisittimelink" href="#">Chart of Visit Time</a>
                                 </li>
                             </ul>
                             <!-- /.nav-second-level -->
@@ -119,6 +129,7 @@
 <script src='../../modules/charts/views/zoomable_circles_of_website_categories.js'></script>
 <script src='../../modules/charts/views/zoomable_circles_of_website_productivity.js'></script>
 <script src='../../modules/charts/views/directed_graph_of_visited_urls_and_referers.js'></script>
+<script src="../../modules/charts/views/data.js"></script>
 <script src='../../modules/interface/views/mainpage.js'></script>
 </body>
 
