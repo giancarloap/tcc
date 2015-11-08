@@ -162,6 +162,22 @@
                 console.log(new Date(d.value));
             })
 
+        //var y = d3.scale.linear()
+        //    .range([height, 0]);
+        //
+        //y.domain([0, d3.max(data, function(d) { return d.value; })]);
+
+        //var barWidth = width / data.length;
+
+        circles.selectAll("g")
+            .data(data)
+            .enter().append("rect")
+            .attr("x", function(d) { return (lessThanDay(padding.pad)) ? x(d.value) : x(getDate(d.value)); })
+            .attr("y", function(d) { return (lessThanDay(padding.pad)) ? y(getDate(d.value)) : y(getTime(d.value)) })
+            .attr("height", function(d) { return 10; }) //return d.end_value - d.start_value; })
+            .attr("width", 10)
+            .style("fill", "rgba(255, 0, 0, 1)");
+
         // ----------------------------------------- Brush ---------------------------------------------
 
         if (enableBrush) {

@@ -175,40 +175,41 @@ function set_data() {
                         if (j == visitItems.length - 1) {
                             k++;
                         }
-                        if (k == historyItems.length - 1) {
-                            links = [];
 
-                            ////alert(associativeArray.length);
+                    }
+                    if (k == historyItems.length - 1) {
+                        links = [];
 
-                            //for (var i = 0; i < associativeArray.length;i++) {
-                            //    ////alert(associativeArray)
-                            //    //alert(i);
-                            //}
+                        ////alert(associativeArray.length);
 
-                            //alert('proximo //alert eh o keys do assossiative array');
-                            //alert(Object.keys(associativeArray).length);
-                            //alert(dump(associativeArray));
-                            //i = 0;
-                            for (var key in associativeArray) {
-                                data.push({
-                                    'value': associativeArray[key]['visitTime']
-                                })
-                            }
+                        //for (var i = 0; i < associativeArray.length;i++) {
+                        //    ////alert(associativeArray)
+                        //    //alert(i);
+                        //}
 
-                            //console.log(dump(links));
-
-
+                        //alert('proximo //alert eh o keys do assossiative array');
+                        //alert(Object.keys(associativeArray).length);
+                        //alert(dump(associativeArray));
+                        //i = 0;
+                        for (var key in associativeArray) {
+                            data.push({
+                                'value': associativeArray[key]['visitTime']
+                            })
                         }
+                        alert(dump(data));
+                        timeseries('timeseries', data, true);
+                        //timeseries('timeseries one', getData(new Date(2012, 1, 1), new Date(2015, 1, 2), amount), true);
+                        timeseries.getBrushExtent();
+                        //alert('test');
+                        //var circle = svg.selectAll("circle")
+                        //    .style("fill", function() { return "rgba(46, 204, 113, 1)" })
+                        //console.log(dump(links));
+
+
                     }
                 })
             }
         }
     )
-    alert(dump(data));
-    timeseries('timeseries', data, true);
-    //timeseries('timeseries one', getData(new Date(2012, 1, 1), new Date(2015, 1, 2), amount), true);
-    timeseries.getBrushExtent();
-    //alert('test');
-    //var circle = svg.selectAll("circle")
-    //    .style("fill", function() { return "rgba(46, 204, 113, 1)" })
+
 }
