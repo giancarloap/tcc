@@ -1,3 +1,16 @@
+function getQueryVariable(variable) {
+    var query = window.location.search.substring(1);
+    query = query.replace('#','');
+    var vars = query.split("&");
+    for (var i=0;i<vars.length;i++) {
+        var pair = vars[i].split("=");
+        if (pair[0] == variable) {
+            return pair[1];
+        }
+    }
+    return 'Query Variable ' + variable + ' not found';
+}
+
 function start() {
     // Test First load on storage database.
     data = test_first_load('data');
@@ -80,6 +93,11 @@ function start() {
         });
         //buildDirectedGraphOfVisitedUrlsAndReferers();
     });
+
+    if (getQueryVariable('chart') == 'bubble_chart') {
+        //alert('bubble_chart no get');
+        document.getElementById("bubblechartlink").click();
+    }
 }
 
 document.addEventListener('DOMContentLoaded', function () {

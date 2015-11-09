@@ -57,19 +57,19 @@ function buildBubbleChart(startTime, endTime) {
 
         var chosen_category = null;
         chosen_category = $("#category-select :selected").text()
-        alert(chosen_category);
+        //alert(chosen_category);
 
         var chosen_productivity = null;
         chosen_productivity = $("#productivity-select :selected").text()
-        alert(chosen_productivity);
+        //alert(chosen_productivity);
 
-        alert(dump(associativeArray));
-        alert(Object.keys(associativeArray).length);
+        //alert(dump(associativeArray));
+        //alert(Object.keys(associativeArray).length);
         if (chosen_category == null || chosen_productivity == null) {
-            alert('null');
+            //alert('null');
         }
         else {
-            alert('else');
+            //alert('else');
             chrome.storage.sync.get('data', function(result) {
                 try {
                     data = result.data;
@@ -97,33 +97,52 @@ function buildBubbleChart(startTime, endTime) {
 
                 //alert(obj);
                 //alert(JSON.stringify(obj));
+                //alert(chosen_category);
+                //alert(chosen_productivity);
+                //alert(dump(obj));
+
+                //alert(selected_circle.className);
+                //alert(selected_circle.r);
 
                 //salvar no storage e atualizar tela.
                 chrome.storage.sync.set({'data': JSON.stringify(obj)}, function() {
-                    selected_circle.color = chosen_productivity === "Productive" ? "rgba(46, 204, 113, 1)" : (chosen_productivity === 'Unproductive' ? "rgba(230, 85, 13, 1.0)" : (chosen_productivity === 'Neutral' ? "rgba(255, 255, 0, 1.0)" : "rgba(107, 174, 214, 1.0)"));
+                    //selected_circle.color = chosen_productivity === "Productive" ? "rgba(46, 204, 113, 1)" : (chosen_productivity === 'Unproductive' ? "rgba(230, 85, 13, 1.0)" : (chosen_productivity === 'Neutral' ? "rgba(255, 255, 0, 1.0)" : "rgba(107, 174, 214, 1.0)"));
+                    //alert(selected_circle.color);
+                    //alert(selected_circle.className + "  Visited: " + format(associativeArray[selected_circle.className]['domainVisitCount']) + " times. Category: " + chosen_category);
+                    //node.append("title")
+                    //    .text(function (d) {
+                    //        //return d.className + ": " + format(d.value);
+                    //        return selected_circle.className + "  Visited: " + format(associativeArray[selected_circle.className]['domainVisitCount']) + " times. Category: " + chosen_category;
+                    //    });
+                    //
+                    //node.append("circle")
+                    //    .attr("r", function (d) {
+                    //        return selected_circle.r;
+                    //    })
+                    //    .style("fill", function (d) {
+                    //        return selected_circle.color;
+                    //    })
+                    //;
+                    //
+                    //node.append("text")
+                    //    .attr("dy", ".3em")
+                    //    .style("text-anchor", "middle")
+                    //    .text(function (d) {
+                    //        return selected_circle.className.substring(0, selected_circle.r / 3);
+                    //    });
+                    //return;
 
-                    node.append("title")
-                        .text(function (d) {
-                            //return d.className + ": " + format(d.value);
-                            return selected_circle.className + "  Visited: " + format(associativeArray[selected_circle.className]['domainVisitCount']) + " times. Category: " + chosen_category;
-                        });
+                    //Recarregar a pagina
+                    var url = window.location.href;
 
-                    node.append("circle")
-                        .attr("r", function (d) {
-                            return selected_circle.r;
-                        })
-                        .style("fill", function (d) {
-                            return selected_circle.color;
-                        })
-                    ;
+                    if (url.indexOf('?') > -1){
+                        url += '&chart=bubble_chart'
+                    }else{
+                        url += '?chart=bubble_chart'
+                    }
+                    url = url.replace('#','');
+                    window.location.href = url;
 
-                    node.append("text")
-                        .attr("dy", ".3em")
-                        .style("text-anchor", "middle")
-                        .text(function (d) {
-                            return selected_circle.className.substring(0, selected_circle.r / 3);
-                        });
-                    return;
                 });
             });
         }
@@ -330,9 +349,9 @@ function buildBubbleChart(startTime, endTime) {
                     .padding(1.5);
 
                 var svg = d3.select("#bubblechartcontent").append("svg")
-                    .attr("width", diameter)
-                    .attr("height", diameter)
-                    .attr("class", "bubble")
+                        .attr("width", diameter)
+                        .attr("height", diameter)
+                        .attr("class", "bubble")
                     ;
 
                 var node;
