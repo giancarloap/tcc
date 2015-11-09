@@ -43,6 +43,77 @@ function dump(arr, level) {
 // Search history to find up to ten links that a user has typed in,
 // and show those links in a popup.
 function buildBubbleChart(startTime, endTime) {
+
+
+        $('.add').click(function(e){
+            e.stopPropagation();
+            if ($(this).hasClass('active')){
+                $('.dialog').fadeOut(200);
+                $(this).removeClass('active');
+            } else {
+                $('.dialog').delay(300).fadeIn(200);
+                $(this).addClass('active');
+            }
+        });
+        $('.radio > .button').click( function() {
+            $('.radio').find('.button.active').removeClass('active');
+            $(this).addClass('active');
+        });
+
+        function closeMenu(){
+            $('.dialog').fadeOut(200);
+            $('.add').removeClass('active');
+        }
+
+        $(document.body).click( function(e) {
+            closeMenu();
+        });
+
+        $(".dialog").click( function(e) {
+            e.stopPropagation();
+        });
+
+
+    $('#bubblechartcontent').click(function(e){
+        e.stopPropagation();
+        if ($(this).hasClass('active')){
+            $('.dialog').fadeOut(200);
+            $(this).removeClass('active');
+        } else {
+            $('.dialog').delay(300).fadeIn(200);
+            $(this).addClass('active');
+        }
+    });
+    //$('.radio > .button').click( function() {
+    //    $('.radio').find('.button.active').removeClass('active');
+    //    $(this).addClass('active');
+    //});
+    //
+    //function closeMenu(){
+    //    $('.dialog').fadeOut(200);
+    //    $('.add').removeClass('active');
+    //}
+    //
+    //$(document.body).click( function(e) {
+    //    closeMenu();
+    //});
+    //
+    //$(".dialog").click( function(e) {
+    //    e.stopPropagation();
+    //});
+
+
+
+
+
+
+
+
+
+
+
+
+
     var startTimeDate = startTime;
     if (startTime !== -1){
         startTimeDate = startTimeDate.split(" ");
@@ -140,9 +211,9 @@ function buildBubbleChart(startTime, endTime) {
                 }
 
                 var obj = JSON.parse(data);
-                for(var key in obj){
-                    if (obj.hasOwnProperty(key)){
-                        var value=obj[key];
+                for (var key in obj) {
+                    if (obj.hasOwnProperty(key)) {
+                        var value = obj[key];
                         // work with key and value
                     }
                 }
@@ -171,7 +242,6 @@ function buildBubbleChart(startTime, endTime) {
                 //==========Comeca a categorizar os dominios
 
                 domainVisitCountmphasis = 20;
-
 
 
                 for (var domain in associativeArray) {
@@ -210,9 +280,9 @@ function buildBubbleChart(startTime, endTime) {
                     .padding(1.5);
 
                 var svg = d3.select("#bubblechartcontent").append("svg")
-                    .attr("width", diameter)
-                    .attr("height", diameter)
-                    .attr("class", "bubble")
+                        .attr("width", diameter)
+                        .attr("height", diameter)
+                        .attr("class", "bubble")
                     ;
 
                 var node;
@@ -223,80 +293,110 @@ function buildBubbleChart(startTime, endTime) {
                         }))
                     .enter().append("g")
                     .attr("class", "node")
-                    .on('click', function (d) { // on mouse in show line, circles and text
+                    .on('click', function (e, d) { // on mouse in show line, circles and text
+                        //$('.circle').click(function(e){
+                            e.stopPropagation();
 
-                        //alert(d.color);
-                        //alert(typeof d.color);
-                        //if (d.color === 'rgba(107, 174, 214, 1.0)') {
-                        //    alert('é azul');
+                            if ($(this).hasClass('active')){
+                                $('.dialog').fadeOut(200);
+                                $(this).removeClass('active');
+                            } else {
+                                $('.dialog').delay(300).fadeIn(200);
+                                $(this).addClass('active');
+                            }
+                        //});
+                        //$('.radio > .button').click( function() {
+                        //    $('.radio').find('.button.active').removeClass('active');
+                        //    $(this).addClass('active');
+                        //});
+                        //
+                        //function closeMenu(){
+                        //    $('.dialog').fadeOut(200);
+                        //    $('.add').removeClass('active');
                         //}
-
-                        var typed_category = prompt("Please enter the category of the website: " + d.className + " (ex: Social Networking, Communication, News & Opinion, Learning, Search, etc.), or press cancel to set category of another website.", "News & Opinion");
-                        var typed_productivity = prompt("Please tell if the website " + d.className + " is Productive, Unproductive, or Neutral(neutral websites can be used in a productive or unproductive way (ex: Google, can be used to find source of knowledge for a research, or to find entertainment websites), or press cancel to set category of another website.", "Productive");
-
-                        if (typed_category == null || typed_productivity == null) {
-
-                        }
-                        else {
-                            chrome.storage.sync.get('data', function(result) {
-                                try {
-                                    data = result.data;
-                                    //alert(data);
-                                }
-                                catch (err) {
-                                    return 'key empty';
-                                }
-
-                                //alert(data);
-                                //alert(dump(data));
-                                var obj = JSON.parse(data);
-                                for (var key in obj) {
-                                    if (obj.hasOwnProperty(key)) {
-                                        var value = obj[key];
-                                        // work with key and value
-                                    }
-                                }
-
-                                var key = d.className;
-                                obj[key] = {
-                                    "productivity": typed_productivity,
-                                    "category": typed_category
-                                };
-
-                                //alert(obj);
-                                //alert(JSON.stringify(obj));
-
-                                //salvar no storage e atualizar tela.
-                                chrome.storage.sync.set({'data': JSON.stringify(obj)}, function() {
-                                    d.color = typed_productivity === "Productive" ? "rgba(46, 204, 113, 1)" : (typed_productivity === 'Unproductive' ? "rgba(230, 85, 13, 1.0)" : (typed_productivity === 'Neutral' ? "rgba(255, 255, 0, 1.0)" : "rgba(107, 174, 214, 1.0)"));
-
-                                    node.append("title")
-                                        .text(function (d) {
-                                            //return d.className + ": " + format(d.value);
-                                            return d.className + "  Visited: " + format(associativeArray[d.className]['domainVisitCount']) + " times. Category: " + typed_productivity;
-                                        });
-
-                                    node.append("circle")
-                                        .attr("r", function (d) {
-                                            return d.r;
-                                        })
-                                        .style("fill", function (d) {
-                                            return d.color;
-                                        })
-                                    ;
-
-                                    node.append("text")
-                                        .attr("dy", ".3em")
-                                        .style("text-anchor", "middle")
-                                        .text(function (d) {
-                                            return d.className.substring(0, d.r / 3);
-                                        });
-                                    return;
-                                });
-                            });
-                        }
-
+                        //
+                        //$(document.body).click( function(e) {
+                        //    closeMenu();
+                        //});
+                        //
+                        //$(".dialog").click( function(e) {
+                        //    e.stopPropagation();
+                        //});
                     })
+                    //.on('click', function (d) { // on mouse in show line, circles and text
+                    //
+                    //    //alert(d.color);
+                    //    //alert(typeof d.color);
+                    //    //if (d.color === 'rgba(107, 174, 214, 1.0)') {
+                    //    //    alert('é azul');
+                    //    //}
+                    //
+                    //    var typed_category = prompt("Please enter the category of the website: " + d.className + " (ex: Social Networking, Communication, News & Opinion, Learning, Search, etc.), or press cancel to set category of another website.", "News & Opinion");
+                    //    var typed_productivity = prompt("Please tell if the website " + d.className + " is Productive, Unproductive, or Neutral(neutral websites can be used in a productive or unproductive way (ex: Google, can be used to find source of knowledge for a research, or to find entertainment websites), or press cancel to set category of another website.", "Productive");
+                    //
+                    //    if (typed_category == null || typed_productivity == null) {
+                    //
+                    //    }
+                    //    else {
+                    //        chrome.storage.sync.get('data', function(result) {
+                    //            try {
+                    //                data = result.data;
+                    //                //alert(data);
+                    //            }
+                    //            catch (err) {
+                    //                return 'key empty';
+                    //            }
+                    //
+                    //            //alert(data);
+                    //            //alert(dump(data));
+                    //            var obj = JSON.parse(data);
+                    //            for (var key in obj) {
+                    //                if (obj.hasOwnProperty(key)) {
+                    //                    var value = obj[key];
+                    //                    // work with key and value
+                    //                }
+                    //            }
+                    //
+                    //            var key = d.className;
+                    //            obj[key] = {
+                    //                "productivity": typed_productivity,
+                    //                "category": typed_category
+                    //            };
+                    //
+                    //            //alert(obj);
+                    //            //alert(JSON.stringify(obj));
+                    //
+                    //            //salvar no storage e atualizar tela.
+                    //            chrome.storage.sync.set({'data': JSON.stringify(obj)}, function() {
+                    //                d.color = typed_productivity === "Productive" ? "rgba(46, 204, 113, 1)" : (typed_productivity === 'Unproductive' ? "rgba(230, 85, 13, 1.0)" : (typed_productivity === 'Neutral' ? "rgba(255, 255, 0, 1.0)" : "rgba(107, 174, 214, 1.0)"));
+                    //
+                    //                node.append("title")
+                    //                    .text(function (d) {
+                    //                        //return d.className + ": " + format(d.value);
+                    //                        return d.className + "  Visited: " + format(associativeArray[d.className]['domainVisitCount']) + " times. Category: " + typed_productivity;
+                    //                    });
+                    //
+                    //                node.append("circle")
+                    //                    .attr("r", function (d) {
+                    //                        return d.r;
+                    //                    })
+                    //                    .style("fill", function (d) {
+                    //                        return d.color;
+                    //                    })
+                    //                ;
+                    //
+                    //                node.append("text")
+                    //                    .attr("dy", ".3em")
+                    //                    .style("text-anchor", "middle")
+                    //                    .text(function (d) {
+                    //                        return d.className.substring(0, d.r / 3);
+                    //                    });
+                    //                return;
+                    //            });
+                    //        });
+                    //    }
+                    //
+                    //})
                     .attr("transform", function (d) {
                         return "translate(" + d.x + "," + d.y + ")";
                     });
