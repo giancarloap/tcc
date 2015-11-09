@@ -141,26 +141,26 @@
         var circles = context.append("g")
             .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
 
-        circles.selectAll(".circ")
-            .data(data)
-            .enter().append("circle")
-            .attr("class", "circ")
-            .attr("cx", function(d) {
-                return (lessThanDay(padding.pad)) ? x(d.value) : x(getDate(d.value));
-            })
-            .attr("cy", function(d, i) {
-                return (lessThanDay(padding.pad)) ? y(getDate(d.value)) : y(getTime(d.value));
-            })
-            .style("stroke-width", 1)
-            .style("fill", function (d) {
-                return "rgba(46, 204, 113, 1)";
-            })
-            //.style("opacity", 0.1)
-            .style("fill-opacity", .07)
-            .attr("r", 9)
-            .on("click", function(d) {
-                console.log(new Date(d.value));
-            })
+        //circles.selectAll(".circ")
+        //    .data(data)
+        //    .enter().append("circle")
+        //    .attr("class", "circ")
+        //    .attr("cx", function(d) {
+        //        return (lessThanDay(padding.pad)) ? x(d.value) : x(getDate(d.value));
+        //    })
+        //    .attr("cy", function(d, i) {
+        //        return (lessThanDay(padding.pad)) ? y(getDate(d.value)) : y(getTime(d.value));
+        //    })
+        //    .style("stroke-width", 1)
+        //    .style("fill", function (d) {
+        //        return "rgba(46, 204, 113, 1)";
+        //    })
+        //    //.style("opacity", 0.1)
+        //    .style("fill-opacity", .07)
+        //    .attr("r", 9)
+        //    .on("click", function(d) {
+        //        console.log(new Date(d.value));
+        //    })
 
         //var y = d3.scale.linear()
         //    .range([height, 0]);
@@ -176,7 +176,7 @@
             .attr("y", function(d) { return (lessThanDay(padding.pad)) ? y(getDate(d.value)) : y(getTime(d.value)) })
             .attr("height", function(d) { return 10; }) //return d.end_value - d.start_value; })
             .attr("width", 10)
-            .style("fill", "rgba(255, 0, 0, 1)");
+            .style("fill", "rgba(211, 84, 0, 1)");
 
         // ----------------------------------------- Brush ---------------------------------------------
 
