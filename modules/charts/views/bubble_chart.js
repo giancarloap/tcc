@@ -44,9 +44,10 @@ function dump(arr, level) {
 // and show those links in a popup.
 function buildBubbleChart(startTime, endTime) {
     var associativeArray = {};
+    var selected_circle = null;
 
     $("#ok-button").click(function (d) {
-        alert(d.className);return;
+        //alert(selected_circle.className);return;
         //e.preventDefault();
         //e.preventDefault();
         $('.dialog').fadeOut(200);
@@ -88,7 +89,7 @@ function buildBubbleChart(startTime, endTime) {
                     }
                 }
 
-                var key = d.className;
+                var key = selected_circle.className;
                 obj[key] = {
                     "productivity": chosen_productivity,
                     "category": chosen_category
@@ -99,20 +100,20 @@ function buildBubbleChart(startTime, endTime) {
 
                 //salvar no storage e atualizar tela.
                 chrome.storage.sync.set({'data': JSON.stringify(obj)}, function() {
-                    d.color = chosen_productivity === "Productive" ? "rgba(46, 204, 113, 1)" : (chosen_productivity === 'Unproductive' ? "rgba(230, 85, 13, 1.0)" : (chosen_productivity === 'Neutral' ? "rgba(255, 255, 0, 1.0)" : "rgba(107, 174, 214, 1.0)"));
+                    selected_circle.color = chosen_productivity === "Productive" ? "rgba(46, 204, 113, 1)" : (chosen_productivity === 'Unproductive' ? "rgba(230, 85, 13, 1.0)" : (chosen_productivity === 'Neutral' ? "rgba(255, 255, 0, 1.0)" : "rgba(107, 174, 214, 1.0)"));
 
                     node.append("title")
                         .text(function (d) {
                             //return d.className + ": " + format(d.value);
-                            return d.className + "  Visited: " + format(associativeArray[d.className]['domainVisitCount']) + " times. Category: " + chosen_category;
+                            return selected_circle.className + "  Visited: " + format(associativeArray[selected_circle.className]['domainVisitCount']) + " times. Category: " + chosen_category;
                         });
 
                     node.append("circle")
                         .attr("r", function (d) {
-                            return d.r;
+                            return selected_circle.r;
                         })
                         .style("fill", function (d) {
-                            return d.color;
+                            return selected_circle.color;
                         })
                     ;
 
@@ -120,7 +121,7 @@ function buildBubbleChart(startTime, endTime) {
                         .attr("dy", ".3em")
                         .style("text-anchor", "middle")
                         .text(function (d) {
-                            return d.className.substring(0, d.r / 3);
+                            return selected_circle.className.substring(0, selected_circle.r / 3);
                         });
                     return;
                 });
@@ -354,6 +355,7 @@ function buildBubbleChart(startTime, endTime) {
                             $(this).addClass('active');
                         }
 
+                        selected_circle = d;
                         //alert(d.color);
                         //alert(typeof d.color);
                         //if (d.color === 'rgba(107, 174, 214, 1.0)') {
