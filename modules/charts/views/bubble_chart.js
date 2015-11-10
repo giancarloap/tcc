@@ -141,6 +141,8 @@ function buildBubbleChart(startTime, endTime) {
                         url += '?chart=bubble_chart'
                     }
                     url = url.replace('#','');
+                    url = url.replace('datetimepicker1','');
+
                     window.location.href = url;
 
                 });
@@ -375,6 +377,9 @@ function buildBubbleChart(startTime, endTime) {
                         }
 
                         selected_circle = d;
+
+                        $('#title').text("Please choose the category and productivity of the website: " + d.className);
+                        location.href = "#datetimepicker1";
                         //alert(d.color);
                         //alert(typeof d.color);
                         //if (d.color === 'rgba(107, 174, 214, 1.0)') {
