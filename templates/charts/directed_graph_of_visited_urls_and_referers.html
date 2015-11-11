@@ -1,33 +1,40 @@
 <style>
-.link {
-    fill: none;
-    stroke: #666;
-    stroke-width: 1.5px;
-}
+    .link {
+        stroke-width: 4px;
+    }
 
-#licensing {
-    fill: green;
-}
+    .node {
+        stroke: #fff;
+        stroke-width: 2px;
+    }
 
-.link.licensing {
-    stroke: green;
-}
+    .textClass {
+        stroke: #23232;
+        font-family: "Arial", "Liberation Sans", Arial, Helvetica, sans-serif;
+        font-weight: bold;
 
-.link.resolved {
-    stroke-dasharray: 0,2 1;
-}
+        stroke-width: 3;
+        font-size: 20px;
 
-circle {
-    fill: #ccc;
-    stroke: #333;
-    stroke-width: 1.5px;
-}
+    }
 
-text {
-    font: 10px sans-serif;
-    pointer-events: none;
-    text-shadow: 0 1px 0 #fff, 1px 0 0 #fff, 0 -1px 0 #fff, -1px 0 0 #fff;
-}
+    #licensing {
+        fill: green;
+    }
+
+    .link.licensing {
+        stroke: green;
+    }
+
+    #chart, .ui-widget {
+        border-style: solid;
+        border-width: 2px;
+        border-color: white;
+    }
+
+    body {
+        background-color: white;
+    }
 </style>
 <!--<div class="container-fluid">-->
     <!--<div class="row">-->
@@ -37,7 +44,11 @@ text {
         <!--&lt;!&ndash; /.col-lg-12 &ndash;&gt;-->
     <!--</div>-->
     <!-- /.row -->
-    <div id="directedgraphofvisitedurlsandrefererscontent">
-    </div>
+<div class="ui-widget">
+    <label for="search">Search: </label>
+    <input id="search">
+</div>
+<div id="chart">
+</div>
 <!--</div>-->
 <!-- /.container-fluid -->

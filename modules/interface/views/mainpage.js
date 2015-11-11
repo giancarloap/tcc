@@ -75,9 +75,12 @@ function start() {
             dataType: 'html',
             success: function (DirectedGraphOfUrlsAndReferers) {
                 $("#page-wrapper").html(DirectedGraphOfUrlsAndReferers);
+                //alert(window.location.pathname);
             }
         });
-        buildDirectedGraphOfVisitedUrlsAndReferers();
+        g2j4d3_init();
+        graphSub_init();
+        //buildDirectedGraphOfVisitedUrlsAndReferers();
     });
 
     document.getElementById("chartofvisittimelink").addEventListener("click", function () {
