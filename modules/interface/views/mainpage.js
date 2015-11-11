@@ -80,7 +80,7 @@ function start() {
         });
         g2j4d3_init();
         graphSub_init();
-        //buildDirectedGraphOfVisitedUrlsAndReferers();
+        //graph = buildDirectedGraphOfVisitedUrlsAndReferers();
     });
 
     document.getElementById("chartofvisittimelink").addEventListener("click", function () {

@@ -249,7 +249,7 @@ function buildDirectedGraphOfVisitedUrlsAndReferers() {
                                     ////alert(links[j]['type']);
                                     if ( link['source'] === links[j]['source'] &&
                                         link['target'] === links[j]['target'] &&
-                                        link['type'] === links[j]['type'] ) {
+                                        link['type'] === links[j]['value'] ) {
                                         ////alert('continue');
                                         repeated = true;
                                         break;
@@ -302,6 +302,36 @@ function buildDirectedGraphOfVisitedUrlsAndReferers() {
 
 //alert('passou do for. proximo //alert eh o dump links');
 //alert(dump(links));
+                            for (var l = 0 ; l < links.length ; l++) {
+                                if (links[l]['source']['name'] in repeatedManyTimes && !(links[l]['target']['name'] in repeatedManyTimes)) {
+                                    //alert(sourceRepetitionCount[d.source.name]['numTarget']);
+                                    if (sourceRepetitionCount[links[l]['source']['name']]['targets'][links[l]['target']['name']]['numTarget'] % 2 == 0) {
+                                        //alert('par');
+                                        links[l]['value'] = 130;
+                                        //return 130;
+                                    } else {
+                                        //alert('impar');
+                                        links[l]['value'] = 100;
+                                        //return 100;
+                                    }
+                                }
+                                links[l]['value'] = 300;
+                                //return 300;
+                            }
+
+                            var graph_data = {
+                                "nodes":[
+                                    //{"name":"Myriel","group":1}
+                                ],
+                                "links":[
+                                    //{"source":1,"target":0,"value":1}
+                                ]
+                            };
+
+
+
+
+
 
                             //reffererId = associativeArray[visitId][referringVisitId];
                             //source = associativeArray[reffererId]['domain']['name'];
