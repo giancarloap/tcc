@@ -1,4 +1,4 @@
-function graphSub_init() {
+function graphSub_init(graph_data) {
     alert('entrou aqui');
     (function () {
         /* test data in data/fm.json */
@@ -572,6 +572,7 @@ function graphSub_init() {
      */
 
     d3.json("data/miserables.json", function (error, graph) {
+        graph = graph_data;
         if (error) throw error;
 
         // Parse JSON into the correct format if needed
