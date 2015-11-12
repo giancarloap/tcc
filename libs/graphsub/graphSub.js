@@ -1,5 +1,5 @@
 function graphSub_init() {
-
+    alert('entrou aqui');
     (function () {
         /* test data in data/fm.json */
         /*

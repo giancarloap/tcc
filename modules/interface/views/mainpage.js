@@ -78,9 +78,10 @@ function start() {
                 //alert(window.location.pathname);
             }
         });
-        g2j4d3_init();
-        graphSub_init();
-        //graph = buildDirectedGraphOfVisitedUrlsAndReferers();
+        buildDirectedGraphOfVisitedUrlsAndReferers();
+        //g2j4d3_init();
+        //graphSub_init();
+
     });
 
     document.getElementById("chartofvisittimelink").addEventListener("click", function () {
