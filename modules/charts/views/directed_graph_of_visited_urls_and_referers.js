@@ -193,6 +193,7 @@ function buildDirectedGraphOfVisitedUrlsAndReferers() {
                             //alert(Object.keys(associativeArray).length);
                             //alert(dump(associativeArray));
                             i = 0;
+                            console.log(dump(associativeArray));
                             for (var key in associativeArray) {
                                 ////alert('i' + i);
                                 //i++;
@@ -211,7 +212,12 @@ function buildDirectedGraphOfVisitedUrlsAndReferers() {
                                 }else{
                                     ////alert('test2bb');
                                     //if (!source) {
-                                    source = associativeArray[key]['transition'];
+                                    if (associativeArray[key]['transition'] == 'link') {
+                                        alert(dump(associativeArray[key]));
+                                        source = 'typed in the search bar';
+                                    }else {
+                                        source = associativeArray[key]['transition'];
+                                    }
                                     //alert('refererid='+associativeArray[key]['referringVisitId']);
                                     //alert('transition='+associativeArray[key]['transition']);
                                 }
