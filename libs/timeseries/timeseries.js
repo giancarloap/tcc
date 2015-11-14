@@ -176,7 +176,7 @@
             .attr("y", function(d) { return (lessThanDay(padding.pad)) ? y(getDate(d.value)) : y(getTime(d.value)) })
             .attr("height", function(d) { return 10; }) //return d.end_value - d.start_value; })
             .attr("width", 10)
-            .style("fill", "rgba(211, 84, 0, 1)");
+            .style("fill", "rgba(211, 84, 0, 0.3)");
 
         // ----------------------------------------- Brush ---------------------------------------------
 
