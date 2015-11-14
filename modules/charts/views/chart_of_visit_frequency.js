@@ -104,10 +104,6 @@ function set_data() {
 
             for (var i = 0; i < historyItems.length; ++i) {
 
-
-                //alert(historyItems.length);
-                //alert(historyItems[i].url);
-
                 chrome.history.getVisits({url: historyItems[i].url}, function (visitItems) {
 
                     domain = historyItems[k].url.match(/^[\w-]+:\/*\[?([\w\.:-]+)\]?(?::\d+)?/)[1];
@@ -145,33 +141,7 @@ function set_data() {
 
                         domainVisitCountmphasis = 20;
 
-                        //for (var domain in associativeArray) {
-                        //    var productivity = null;
-                        //    var category = null;
-                        //
-                        //    $.ajax({
-                        //        url: chrome.extension.getURL('modules/charts/views/category.json'),
-                        //        async: false,
-                        //        dataType: 'json',
-                        //        success: function (json) {
-                        //            if (domain in json) {
-                        //                productivity = json[domain]['productivity'];
-                        //                category = json[domain]['category'];
-                        //            }
-                        //        }
-                        //    });
-                        //
-                        ////associativeArray[domain]['radius'] = Math.log(associativeArray[domain]['domainVisitCount']) * 10 + domainVisitCountmphasis;
-                        //associativeArray[visitItems[j].visitId]['domain']['productivity'] = productivity;
-                        //associativeArray[visitItems[j].visitId]['domain']['category'] = category;
-                        //associativeArray[visitItems[j].visitId]['domain']['color'] = productivity === "Productive" ? "rgba(46, 204, 113, 1)" : (productivity === 'Unproductive' ? "rgba(230, 85, 13, 1.0)" : (productivity === 'Neutral' ? "rgba(255, 255, 0, 1.0)" : "rgba(107, 174, 214, 1.0)"));
-                        //associativeArray[visitItems[j].visitId]['domain']['text'] = associativeArray[domain]['domain'] + '  Visits: ' + associativeArray[domain]['domainVisitCount'] + ' ' + (typeof productivity === 'undefined' ? 'Unclassified' : productivity);
-                        //}
 
-                        //console.log('i='+i);
-                        //console.log('j='+j);
-                        //console.log('k='+k);
-                        //console.log('historyitems.length='+historyItems.length);
                         if (j == visitItems.length - 1) {
                             k++;
                         }
@@ -180,32 +150,14 @@ function set_data() {
                     if (k == historyItems.length - 1) {
                         links = [];
 
-                        ////alert(associativeArray.length);
-
-                        //for (var i = 0; i < associativeArray.length;i++) {
-                        //    ////alert(associativeArray)
-                        //    //alert(i);
-                        //}
-
-                        //alert('proximo //alert eh o keys do assossiative array');
-                        //alert(Object.keys(associativeArray).length);
-                        //alert(dump(associativeArray));
-                        //i = 0;
                         for (var key in associativeArray) {
                             data.push({
                                 'value': associativeArray[key]['visitTime']
                             })
                         }
-                        alert(dump(data));
                         timeseries('timeseries', data, true);
                         //timeseries('timeseries one', getData(new Date(2012, 1, 1), new Date(2015, 1, 2), amount), true);
                         timeseries.getBrushExtent();
-                        //alert('test');
-                        //var circle = svg.selectAll("circle")
-                        //    .style("fill", function() { return "rgba(46, 204, 113, 1)" })
-                        //console.log(dump(links));
-
-
                     }
                 })
             }
