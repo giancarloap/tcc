@@ -68,9 +68,9 @@ function start() {
     //    buildZoomableCirclesOfProductivity();
     //});
 
-    document.getElementById("directedgraphofvisitedurlsandrefererslink").addEventListener("click", function () {
+    document.getElementById("graphofvisitedurlsandrefererslink").addEventListener("click", function () {
         $.ajax({
-            url: chrome.extension.getURL('templates/charts/directed_graph_of_visited_urls_and_referers.html'),
+            url: chrome.extension.getURL('templates/charts/graph_of_visited_urls_and_referers.html'),
             async: false,
             dataType: 'html',
             success: function (DirectedGraphOfUrlsAndReferers) {
