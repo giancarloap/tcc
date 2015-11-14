@@ -10,9 +10,13 @@
     "scripts": ["modules/interface/views/main.js"],
     "persistent": false
   },
+  "icons": {
+    "128": "icons/grafico-128.png",
+    "16": "icons/grafico-16.png"
+  },
   "browser_action": {
-    "default_title": "Make this page red",
-    "default_icon": "clock.png"
+    "default_title": "Information Visualization of Browser History",
+    "default_icon": "icons/grafico.png"
   },
   "manifest_version": 2
 }
