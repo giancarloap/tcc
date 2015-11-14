@@ -80,9 +80,9 @@ function start() {
         buildDirectedGraphOfVisitedUrlsAndReferers();
     });
 
-    document.getElementById("chartofvisittimelink").addEventListener("click", function () {
+    document.getElementById("chartofvisitfrequencylink").addEventListener("click", function () {
         $.ajax({
-            url: chrome.extension.getURL('templates/charts/chart_of_visit_time.html'),
+            url: chrome.extension.getURL('templates/charts/chart_of_visit_frequency.html'),
             async: false,
             dataType: 'html',
             success: function (ChartOfVisitTime) {
