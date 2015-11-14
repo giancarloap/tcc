@@ -91,7 +91,6 @@ function start() {
                 set_data();
             }
         });
-        //buildDirectedGraphOfVisitedUrlsAndReferers();
     });
 
     if (getQueryVariable('chart') == 'bubble_chart') {
