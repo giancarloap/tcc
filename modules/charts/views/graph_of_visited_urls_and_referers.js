@@ -59,99 +59,156 @@ function buildDirectedGraphOfVisitedUrlsAndReferers() {
     // //alert(oneWeekAgo);
     var oneWeekAgo = 0;
 
-    // Track the number of callbacks from chrome.history.getVisits()
-    // that we expect to get.  When it reaches zero, we have all results.
-    chrome.history.search({
-            'text': '',              // Return every history item....
-            'startTime': oneWeekAgo,  // that was accessed less than one week ago.
-            'maxResults': 999999999
-        },
-        function (historyItems) {
-            // For each history item, get details on all visits.;
+    chrome.storage.sync.get('data', function(result) {
+        try {
+            data = result.data;
+            //alert(data);
+        }
+        catch (err) {
+            return 'key empty';
+        }
 
-            for (var i = 0; i < historyItems.length; ++i) {
+        var obj = JSON.parse(data);
+        for (var key in obj) {
+            if (obj.hasOwnProperty(key)) {
+                var value = obj[key];
+                // work with key and value
+            }
+        }
 
 
-                //alert(historyItems.length);
-                //alert(historyItems[i].url);
+        // Track the number of callbacks from chrome.history.getVisits()
+        // that we expect to get.  When it reaches zero, we have all results.
+        chrome.history.search({
+                'text': '',              // Return every history item....
+                'startTime': oneWeekAgo,  // that was accessed less than one week ago.
+                'maxResults': 999999999
+            },
+            function (historyItems) {
+                // For each history item, get details on all visits.;
 
-                chrome.history.getVisits({url: historyItems[i].url}, function (visitItems) {
+                for (var i = 0; i < historyItems.length; ++i) {
 
-                    domain = historyItems[k].url.match(/^[\w-]+:\/*\[?([\w\.:-]+)\]?(?::\d+)?/)[1];
-                    domain = domain.replace('www.', '');
-                    domain = domain.replace('.com', '');
-                    domain = domain.replace('.br', '');
-                    domain = domain.replace('.org', '');
-                    domain = domain.replace('.net', '');
-                    domain = domain.replace('.gov', '');
 
-                    for (var j = 0; j < visitItems.length; ++j) {
+                    //alert(historyItems.length);
+                    //alert(historyItems[i].url);
 
-                        //if (visitItems[j].referringVisitId == 0 ){
-                        //    //alert('referringVisitId igual a zero');
-                        //    alert('url='+historyItems[k].url + '    transition='+visitItems[j].transition );
-                        //    //alert('transition='+visitItems[j].transition);
-                        //}
+                    chrome.history.getVisits({url: historyItems[i].url}, function (visitItems) {
 
-                        //alert('visitItem.length=' + visitItems.length);
-                        //alert(historyItems[k].url);
-                        //alert('visitItem.visitid=' +visitItems[j].visitId);
-                        //alert('visitItem.id='+visitItems[j].id);
+                        domain = historyItems[k].url.match(/^[\w-]+:\/*\[?([\w\.:-]+)\]?(?::\d+)?/)[1];
+                        domain = domain.replace('www.', '');
+                        domain = domain.replace('.com', '');
+                        domain = domain.replace('.br', '');
+                        domain = domain.replace('.org', '');
+                        domain = domain.replace('.net', '');
+                        domain = domain.replace('.gov', '');
 
-                        associativeArray[visitItems[j].visitId] = {};
-                        associativeArray[visitItems[j].visitId]['visitId'] = visitItems[j].visitId;
-                        associativeArray[visitItems[j].visitId]['id'] = visitItems[j].id;
-                        if (historyItems[k]) {
-                            associativeArray[visitItems[j].visitId]['url'] = historyItems[k].url;
+                        for (var j = 0; j < visitItems.length; ++j) {
+
+                            //if (visitItems[j].referringVisitId == 0 ){
+                            //    //alert('referringVisitId igual a zero');
+                            //    alert('url='+historyItems[k].url + '    transition='+visitItems[j].transition );
+                            //    //alert('transition='+visitItems[j].transition);
+                            //}
+
+                            //alert('visitItem.length=' + visitItems.length);
+                            //alert(historyItems[k].url);
+                            //alert('visitItem.visitid=' +visitItems[j].visitId);
+                            //alert('visitItem.id='+visitItems[j].id);
+
+                            associativeArray[visitItems[j].visitId] = {};
+                            associativeArray[visitItems[j].visitId]['visitId'] = visitItems[j].visitId;
+                            associativeArray[visitItems[j].visitId]['id'] = visitItems[j].id;
+                            if (historyItems[k]) {
+                                associativeArray[visitItems[j].visitId]['url'] = historyItems[k].url;
+                            }
+                            //associativeArray[visitItems[j].visitId]['domain'] = domain;
+                            associativeArray[visitItems[j].visitId]['transition'] = visitItems[j].transition;
+                            associativeArray[visitItems[j].visitId]['referringVisitId'] = visitItems[j].referringVisitId;
+
+                            //if (domain in associativeArray[visitItems[j].visitId]['domain']) {
+                            //    associativeArray[visitItems[j].visitId]['domain']['domainVisitCount'] = associativeArray[domain]['domainVisitCount'] + 1;
+                            //} else {
+
+                            associativeArray[visitItems[j].visitId]['domain'] = {};
+                            associativeArray[visitItems[j].visitId]['domain']['name'] = domain;
+                            associativeArray[visitItems[j].visitId]['domain']['title'] = historyItems[j].title;
+                            //associativeArray[visitItems[j].visitId]['domain']['domainVisitCount'] = 1;
+                            //}
+
+                            domainVisitCountmphasis = 20;
+
+
+
+
+                            //for (var domain in associativeArray) {
+                            //    var productivity = null;
+                            //    var category = null;
+                            //
+                            //    $.ajax({
+                            //        url: chrome.extension.getURL('modules/charts/views/category.json'),
+                            //        async: false,
+                            //        dataType: 'json',
+                            //        success: function (json) {
+                            //            if (domain in json) {
+                            //                productivity = json[domain]['productivity'];
+                            //                category = json[domain]['category'];
+                            //            }
+                            //        }
+                            //    });
+                            //
+                            ////associativeArray[domain]['radius'] = Math.log(associativeArray[domain]['domainVisitCount']) * 10 + domainVisitCountmphasis;
+                            //associativeArray[visitItems[j].visitId]['domain']['productivity'] = productivity;
+                            //associativeArray[visitItems[j].visitId]['domain']['category'] = category;
+                            //associativeArray[visitItems[j].visitId]['domain']['color'] = productivity === "Productive" ? "rgba(46, 204, 113, 1)" : (productivity === 'Unproductive' ? "rgba(230, 85, 13, 1.0)" : (productivity === 'Neutral' ? "rgba(255, 255, 0, 1.0)" : "rgba(107, 174, 214, 1.0)"));
+                            //associativeArray[visitItems[j].visitId]['domain']['text'] = associativeArray[domain]['domain'] + '  Visits: ' + associativeArray[domain]['domainVisitCount'] + ' ' + (typeof productivity === 'undefined' ? 'Unclassified' : productivity);
+                            //}
+
+                            //console.log('i='+i);
+                            // /console.log('j='+j);
+                            //console.log('k='+k);
+                            //console.log('historyitems.length='+historyItems.length);
+                            if (j == visitItems.length - 1) {
+                                k++;
+                            }
                         }
-                        //associativeArray[visitItems[j].visitId]['domain'] = domain;
-                        associativeArray[visitItems[j].visitId]['transition'] = visitItems[j].transition;
-                        associativeArray[visitItems[j].visitId]['referringVisitId'] = visitItems[j].referringVisitId;
-
-                        //if (domain in associativeArray[visitItems[j].visitId]['domain']) {
-                        //    associativeArray[visitItems[j].visitId]['domain']['domainVisitCount'] = associativeArray[domain]['domainVisitCount'] + 1;
-                        //} else {
-
-                        associativeArray[visitItems[j].visitId]['domain'] = {};
-                        associativeArray[visitItems[j].visitId]['domain']['name'] = domain;
-                        associativeArray[visitItems[j].visitId]['domain']['title'] = historyItems[j].title;
-                        //associativeArray[visitItems[j].visitId]['domain']['domainVisitCount'] = 1;
-                        //}
-
-                        domainVisitCountmphasis = 20;
-
-                        //for (var domain in associativeArray) {
-                        //    var productivity = null;
-                        //    var category = null;
-                        //
-                        //    $.ajax({
-                        //        url: chrome.extension.getURL('modules/charts/views/category.json'),
-                        //        async: false,
-                        //        dataType: 'json',
-                        //        success: function (json) {
-                        //            if (domain in json) {
-                        //                productivity = json[domain]['productivity'];
-                        //                category = json[domain]['category'];
-                        //            }
-                        //        }
-                        //    });
-                        //
-                        ////associativeArray[domain]['radius'] = Math.log(associativeArray[domain]['domainVisitCount']) * 10 + domainVisitCountmphasis;
-                        //associativeArray[visitItems[j].visitId]['domain']['productivity'] = productivity;
-                        //associativeArray[visitItems[j].visitId]['domain']['category'] = category;
-                        //associativeArray[visitItems[j].visitId]['domain']['color'] = productivity === "Productive" ? "rgba(46, 204, 113, 1)" : (productivity === 'Unproductive' ? "rgba(230, 85, 13, 1.0)" : (productivity === 'Neutral' ? "rgba(255, 255, 0, 1.0)" : "rgba(107, 174, 214, 1.0)"));
-                        //associativeArray[visitItems[j].visitId]['domain']['text'] = associativeArray[domain]['domain'] + '  Visits: ' + associativeArray[domain]['domainVisitCount'] + ' ' + (typeof productivity === 'undefined' ? 'Unclassified' : productivity);
-                        //}
-
-                        //console.log('i='+i);
-                        //console.log('j='+j);
-                        //console.log('k='+k);
-                        //console.log('historyitems.length='+historyItems.length);
-                        if (j == visitItems.length -1) {
-                            k++;
-                        }
-                        if (k == historyItems.length -1) {
+                        if (k == historyItems.length - 1) {
                             links = [];
+
+                            //==========Comeca a categorizar os dominios
+
+                            domainVisitCountmphasis = 20;
+
+
+                            //alert('1');
+                            for (var key in associativeArray) {
+                                //alert('2');
+                                var productivity = null;
+                                var category = null;
+
+                                //alert('cheguei aqui');
+                                //alert()
+                                //alert('3');
+                                if (associativeArray[key]['domain']['name'] in obj) {
+                                    //alert('4');
+                                    productivity = obj[domain]['productivity'];
+                                    category = obj[domain]['category'];
+                                    //alert('5');
+                                }
+                                //alert('6');
+                                //associativeArray[domain]['radius'] = Math.log(associativeArray[domain]['domainVisitCount']) * 10 + domainVisitCountmphasis;
+                                //associativeArray[key][domain]['radius'] = associativeArray[key][domain]['domainVisitCount'];
+                                //alert('7');
+                                associativeArray[key]['domain']['productivity'] = productivity;
+                                associativeArray[key]['domain']['category'] = category;
+                                associativeArray[key]['domain']['color'] = productivity === "Productive" ? "rgba(46, 204, 113, 1)" : (productivity === 'Unproductive' ? "rgba(230, 85, 13, 1.0)" : (productivity === 'Neutral' ? "rgba(255, 255, 0, 1.0)" : "rgba(107, 174, 214, 1.0)"));
+                                associativeArray[key]['domain']['text'] = associativeArray[key]['domain']['name'] + /*'  Visits: ' + associativeArray[key][domain]['domainVisitCount'] +*/ ' . Category: ' + typeof category === 'undefined' ? 'Uncategorized' : category;
+                                //alert('8');
+                            }
+                            //alert('9');
+                            //alert(dump(associativeArray));
+                            //==========Termina de categorizar os dominios
+
 
                             ////alert(associativeArray.length);
 
@@ -180,7 +237,7 @@ function buildDirectedGraphOfVisitedUrlsAndReferers() {
                                 if (reffererId in associativeArray) {
                                     ////alert('test2b');
                                     source = associativeArray[reffererId]['domain']['name'];
-                                }else{
+                                } else {
                                     ////alert('test2bb');
                                     //if (!source) {
                                     source = associativeArray[key]['transition'];
@@ -195,12 +252,12 @@ function buildDirectedGraphOfVisitedUrlsAndReferers() {
                                 //productivity = associativeArray[key]['domain']['productivity'];
                                 //category = associativeArray[key]['domain']['category'];
                                 ////alert('test2e');
-                                link = { "source": source, "target": target, "type": type };
+                                link = {"source": source, "target": target, "type": type, "color": associativeArray[key]['domain']['color'], "Category": associativeArray[key]['domain']['category']};
                                 ////alert('test2f');
                                 ////alert(link['source']);
 
                                 links_contain_link = false;
-                                if (links.length == 0){
+                                if (links.length == 0) {
                                     links.push(link);
                                     //alert('entrou no links vazio');
                                     continue;
@@ -209,7 +266,7 @@ function buildDirectedGraphOfVisitedUrlsAndReferers() {
                                 links_length = links.length;
                                 repeated = false;
 
-                                for (var j = 0 ; j < links_length ; j++){
+                                for (var j = 0; j < links_length; j++) {
                                     ////alert(links_length + ' jotas');
                                     ////alert('j'+ j);
                                     ////alert(dump(links));
@@ -220,9 +277,9 @@ function buildDirectedGraphOfVisitedUrlsAndReferers() {
                                     ////alert(links[j]['source']);
                                     ////alert(links[j]['target']);
                                     ////alert(links[j]['type']);
-                                    if ( link['source'] === links[j]['source'] &&
+                                    if (link['source'] === links[j]['source'] &&
                                         link['target'] === links[j]['target'] &&
-                                        link['type'] === links[j]['type'] ) {
+                                        link['type'] === links[j]['type']) {
                                         ////alert('continue');
                                         repeated = true;
                                         break;
@@ -232,13 +289,13 @@ function buildDirectedGraphOfVisitedUrlsAndReferers() {
                                 if (!repeated) {
                                     if (link['source'] in limit_sources) {
                                         limit_sources[link['source']]++;
-                                    }else{
+                                    } else {
                                         limit_sources[link['source']] = 1;
                                     }
                                     if (limit_sources[link['source']] > 5) {
 
-                                    }else {
-                                        alert(dump(limit_sources));
+                                    } else {
+                                        //alert(dump(limit_sources));
                                         links.push(link);
                                     }
                                 }
@@ -252,8 +309,8 @@ function buildDirectedGraphOfVisitedUrlsAndReferers() {
 
                             sourceRepetitionCount = {};
                             repeatedManyTimes = {};
-                            for (var l = 0 ; l < links.length ; l++) {
-                                if ( links[l]['source'] in sourceRepetitionCount ) {
+                            for (var l = 0; l < links.length; l++) {
+                                if (links[l]['source'] in sourceRepetitionCount) {
                                     //alert(sourceRepetitionCount[links[l]['source']][links[l]['target']]);
                                     sourceRepetitionCount[links[l]['source']]['count'] = sourceRepetitionCount[links[l]['source']]['count'] + 1;
                                     if (links[l]['target'] in sourceRepetitionCount[links[l]['source']]['targets']) {
@@ -261,15 +318,15 @@ function buildDirectedGraphOfVisitedUrlsAndReferers() {
                                         //alert('estou aqui');
                                         sourceRepetitionCount[links[l]['source']]['targets'][links[l]['target']]['numTarget'] = Object.keys(sourceRepetitionCount[links[l]['source']]['targets']).length;
                                     }
-                                    else{
+                                    else {
                                         sourceRepetitionCount[links[l]['source']]['targets'][links[l]['target']] = {};
                                         sourceRepetitionCount[links[l]['source']]['targets'][links[l]['target']]['targetName'] = links[l]['target'];
                                         sourceRepetitionCount[links[l]['source']]['targets'][links[l]['target']]['numTarget'] = Object.keys(sourceRepetitionCount[links[l]['source']]['targets']).length;
                                     }
-                                    if (!(sourceRepetitionCount[links[l]['source']] in repeatedManyTimes) && sourceRepetitionCount[links[l]['source']]['count'] >= 3){
+                                    if (!(sourceRepetitionCount[links[l]['source']] in repeatedManyTimes) && sourceRepetitionCount[links[l]['source']]['count'] >= 3) {
                                         repeatedManyTimes[links[l]['source']] = sourceRepetitionCount[links[l]['source']];
                                     }
-                                }else {
+                                } else {
                                     sourceRepetitionCount[links[l]['source']] = {};
                                     sourceRepetitionCount[links[l]['source']]['name'] = links[l]['source'];
                                     sourceRepetitionCount[links[l]['source']]['count'] = 1;
@@ -282,8 +339,9 @@ function buildDirectedGraphOfVisitedUrlsAndReferers() {
 
                             var nodes = {};
 
+                            //alert(dump(links));
 // Compute the distinct nodes from the links.
-                            links.forEach(function(link) {
+                            links.forEach(function (link) {
                                 link.source = nodes[link.source] || (nodes[link.source] = {name: link.source});
                                 link.target = nodes[link.target] || (nodes[link.target] = {name: link.target});
                             });
@@ -318,22 +376,44 @@ function buildDirectedGraphOfVisitedUrlsAndReferers() {
                                 .call(force.drag);
 
                             node.append("circle")
-                                .attr("r", 8);
+                                .attr("r", 8)
+                                .style("fill", function (d) {
+                                    //alert(d.name);
+                                    //alert(dump(obj));
+                                    if (!(d.name in obj)) {
+                                        return "rgba(107, 174, 214, 1.0)";
+                                    }
+                                    return obj[d.name]['productivity'] === "Productive" ? "rgba(46, 204, 113, 1)" : (obj[d.name]['productivity'] === 'Unproductive' ? "rgba(230, 85, 13, 1.0)" : (obj[d.name]['productivity'] === 'Neutral' ? "rgba(255, 255, 0, 1.0)" : "rgba(107, 174, 214, 1.0)"));
+                                    //return d.color;
+                                    //return "rgba(46, 204, 113, 1)";
+                                });
 
                             node.append("text")
                                 .attr("x", 12)
                                 .attr("dy", ".35em")
-                                .text(function(d) { return d.name; });
+                                .text(function (d) {
+                                    return d.name;
+                                });
 
                             function tick() {
                                 link
-                                    .attr("x1", function(d) { return d.source.x; })
-                                    .attr("y1", function(d) { return d.source.y; })
-                                    .attr("x2", function(d) { return d.target.x; })
-                                    .attr("y2", function(d) { return d.target.y; });
+                                    .attr("x1", function (d) {
+                                        return d.source.x;
+                                    })
+                                    .attr("y1", function (d) {
+                                        return d.source.y;
+                                    })
+                                    .attr("x2", function (d) {
+                                        return d.target.x;
+                                    })
+                                    .attr("y2", function (d) {
+                                        return d.target.y;
+                                    });
 
                                 node
-                                    .attr("transform", function(d) { return "translate(" + d.x + "," + d.y + ")"; });
+                                    .attr("transform", function (d) {
+                                        return "translate(" + d.x + "," + d.y + ")";
+                                    });
                             }
 
                             function mouseover() {
@@ -347,127 +427,16 @@ function buildDirectedGraphOfVisitedUrlsAndReferers() {
                                     .duration(750)
                                     .attr("r", 8);
                             }
-
-//                            var nodes = {};
-//
-//// Compute the distinct nodes from the links.
-//                            links.forEach(function (link) {
-//                                link.source = nodes[link.source] || (nodes[link.source] = {name: link.source});
-//                                link.target = nodes[link.target] || (nodes[link.target] = {name: link.target});
-//                            });
-//
-//                            var width = 960,
-//                                height = 500;
-//
-//
-//
-//                            var force = d3.layout.force()
-//                                .nodes(d3.values(nodes))
-//                                .links(links)
-//                                .size([width, height])
-//                                //.linkDistance(120)//60
-//                                //.linkDistance(function(d) { return Math.sqrt(d.value); })//60
-//                                .linkDistance(function(d) {
-//                                    //alert('test');
-//                                    //alert(dump(d));
-//                                    //alert(d.source.name);
-//                                    if (d.source.name in repeatedManyTimes && !(d.target.name in repeatedManyTimes)){
-//                                        //alert(sourceRepetitionCount[d.source.name]['numTarget']);
-//                                        if (sourceRepetitionCount[d.source.name]['targets'][d.target.name]['numTarget'] % 2 == 0) {
-//                                            //alert('par');
-//                                            return 130;
-//                                        }else {
-//                                            //alert('impar');
-//                                            return 100;
-//                                        }
-//
-//                                    }
-//                                    return 300;
-//                                })//60
-//                                .charge(-120)//-300
-//                                .on("tick", tick)
-//                                .start();
-//
-//                            var svg = d3.select("#directedgraphofvisitedurlsandrefererscontent").append("svg")
-//                                .attr("width", 9999999999999999999999999)
-//                                .attr("height", 9999999999999999999999999);
-//
-//// Per-type markers, as they don't inherit styles.
-//                            svg.append("defs").selectAll("marker")
-//                                .data(["suit", "licensing", "resolved"])
-//                                .enter().append("marker")
-//                                .attr("id", function (d) {
-//                                    return d;
-//                                })
-//                                .attr("viewBox", "0 -5 10 10")
-//                                .attr("refX", 15)
-//                                .attr("refY", -1.5)
-//                                .attr("markerWidth", 6)
-//                                .attr("markerHeight", 6)
-//                                .attr("orient", "auto")
-//                                .append("path")
-//                                .attr("d", "M0,-5L10,0L0,5");
-//
-//                            var path = svg.append("g").selectAll("path")
-//                                .data(force.links())
-//                                .enter().append("path")
-//                                .attr("class", function (d) {
-//                                    return "link " + d.type;
-//                                })
-//                                .attr("marker-end", function (d) {
-//                                    return "url(#" + d.type + ")";
-//                                });
-//
-//                            var circle = svg.append("g").selectAll("circle")
-//                                .data(force.nodes())
-//                                .enter().append("circle")
-//                                .attr("r", 10)//6
-//                                .style("fill", function (d) {
-//                                    //return d.color;
-//                                    return "rgba(46, 204, 113, 1)";
-//                                })
-//                                .call(force.drag);
-//
-//                            var text = svg.append("g").selectAll("text")
-//                                .data(force.nodes())
-//                                .enter().append("text")
-//                                .attr("x", 8)
-//                                .attr("y", ".31em")
-//                                .text(function (d) {
-//                                    return d.name;
-//                                });
-//
-//// Use elliptical arc path segments to doubly-encode directionality.
-//                            function tick() {
-//                                path.attr("d", linkArc);
-//                                circle.attr("transform", transform);
-//                                text.attr("transform", transform);
-//                            }
-//
-//                            function linkArc(d) {
-//                                //alert(dump(d));
-//                                var dx = d.target.x - d.source.x;
-//                                var dy = d.target.y - d.source.y;
-//                                var dr = Math.sqrt(dx * dx + dy * dy);
-//                                //var dr = 160;
-//                                return "M" + d.source.x + "," + d.source.y + "A" + dr + "," + dr + " 0 0,1 " + d.target.x + "," + d.target.y;
-//                            }
-//
-//                            function transform(d) {
-//                                return "translate(" + d.x + "," + d.y + ")";
-//                            }
-//                            //console.log('fim do codigo');
                         }
-                    }
-                })
-                //console.log('i='+i);
-            }
-            //console.log('saiu do for do i');
-            visit = true;
-        })
+                    })
+                    //console.log('i='+i);
+                }
+                //console.log('saiu do for do i');
+                visit = true;
+            })
 
-    //while(!visit) {
-    //    console.log('visit='+visit);
-    //}
-
+        //while(!visit) {
+        //    console.log('visit='+visit);
+        //}
+    });
 }

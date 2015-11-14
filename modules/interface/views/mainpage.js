@@ -38,23 +38,20 @@ function start() {
                 });
             }
         });
-
-
-
         buildBubbleChart(-1, -1);
     });
 
-    document.getElementById("zoomablecirclesofcategorieslink").addEventListener("click", function () {
-        $.ajax({
-            url: chrome.extension.getURL('templates/charts/zoomable_circles_of_website_categories.html'),
-            async: false,
-            dataType: 'html',
-            success: function (ZoomableCirclesOfCategories) {
-                $("#page-wrapper").html(ZoomableCirclesOfCategories);
-            }
-        });
-        buildZoomableCirclesOfCategories();
-    });
+    //document.getElementById("zoomablecirclesofcategorieslink").addEventListener("click", function () {
+    //    $.ajax({
+    //        url: chrome.extension.getURL('templates/charts/zoomable_circles_of_website_categories.html'),
+    //        async: false,
+    //        dataType: 'html',
+    //        success: function (ZoomableCirclesOfCategories) {
+    //            $("#page-wrapper").html(ZoomableCirclesOfCategories);
+    //        }
+    //    });
+    //    buildZoomableCirclesOfCategories();
+    //});
 
     //document.getElementById("zoomablecirclesofproductivitylink").addEventListener("click", function () {
     //    $.ajax({

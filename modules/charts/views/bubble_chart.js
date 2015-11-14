@@ -459,7 +459,7 @@ function buildBubbleChart(startTime, endTime) {
                 node.append("title")
                     .text(function (d) {
                         //return d.className + ": " + format(d.value);
-                        return d.className + "  Visited: " + format(associativeArray[d.className]['domainVisitCount']) + " times. Category: " + associativeArray[d.className]['category'];;
+                        return d.className + "  Visited: " + format(associativeArray[d.className]['domainVisitCount']) + " times. Category: " + associativeArray[d.className]['category'];
                     });
 
                 node.append("circle")
