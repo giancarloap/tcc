@@ -290,34 +290,3 @@
         color:#FAFEFF;
     }
 </style>
-<nav>
-    <ul>
-        <li>
-            <a href="#" class="button add">+</a>
-            <div class="dialog" style="display:none">
-                <div class="title">Add Event</div>
-                <form action="addevent.php" method="post">
-                    <select class="niceselect" name="type">
-                        <option value="a">Appointment</option>
-                        <option value="a">Block</option>
-                    </select>
-                    <input class="inputtypetext" name="start_dtm" type="datetime-local"/>
-                    <input class="inputtypetext" name="duration" type="time"/>
-                    <input class="inputtypetext" name="name" type="text" placeholder="Name"/>
-                    <input class="inputtypetext" name="location" type="text" placeholder="Location"/>
-                    <textarea name="description" placeholder="Description" cols="30" rows="10" wrap="soft"></textarea>
-                    <input class="inputtypesubmit" type="submit" value="Ok"/>
-                </form>
-            </div>
-        </li>
-        <li class="radio">
-            <a href="#" class="button active">Day</a>
-
-            <a href="#" class="button">Week</a>
-
-            <a href="#" class="button">Month</a>
-        </li>
-    </ul>
-    </div>
-</nav>
-<p>Click the '+'!</p>
