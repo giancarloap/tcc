@@ -176,7 +176,46 @@
             .attr("y", function(d) { return (lessThanDay(padding.pad)) ? y(getDate(d.value)) : y(getTime(d.value)) })
             .attr("height", function(d) { return 10; }) //return d.end_value - d.start_value; })
             .attr("width", 10)
-            .style("fill", "rgba(211, 84, 0, 0.3)");
+            .style("fill", "rgba(211, 84, 0, 0.3)")
+            .append("title")
+            .text(function (d) {
+                //alert(dump(d));
+                //return d.className + ": " + format(d.value);
+                //if (d.name in obj) {
+                //    return d.name + ". Category: " + obj[d.name]['category'];
+                //}
+                //return d.name;
+                if (d.name) {
+                    return d.name;
+                }
+                return "undefined";
+            })
+            .append("text")
+            .text(function (d) {
+                return "nome";
+                //return d.className.substring(0, d.r / 3);
+            });
+
+        circles.append("title")
+            .text(function (d) {
+                //alert(dump(d));
+                if (d.name) {
+                    return d.name;
+                }
+                return "undefined";
+                //return d.className + ": " + format(d.value);
+                //if (d.name in obj) {
+                //    return d.name + ". Category: " + obj[d.name]['category'];
+                //}
+                //return d.name;
+                return "nome";
+            });
+
+        circles.append("text")
+            .text(function (d) {
+                return "nome";
+                //return d.className.substring(0, d.r / 3);
+            });
 
         // ----------------------------------------- Brush ---------------------------------------------
 

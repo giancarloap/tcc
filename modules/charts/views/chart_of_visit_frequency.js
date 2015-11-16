@@ -152,6 +152,7 @@ function set_data() {
 
                         for (var key in associativeArray) {
                             data.push({
+                                'name': associativeArray[key]['domain']['name'],
                                 'value': associativeArray[key]['visitTime']
                             })
                         }
