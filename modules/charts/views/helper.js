@@ -1,5 +1,5 @@
 function test_first_load() {
-    chrome.storage.sync.get('data', function(result)
+    chrome.storage.local.get('data', function(result)
     {
         try {
             data = result.data;
@@ -231,21 +231,21 @@ function storage_first_save() {
         }
     );
 
-    chrome.storage.sync.set({'data': data}, function() {
+    chrome.storage.local.set({'data': data}, function() {
     });
 }
 
 
 
 function save_to_storage(key, data) {
-    chrome.storage.sync.set({'data': data}, function() {
+    chrome.storage.local.set({'data': data}, function() {
         // Notify that we saved.
         //alert('Settings saved');
     });
 }
 
 function load_from_storage() {
-    chrome.storage.sync.get('data', function(result)
+    chrome.storage.local.get('data', function(result)
     {
         try {
             data = result.data;

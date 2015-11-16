@@ -70,7 +70,7 @@ function buildBubbleChart(startTime, endTime) {
         }
         else {
             //alert('else');
-            chrome.storage.sync.get('data', function(result) {
+            chrome.storage.local.get('data', function(result) {
                 try {
                     data = result.data;
                     //alert(data);
@@ -105,7 +105,7 @@ function buildBubbleChart(startTime, endTime) {
                 //alert(selected_circle.r);
 
                 //salvar no storage e atualizar tela.
-                chrome.storage.sync.set({'data': JSON.stringify(obj)}, function() {
+                chrome.storage.local.set({'data': JSON.stringify(obj)}, function() {
                     //selected_circle.color = chosen_productivity === "Productive" ? "rgba(46, 204, 113, 1)" : (chosen_productivity === 'Unproductive' ? "rgba(230, 85, 13, 1.0)" : (chosen_productivity === 'Neutral' ? "rgba(255, 255, 0, 1.0)" : "rgba(107, 174, 214, 1.0)"));
                     //alert(selected_circle.color);
                     //alert(selected_circle.className + "  Visited: " + format(associativeArray[selected_circle.className]['domainVisitCount']) + " times. Category: " + chosen_category);
@@ -271,7 +271,7 @@ function buildBubbleChart(startTime, endTime) {
 
             associativeArray = {};
 
-            chrome.storage.sync.get('data', function(result) {
+            chrome.storage.local.get('data', function(result) {
                 try {
                     data = result.data;
                     //alert(data);

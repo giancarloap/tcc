@@ -59,7 +59,7 @@ function buildDirectedGraphOfVisitedUrlsAndReferers() {
     // //alert(oneWeekAgo);
     var oneWeekAgo = 0;
 
-    chrome.storage.sync.get('data', function(result) {
+    chrome.storage.local.get('data', function(result) {
         try {
             data = result.data;
             //alert(data);
@@ -392,6 +392,15 @@ function buildDirectedGraphOfVisitedUrlsAndReferers() {
                                 .attr("x", 12)
                                 .attr("dy", ".35em")
                                 .text(function (d) {
+                                    return d.name;
+                                });
+
+                            node.append("title")
+                                .text(function (d) {
+                                    //return d.className + ": " + format(d.value);
+                                    if (d.name in obj) {
+                                        return d.name + ". Category: " + obj[d.name]['category'];
+                                    }
                                     return d.name;
                                 });
 
