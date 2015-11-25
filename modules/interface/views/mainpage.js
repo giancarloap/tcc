@@ -94,6 +94,10 @@ function start() {
         //alert('bubble_chart no get');
         document.getElementById("bubblechartlink").click();
     }
+
+    document.getElementById("navbar-brand").addEventListener("click", function () {
+        window.location.href = window.location.href.split(/[?#]/)[0];
+    });
 }
 
 document.addEventListener('DOMContentLoaded', function () {
