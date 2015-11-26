@@ -123,7 +123,7 @@
         var svg = d3.select("." + classd).append("svg")
             .attr("width", width + margin.left + margin.right)
             .attr("height", height + margin.top + margin.bottom);
-
+        alert("." + classd);
         var context = svg.append("g")
             .attr("class", "context")
             .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
@@ -190,11 +190,11 @@
                 }
                 return "undefined";
             })
-            .append("text")
-            .text(function (d) {
-                return "nome";
-                //return d.className.substring(0, d.r / 3);
-            });
+            //.append("text")
+            //.text(function (d) {
+            //    return "nome";
+            //    //return d.className.substring(0, d.r / 3);
+            //});
 
         circles.append("title")
             .text(function (d) {

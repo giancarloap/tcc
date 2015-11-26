@@ -8,5 +8,38 @@
 
 <script src="../../modules/charts/views/initHighlightingOnLoad.js"></script>
 
-<div class="timeseries"></div>
+<div class="panel panel-default">
+    <!-- Default panel contents -->
+    <div class="panel-heading"><strong>Filter</strong></div>
+
+    <!-- Table -->
+    <table class="table">
+        <tr>
+            <td><strong>Start Date and time</strong> (If not specified, this defaults to the date of the first history entry.)</td>
+            <td><strong>End Date and Time</strong>(If not specified, this defaults to the current date and time.)</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>
+                <div class='input-group date' id='datetimepicker1'>
+                    <input id="startTimeInput" type='text' class="form-control" />
+                    <span class="input-group-addon">
+                        <span class="glyphicon glyphicon-calendar"></span>
+                    </span>
+                </div>
+            </td>
+            <td>
+                <div class='input-group date' id='datetimepicker2'>
+                    <input id="endTimeInput" type='text' class="form-control" />
+                    <span class="input-group-addon">
+                        <span class="glyphicon glyphicon-calendar"></span>
+                    </span>
+                </div>
+            </td>
+            <td><button id="filter" type="button" class="btn btn-primary btn-lg">Filter</button></td>
+        </tr>
+    </table>
+</div>
+
+<div id="timeseries" class="timeseries"></div>
 <!--<script src="../../modules/charts/views/chart_of_visit_frequency.js"></script>-->

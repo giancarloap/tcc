@@ -45,7 +45,7 @@ function init_highlight() {
     hljs.initHighlightingOnLoad();
 }
 
-function set_data() {
+function set_data(startTime, endTime) {
     //alert('data');
     //var data = [{'value': 1380854103662},{'value': 1363641921283}];
     //timeseries('timeseries', data, true);
@@ -76,32 +76,101 @@ function set_data() {
     var k = 0;
 
 
+    var startTimeDate = startTime;
+    if (startTime !== -1){
+        startTimeDate = startTimeDate.split(" ");
 
+        date = startTimeDate[0];
+        time = startTimeDate[1];
+        am_pm = startTimeDate[2];
+
+        date = date.split("/");
+        time = time.split(":");
+
+        time[0] = parseInt(time[0]);
+        time[1] = parseInt(time[1]);
+
+        if(am_pm == "PM" && time[0]<12) time[0] = time[0]+12;
+        if(am_pm == "AM" && time[0]==12) time[0] = time[0]-12;
+        var sHours = time[0].toString();
+        var sMinutes = time[1].toString();
+        if(time[0]<10) sHours = "0" + sHours;
+        if(time[1]<10) sMinutes = "0" + sMinutes;
+
+        time[0] = sHours;
+        time[1] = sMinutes;
+
+        startTimeDate = new Date(date[2],date[0]-1,date[1], time[0], time[1]);
+
+        startTime = startTimeDate.getTime();
+    }else {
+        startTime = 0;
+    }
+
+
+    var endTimeDate = endTime;
+    if (endTime !== -1){
+        endTimeDate = endTimeDate.split(" ");
+
+        date = endTimeDate[0];
+        time = endTimeDate[1];
+        am_pm = endTimeDate[2];
+
+        date = date.split("/");
+        time = time.split(":");
+
+        time[0] = parseInt(time[0]);
+        time[1] = parseInt(time[1]);
+
+        if(am_pm == "PM" && time[0]<12) time[0] = time[0]+12;
+        if(am_pm == "AM" && time[0]==12) time[0] = time[0]-12;
+        var sHours = time[0].toString();
+        var sMinutes = time[1].toString();
+        if(time[0]<10) sHours = "0" + sHours;
+        if(time[1]<10) sMinutes = "0" + sMinutes;
+        //alert(sHours + ":" + sMinutes);
+        time[0] = sHours;
+        time[1] = sMinutes;
+
+        endTimeDate = new Date(date[2],date[0] -1,date[1], time[0], time[1]);
+        //alert(endTimeDate);
+        endTime = endTimeDate.getTime();
+    }else {
+        endTime = (new Date).getTime();
+    }
+    alert(startTime);
+    alert(endTime);
+    $(function () {
+        $('#datetimepicker1').datetimepicker();
+    });
+    $(function () {
+        $('#datetimepicker2').datetimepicker();
+    });
     // To look for history items visited in the last week,
     // subtract a week of microseconds from the current time.
     // var microsecondsPerWeek = 1000 * 60 * 60 * 24 * 7;
     // var oneWeekAgo = (new Date).getTime() - microsecondsPerWeek;
     // //alert(oneWeekAgo);
-    var oneWeekAgo = 0;
+    //var oneWeekAgo = 0;
 
     //var d = new Date(2015, 09, 15);
     //var oneWeekAgo = d.getTime();
     //alert(oneWeekAgo);
     //endtime = new Date(year, month, day, hours, minutes, seconds, milliseconds);
     d2 = new Date(2015, 11, 02);
-    endtime = d2.getTime();
+    endTimeNow = d2.getTime();
 
     // Track the number of callbacks from chrome.history.getVisits()
     // that we expect to get.  When it reaches zero, we have all results.
     chrome.history.search({
             'text': '',              // Return every history item....
-            'startTime': oneWeekAgo,  // that was accessed less than one week ago.
-            'endTime': endtime,
+            'startTime': 0,
+            'endTime': endTimeNow,
             'maxResults': 999999999
         },
         function (historyItems) {
             // For each history item, get details on all visits.;
-
+            alert(historyItems.length);
             for (var i = 0; i < historyItems.length; ++i) {
 
                 chrome.history.getVisits({url: historyItems[i].url}, function (visitItems) {
@@ -114,7 +183,26 @@ function set_data() {
                     domain = domain.replace('.net', '');
                     domain = domain.replace('.gov', '');
 
+                    //if (visitItems.length == 1){
+                    //    alert('visitItems.length == 1');
+                    //}
+                    //alert('i='+i);
+                    //alert('k='+k);
+                    //alert('url='+historyItems[k].url);
+                    //alert('historyItems[k].url='+historyItems[k].url);
+                    //alert('visitItems.length'+visitItems.length);
+
                     for (var j = 0; j < visitItems.length; ++j) {
+
+                        //if (visitItems[j].visitTime < startTime || visitItems[j].visitTime > endTime){
+                        //    //alert('continue');
+                        //    if (j == visitItems.length - 1) {
+                        //        k++;
+                        //    }
+                        //    continue;
+                        //}
+                        //alert('not continue');
+
 
                         associativeArray[visitItems[j].visitId] = {};
                         associativeArray[visitItems[j].visitId]['visitId'] = visitItems[j].visitId;
@@ -148,14 +236,20 @@ function set_data() {
 
                     }
                     if (k == historyItems.length - 1) {
+                        alert('entrou aqui');
                         links = [];
 
                         for (var key in associativeArray) {
-                            data.push({
-                                'name': associativeArray[key]['domain']['name'],
-                                'value': associativeArray[key]['visitTime']
-                            })
+                            if (associativeArray[key][['visitTime']] >= startTime && associativeArray[key][['visitTime']] <= endTime){
+                                data.push({
+                                    'name': associativeArray[key]['domain']['name'],
+                                    'value': associativeArray[key]['visitTime']
+                                })
+                            }
                         }
+                        $("#timeseries").html("");
+                        //return;
+                        alert(dump(data));
                         timeseries('timeseries', data, true);
                         //timeseries('timeseries one', getData(new Date(2012, 1, 1), new Date(2015, 1, 2), amount), true);
                         timeseries.getBrushExtent();
