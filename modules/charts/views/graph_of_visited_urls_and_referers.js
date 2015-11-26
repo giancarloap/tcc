@@ -44,6 +44,7 @@ function dump(arr, level) {
 // Search history to find up to ten links that a user has typed in,
 // and show those links in a popup.
 function buildDirectedGraphOfVisitedUrlsAndReferers(startTime, endTime) {
+    $('#collapseOne').collapse("hide");
     //console.log('message');
     // http://blog.thomsonreuters.com/index.php/mobile-patent-suits-graphic-of-the-day/
 
