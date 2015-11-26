@@ -54,7 +54,7 @@ function buildDirectedGraphOfVisitedUrlsAndReferers(startTime, endTime) {
 
 
     var startTimeDate = startTime;
-    if (startTime !== -1){
+    if (startTime !== -1) {
         startTimeDate = startTimeDate.split(" ");
 
         date = startTimeDate[0];
@@ -67,26 +67,26 @@ function buildDirectedGraphOfVisitedUrlsAndReferers(startTime, endTime) {
         time[0] = parseInt(time[0]);
         time[1] = parseInt(time[1]);
 
-        if(am_pm == "PM" && time[0]<12) time[0] = time[0]+12;
-        if(am_pm == "AM" && time[0]==12) time[0] = time[0]-12;
+        if (am_pm == "PM" && time[0] < 12) time[0] = time[0] + 12;
+        if (am_pm == "AM" && time[0] == 12) time[0] = time[0] - 12;
         var sHours = time[0].toString();
         var sMinutes = time[1].toString();
-        if(time[0]<10) sHours = "0" + sHours;
-        if(time[1]<10) sMinutes = "0" + sMinutes;
+        if (time[0] < 10) sHours = "0" + sHours;
+        if (time[1] < 10) sMinutes = "0" + sMinutes;
 
         time[0] = sHours;
         time[1] = sMinutes;
 
-        startTimeDate = new Date(date[2],date[0]-1,date[1], time[0], time[1]);
+        startTimeDate = new Date(date[2], date[0] - 1, date[1], time[0], time[1]);
 
         startTime = startTimeDate.getTime();
-    }else {
+    } else {
         startTime = 0;
     }
 
 
     var endTimeDate = endTime;
-    if (endTime !== -1){
+    if (endTime !== -1) {
         endTimeDate = endTimeDate.split(" ");
 
         date = endTimeDate[0];
@@ -99,24 +99,24 @@ function buildDirectedGraphOfVisitedUrlsAndReferers(startTime, endTime) {
         time[0] = parseInt(time[0]);
         time[1] = parseInt(time[1]);
 
-        if(am_pm == "PM" && time[0]<12) time[0] = time[0]+12;
-        if(am_pm == "AM" && time[0]==12) time[0] = time[0]-12;
+        if (am_pm == "PM" && time[0] < 12) time[0] = time[0] + 12;
+        if (am_pm == "AM" && time[0] == 12) time[0] = time[0] - 12;
         var sHours = time[0].toString();
         var sMinutes = time[1].toString();
-        if(time[0]<10) sHours = "0" + sHours;
-        if(time[1]<10) sMinutes = "0" + sMinutes;
+        if (time[0] < 10) sHours = "0" + sHours;
+        if (time[1] < 10) sMinutes = "0" + sMinutes;
         //alert(sHours + ":" + sMinutes);
         time[0] = sHours;
         time[1] = sMinutes;
 
-        endTimeDate = new Date(date[2],date[0] -1,date[1], time[0], time[1]);
+        endTimeDate = new Date(date[2], date[0] - 1, date[1], time[0], time[1]);
         //alert(endTimeDate);
         endTime = endTimeDate.getTime();
-    }else {
+    } else {
         endTime = (new Date).getTime();
     }
-    alert(startTime);
-    alert(endTime);
+    //alert(startTime);
+    //alert(endTime);
     $(function () {
         $('#datetimepicker1').datetimepicker();
     });
@@ -130,7 +130,7 @@ function buildDirectedGraphOfVisitedUrlsAndReferers(startTime, endTime) {
     // //alert(oneWeekAgo);
     //var oneWeekAgo = 0;
 
-    chrome.storage.local.get('data', function(result) {
+    chrome.storage.local.get('data', function (result) {
         try {
             data = result.data;
             //alert(data);
@@ -147,18 +147,19 @@ function buildDirectedGraphOfVisitedUrlsAndReferers(startTime, endTime) {
             }
         }
 
-
+        d2 = new Date(2015, 11, 02);
+        endTimeNow = d2.getTime();
         // Track the number of callbacks from chrome.history.getVisits()
         // that we expect to get.  When it reaches zero, we have all results.
         chrome.history.search({
                 'text': '',              // Return every history item....
                 'startTime': startTime,
-                'endTime': endTime,
+                'endTime': endTimeNow,
                 'maxResults': 999999999
             },
             function (historyItems) {
                 // For each history item, get details on all visits.;
-                alert(dump(historyItems));
+                //alert(dump(historyItems));
                 for (var i = 0; i < historyItems.length; ++i) {
 
 
@@ -194,6 +195,7 @@ function buildDirectedGraphOfVisitedUrlsAndReferers(startTime, endTime) {
                             if (historyItems[k]) {
                                 associativeArray[visitItems[j].visitId]['url'] = historyItems[k].url;
                             }
+                            associativeArray[visitItems[j].visitId]['visitTime'] = visitItems[j].visitTime;
                             //associativeArray[visitItems[j].visitId]['domain'] = domain;
                             associativeArray[visitItems[j].visitId]['transition'] = visitItems[j].transition;
                             associativeArray[visitItems[j].visitId]['referringVisitId'] = visitItems[j].referringVisitId;
@@ -209,8 +211,6 @@ function buildDirectedGraphOfVisitedUrlsAndReferers(startTime, endTime) {
                             //}
 
                             domainVisitCountmphasis = 20;
-
-
 
 
                             //for (var domain in associativeArray) {
@@ -248,14 +248,14 @@ function buildDirectedGraphOfVisitedUrlsAndReferers(startTime, endTime) {
                         }
                         //alert('estou aqui05');
                         if (k == historyItems.length - 1) {
-                            alert('estou aqui05');
+                            //alert('estou aqui05');
                             links = [];
 
                             //==========Comeca a categorizar os dominios
 
                             domainVisitCountmphasis = 20;
 
-                            alert('estou aqui1');
+                            //alert('estou aqui1');
                             //alert('1');
                             for (var key in associativeArray) {
                                 //alert('2');
@@ -296,7 +296,7 @@ function buildDirectedGraphOfVisitedUrlsAndReferers(startTime, endTime) {
                             //alert('proximo //alert eh o keys do assossiative array');
                             //alert(Object.keys(associativeArray).length);
                             //alert(dump(associativeArray));
-                            alert('estou aqui');
+                            //alert('estou aqui');
 
                             limit_sources = {};
                             i = 0;
@@ -330,7 +330,14 @@ function buildDirectedGraphOfVisitedUrlsAndReferers(startTime, endTime) {
                                 //productivity = associativeArray[key]['domain']['productivity'];
                                 //category = associativeArray[key]['domain']['category'];
                                 ////alert('test2e');
-                                link = {"source": source, "target": target, "type": type, "color": associativeArray[key]['domain']['color'], "Category": associativeArray[key]['domain']['category']};
+                                link = {
+                                    "source": source,
+                                    "target": target,
+                                    "type": type,
+                                    "color": associativeArray[key]['domain']['color'],
+                                    "Category": associativeArray[key]['domain']['category'],
+                                    "visitTime": associativeArray[key]['visitTime']
+                                };
                                 ////alert('test2f');
                                 ////alert(link['source']);
 
@@ -374,7 +381,11 @@ function buildDirectedGraphOfVisitedUrlsAndReferers(startTime, endTime) {
 
                                     } else {
                                         //alert(dump(limit_sources));
-                                        links.push(link);
+                                        //alert(startTime);
+                                        //alert(endTime);
+                                        if (link["visitTime"] >= startTime && link["visitTime"] <= endTime) {
+                                            links.push(link);
+                                        }
                                     }
                                 }
 
@@ -382,7 +393,7 @@ function buildDirectedGraphOfVisitedUrlsAndReferers(startTime, endTime) {
                                 //alert(dump(links));
                                 //i++;
                             }
-                            alert(dump(links));
+                            //alert(dump(links));
                             //console.log(dump(links));
 
                             sourceRepetitionCount = {};
@@ -415,7 +426,7 @@ function buildDirectedGraphOfVisitedUrlsAndReferers(startTime, endTime) {
                                 }
                             }
 
-                            alert(dump(links));
+                            //alert(dump(links));
                             $("#graphofvisitedurlsandrefererscontent").html("");
 
                             var nodes = {};

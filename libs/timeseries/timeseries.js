@@ -123,7 +123,7 @@
         var svg = d3.select("." + classd).append("svg")
             .attr("width", width + margin.left + margin.right)
             .attr("height", height + margin.top + margin.bottom);
-        alert("." + classd);
+        //alert("." + classd);
         var context = svg.append("g")
             .attr("class", "context")
             .attr("transform", "translate(" + margin.left + "," + margin.top + ")");

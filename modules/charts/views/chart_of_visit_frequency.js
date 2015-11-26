@@ -138,8 +138,8 @@ function set_data(startTime, endTime) {
     }else {
         endTime = (new Date).getTime();
     }
-    alert(startTime);
-    alert(endTime);
+    //alert(startTime);
+    //alert(endTime);
     $(function () {
         $('#datetimepicker1').datetimepicker();
     });
@@ -170,7 +170,7 @@ function set_data(startTime, endTime) {
         },
         function (historyItems) {
             // For each history item, get details on all visits.;
-            alert(historyItems.length);
+            //alert(historyItems.length);
             for (var i = 0; i < historyItems.length; ++i) {
 
                 chrome.history.getVisits({url: historyItems[i].url}, function (visitItems) {
@@ -236,7 +236,7 @@ function set_data(startTime, endTime) {
 
                     }
                     if (k == historyItems.length - 1) {
-                        alert('entrou aqui');
+                        //alert('entrou aqui');
                         links = [];
 
                         for (var key in associativeArray) {
@@ -249,7 +249,7 @@ function set_data(startTime, endTime) {
                         }
                         $("#timeseries").html("");
                         //return;
-                        alert(dump(data));
+                        //alert(dump(data));
                         timeseries('timeseries', data, true);
                         //timeseries('timeseries one', getData(new Date(2012, 1, 1), new Date(2015, 1, 2), amount), true);
                         timeseries.getBrushExtent();
