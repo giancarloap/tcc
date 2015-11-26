@@ -1,47 +1,401 @@
 <style>
-.link {
-    fill: none;
-    stroke: #666;
-    stroke-width: 1.5px;
-}
+    .link {
+        fill: none;
+        stroke: #666;
+        stroke-width: 1.5px;
+    }
 
-#licensing {
-    fill: green;
-}
+    #licensing {
+        fill: green;
+    }
 
-.link.licensing {
-    stroke: green;
-}
+    .link.licensing {
+        stroke: green;
+    }
 
-.link.resolved {
-    stroke-dasharray: 0,2 1;
-}
+    .link.resolved {
+        stroke-dasharray: 0, 2 1;
+    }
 
-circle {
-    fill: #ccc;
-    stroke: #333;
-    stroke-width: 1.5px;
-}
+    circle {
+        fill: #ccc;
+        stroke: #333;
+        stroke-width: 1.5px;
+    }
 
-text {
-    font: 10px sans-serif;
-    pointer-events: none;
-    text-shadow: 0 1px 0 #fff, 1px 0 0 #fff, 0 -1px 0 #fff, -1px 0 0 #fff;
-}
+    text {
+        font: 10px sans-serif;
+        pointer-events: none;
+        text-shadow: 0 1px 0 #fff, 1px 0 0 #fff, 0 -1px 0 #fff, -1px 0 0 #fff;
+    }
 
-#header {
-    text-align: center;
-}
+    #header {
+        text-align: center;
+    }
+</style>
+
+<style>
+    * {
+        box-sizing: border-box;
+    }
+
+    body {
+        background: #fefefe;
+        text-align: center;
+        color: #444444;
+        font-family: sans-serif;
+    }
+
+    nav {
+        height: 64px;
+        background: #e74c3c;
+        padding: 0px 32px;
+        border-bottom: 1px solid #C24032;
+        text-align: left;
+        box-shadow: 0px 0px 4px #C24032;
+    }
+
+    nav ul {
+        margin: 0px;
+        padding: 0px;
+    }
+
+    .button {
+        font-size: 16px;
+        font-weight: bold;
+        text-align: center;
+        margin: 0 8px;
+        padding: 0px 32px;
+        display: block;
+        height: 100%;
+        min-width: 9px;
+        line-height: 64px;
+        border: 1px solid #C24032;
+        border-width: 0px 1px;
+        box-shadow: 0px 0px 4px #C24032;
+        transition: box-shadow .2s linear;
+    }
+
+    nav ul li, .radio > .button {
+        display: inline-block;
+        vertical-align: top;
+    }
+
+    .add {
+        transition: box-shadow .2s linear, margin .3s linear .5s;
+    }
+
+    .add.active {
+        margin: 0 98px;
+        transition: box-shadow .2s linear, margin .3s linear;
+    }
+
+    .button:link {
+        color: #eee;
+        text-decoration: none;
+    }
+
+    .button:visited {
+        color: #eee;
+    }
+
+    .button:hover {
+        box-shadow: none;
+    }
+
+    .button:active,
+    .button.active {
+        color: #eee;
+        border-color: #C24032;
+        box-shadow: 0px 0px 4px #C24032 inset;
+    }
+
+    nav ul li a:active {
+        color: #eee;
+    }
+
+    nav ul li a.active {
+        color: #eee;
+    }
+
+    .dialog {
+        position: relative;
+        text-align: center;
+        background: #4478a0;
+        margin: 13px 0 4px 4px;
+        display: inline-block;
+        width: 256px;
+        box-shadow: 0px 0px 8px rgba(68, 140, 160, 0.5);
+    }
+
+    .dialog:after,
+    .dialog:before {
+        bottom: 100%;
+        border: solid transparent;
+        content: " ";
+        height: 0;
+        width: 0;
+        position: absolute;
+        pointer-events: none;
+    }
+
+    .dialog:after {
+        border-color: rgba(255, 255, 255, 0);
+        border-bottom-color: #5C9CCE;
+        border-width: 15px;
+        left: 50%;
+        margin-left: -15px;
+    }
+
+    .dialog:before {
+        border-color: rgba(170, 170, 170, 0);
+        border-width: 16px;
+        left: 50%;
+        margin-left: -16px;
+    }
+
+    .dialog .title {
+        color: #fff;
+        font-weight: bold;
+        text-align: center;
+        border: 1px solid #5189B5;
+        border-width: 0px 0px 1px 0px;
+        margin-left: 0;
+        margin-right: 0;
+        margin-bottom: 4px;
+        margin-top: 8px;
+        padding: 8px 16px;
+        background: #5C9CCE;
+        box-shadow: 0px 1px 4px rgba(68, 120, 160, 0.1);
+        font-size: 16px;
+        line-height: 2em;
+    }
+
+    .dialog .title:first-child {
+        margin-top: -4px;
+    }
+
+    form {
+        padding: 16px;
+        padding-top: 0;
+    }
+
+    select[name=type] {
+        appearance: none;
+        border-radius: 0;
+    }
+
+    textarea, .inputtypetext, input[type=datetime-local], input[type=time], .niceselect {
+        color: #fff;
+        border: 0;
+        outline: 0;
+        resize: none;
+        margin: 0;
+        margin-top: 1em;
+        padding: .5em;
+        width: 100%;
+        border-bottom: 1px dotted rgba(250, 250, 250, 0.4);
+        background: #5d92ba;
+    }
+
+    input[type=text]:focus, input[type=datetime-local]:focus, input[type=time]:focus {
+        background-color: #4478a0;
+    }
+
+    .inputtypesubmit {
+        border: none;
+        background: #FAFEFF;
+        padding: .5em 1em;
+        margin-top: 1em;
+        color: #4478a0;
+    }
+
+    input[type=submit]:active {
+        background: #E1E5E5;
+    }
+
+    input:-moz-placeholder, textarea:-moz-placeholder {
+        color: #FAFEFF;
+    }
+
+    input:-ms-input-placeholder, textarea:-ms-input-placeholder {
+        color: #FAFEFF;
+    }
+
+    input::-webkit-input-placeholder, textarea::-webkit-input-placeholder {
+        color: #FAFEFF;
+    }
 </style>
 <!--<div class="container-fluid">-->
-    <!--<div class="row">-->
-        <!--<div class="col-lg-12">-->
-            <h1 id="header" class="page-header">Graph Of Visited Urls And Referers</h1>
-        <!--</div>-->
-        <!--&lt;!&ndash; /.col-lg-12 &ndash;&gt;-->
-    <!--</div>-->
-    <!-- /.row -->
-    <div id="graphofvisitedurlsandrefererscontent">
+<!--<div class="row">-->
+<!--<div class="col-lg-12">-->
+<h1 id="header" class="page-header">Graph Of Visited Urls And Referers</h1>
+<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+    <div class="panel panel-default">
+        <div class="panel-heading" role="tab" id="headingOne">
+            <h4 class="panel-title">
+                <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne"
+                   aria-expanded="true" aria-controls="collapseOne">
+                    <strong>Legend</strong>
+                </a>
+            </h4>
+        </div>
+        <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
+            <div class="panel-body">
+                <img src="../charts/fig/bola_verde.jpg" title="productive">Productive
+                <img src="../charts/fig/bola_vermelha.jpg" title="unproductivea">Unproductive
+                <img src="../charts/fig/bola_amarela.jpg" title="Neutral">Neutral
+                <img src="../charts/fig/bola_azul.jpg" title="Uncategorized" name="Uncategorized">Uncategorized <br>
+                <br>
+                *<strong>Note:</strong>Isolated nodes means that link(s) to the same page clicked. Two connected links
+                with website
+                names either means that a link from the first website were clicked and lead to the other (or vice-versa,
+                it is not
+                possible to know), or one lead to each other.
+                <br><br>
+                <table class="table table-bordered">
+                    <thead>
+                    <tr>
+                        <td><strong>Transition type</strong></td>
+                        <td><strong>Description</strong></td>
+                    </tr>
+                    <tbody>
+                    <tr>
+                        <td><strong>link</strong></td>
+                        <td>The user got to this page by clicking a link on another page.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>typed</strong></td>
+                        <td>The user got this page by typing the URL in the address bar.
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><strong>reload</strong></td>
+                        <td>The user reloaded the page, either by clicking the reload button or
+                            by pressing
+                            Enter in the address
+                            bar. Session restore and Reopen closed tab use this transition type, too.
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><strong>auto_bookmark</strong></td>
+                        <td>The user got to this page through a suggestion in the UI -
+                            for example,
+                            through a menu item.
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><strong>auto_subframe</strong></td>
+                        <td>Subframe navigation. This is any content that is
+                            automatically loaded in
+                            a non-top-level frame. For
+                            example, if a page consists of several frames containing ads, those ad URLs have this
+                            transition type.
+                            The user may not even realize the content in these pages is a separate frame, and so may not
+                            care about
+                            the URL (see also manual_subframe).
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><strong>manual_subframe</strong></td>
+                        <td>For subframe navigations that are explicitly requested by
+                            the user and
+                            generate new navigation entries
+                            in the back/forward list. An explicitly requested frame is probably more important than an
+                            automatically
+                            loaded frame because the user probably cares about the fact that the requested frame was
+                            loaded.
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><strong>auto_toplevel</strong></td>
+                        <td>The page was specified in the command line or is the start
+                            page.
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><strong>form_submit</strong></td>
+                        <td>The user filled out values in a form and submitted it. Note
+                            that in some
+                            situations - such as when a
+                            form uses script to submit contents - submitting a form does not result in this transition
+                            type.
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><strong>generated</strong></td>
+                        <td>The user got to this page by typing in the address bar and
+                            selecting an entry
+                            that did not look like a
+                            URL. For example, a match might have the URL of a Google search result page, but it might
+                            appear to the
+                            user as "Search Google for ...". These are not quite the same as typed navigations because
+                            the user
+                            didn't type or see the destination URL. See also keyword.
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><strong>keyword</strong></td>
+                        <td>The URL was generated from a replaceable keyword other than the
+                            default search
+                            provider. See also
+                            keyword_generated.
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><strong>keyword_generated</strong></td>
+                        <td>Corresponds to a visit generated for a keyword. See also
+                            keyword.
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </div>
+</div>
+
+<div class="panel panel-default">
+    <!-- Default panel contents -->
+    <div class="panel-heading"><strong>Filter</strong></div>
+
+    <!-- Table -->
+    <table class="table">
+        <tr>
+            <td><strong>Start Date and time</strong> (If not specified, this defaults to the date of the first history
+                entry.)
+            </td>
+            <td><strong>End Date and Time</strong>(If not specified, this defaults to the current date and time.)</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>
+                <div class='input-group date' id='datetimepicker1'>
+                    <input id="startTimeInput" type='text' class="form-control"/>
+                    <span class="input-group-addon">
+                        <span class="glyphicon glyphicon-calendar"></span>
+                    </span>
+                </div>
+            </td>
+            <td>
+                <div class='input-group date' id='datetimepicker2'>
+                    <input id="endTimeInput" type='text' class="form-control"/>
+                    <span class="input-group-addon">
+                        <span class="glyphicon glyphicon-calendar"></span>
+                    </span>
+                </div>
+            </td>
+            <td>
+                <button id="filter" type="button" class="btn btn-primary btn-lg">Filter</button>
+            </td>
+        </tr>
+    </table>
+</div>
+<!--</div>-->
+<!--&lt;!&ndash; /.col-lg-12 &ndash;&gt;-->
+<!--</div>-->
+<!-- /.row -->
+<div id="graphofvisitedurlsandrefererscontent">
+</div>
 <!--</div>-->
 <!-- /.container-fluid -->

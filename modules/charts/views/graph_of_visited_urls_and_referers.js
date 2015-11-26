@@ -43,7 +43,8 @@ function dump(arr, level) {
 
 // Search history to find up to ten links that a user has typed in,
 // and show those links in a popup.
-function buildDirectedGraphOfVisitedUrlsAndReferers() {
+function buildDirectedGraphOfVisitedUrlsAndReferers(startTime, endTime) {
+    $('#collapseOne').collapse("hide");
     //console.log('message');
     // http://blog.thomsonreuters.com/index.php/mobile-patent-suits-graphic-of-the-day/
 
@@ -52,14 +53,85 @@ function buildDirectedGraphOfVisitedUrlsAndReferers() {
 
     links = [];
 
+
+    var startTimeDate = startTime;
+    if (startTime !== -1) {
+        startTimeDate = startTimeDate.split(" ");
+
+        date = startTimeDate[0];
+        time = startTimeDate[1];
+        am_pm = startTimeDate[2];
+
+        date = date.split("/");
+        time = time.split(":");
+
+        time[0] = parseInt(time[0]);
+        time[1] = parseInt(time[1]);
+
+        if (am_pm == "PM" && time[0] < 12) time[0] = time[0] + 12;
+        if (am_pm == "AM" && time[0] == 12) time[0] = time[0] - 12;
+        var sHours = time[0].toString();
+        var sMinutes = time[1].toString();
+        if (time[0] < 10) sHours = "0" + sHours;
+        if (time[1] < 10) sMinutes = "0" + sMinutes;
+
+        time[0] = sHours;
+        time[1] = sMinutes;
+
+        startTimeDate = new Date(date[2], date[0] - 1, date[1], time[0], time[1]);
+
+        startTime = startTimeDate.getTime();
+    } else {
+        startTime = 0;
+    }
+
+
+    var endTimeDate = endTime;
+    if (endTime !== -1) {
+        endTimeDate = endTimeDate.split(" ");
+
+        date = endTimeDate[0];
+        time = endTimeDate[1];
+        am_pm = endTimeDate[2];
+
+        date = date.split("/");
+        time = time.split(":");
+
+        time[0] = parseInt(time[0]);
+        time[1] = parseInt(time[1]);
+
+        if (am_pm == "PM" && time[0] < 12) time[0] = time[0] + 12;
+        if (am_pm == "AM" && time[0] == 12) time[0] = time[0] - 12;
+        var sHours = time[0].toString();
+        var sMinutes = time[1].toString();
+        if (time[0] < 10) sHours = "0" + sHours;
+        if (time[1] < 10) sMinutes = "0" + sMinutes;
+        //alert(sHours + ":" + sMinutes);
+        time[0] = sHours;
+        time[1] = sMinutes;
+
+        endTimeDate = new Date(date[2], date[0] - 1, date[1], time[0], time[1]);
+        //alert(endTimeDate);
+        endTime = endTimeDate.getTime();
+    } else {
+        endTime = (new Date).getTime();
+    }
+    //alert(startTime);
+    //alert(endTime);
+    $(function () {
+        $('#datetimepicker1').datetimepicker();
+    });
+    $(function () {
+        $('#datetimepicker2').datetimepicker();
+    });
     // To look for history items visited in the last week,
     // subtract a week of microseconds from the current time.
     // var microsecondsPerWeek = 1000 * 60 * 60 * 24 * 7;
     // var oneWeekAgo = (new Date).getTime() - microsecondsPerWeek;
     // //alert(oneWeekAgo);
-    var oneWeekAgo = 0;
+    //var oneWeekAgo = 0;
 
-    chrome.storage.local.get('data', function(result) {
+    chrome.storage.local.get('data', function (result) {
         try {
             data = result.data;
             //alert(data);
@@ -76,17 +148,19 @@ function buildDirectedGraphOfVisitedUrlsAndReferers() {
             }
         }
 
-
+        d2 = new Date(2015, 11, 02);
+        endTimeNow = d2.getTime();
         // Track the number of callbacks from chrome.history.getVisits()
         // that we expect to get.  When it reaches zero, we have all results.
         chrome.history.search({
                 'text': '',              // Return every history item....
-                'startTime': oneWeekAgo,  // that was accessed less than one week ago.
+                'startTime': startTime,
+                'endTime': endTimeNow,
                 'maxResults': 999999999
             },
             function (historyItems) {
                 // For each history item, get details on all visits.;
-
+                //alert(dump(historyItems));
                 for (var i = 0; i < historyItems.length; ++i) {
 
 
@@ -122,6 +196,7 @@ function buildDirectedGraphOfVisitedUrlsAndReferers() {
                             if (historyItems[k]) {
                                 associativeArray[visitItems[j].visitId]['url'] = historyItems[k].url;
                             }
+                            associativeArray[visitItems[j].visitId]['visitTime'] = visitItems[j].visitTime;
                             //associativeArray[visitItems[j].visitId]['domain'] = domain;
                             associativeArray[visitItems[j].visitId]['transition'] = visitItems[j].transition;
                             associativeArray[visitItems[j].visitId]['referringVisitId'] = visitItems[j].referringVisitId;
@@ -137,8 +212,6 @@ function buildDirectedGraphOfVisitedUrlsAndReferers() {
                             //}
 
                             domainVisitCountmphasis = 20;
-
-
 
 
                             //for (var domain in associativeArray) {
@@ -171,15 +244,19 @@ function buildDirectedGraphOfVisitedUrlsAndReferers() {
                             if (j == visitItems.length - 1) {
                                 k++;
                             }
+                            //alert('estou aqui0');
+
                         }
+                        //alert('estou aqui05');
                         if (k == historyItems.length - 1) {
+                            //alert('estou aqui05');
                             links = [];
 
                             //==========Comeca a categorizar os dominios
 
                             domainVisitCountmphasis = 20;
 
-
+                            //alert('estou aqui1');
                             //alert('1');
                             for (var key in associativeArray) {
                                 //alert('2');
@@ -220,6 +297,8 @@ function buildDirectedGraphOfVisitedUrlsAndReferers() {
                             //alert('proximo //alert eh o keys do assossiative array');
                             //alert(Object.keys(associativeArray).length);
                             //alert(dump(associativeArray));
+                            //alert('estou aqui');
+
                             limit_sources = {};
                             i = 0;
                             for (var key in associativeArray) {
@@ -252,7 +331,14 @@ function buildDirectedGraphOfVisitedUrlsAndReferers() {
                                 //productivity = associativeArray[key]['domain']['productivity'];
                                 //category = associativeArray[key]['domain']['category'];
                                 ////alert('test2e');
-                                link = {"source": source, "target": target, "type": type, "color": associativeArray[key]['domain']['color'], "Category": associativeArray[key]['domain']['category']};
+                                link = {
+                                    "source": source,
+                                    "target": target,
+                                    "type": type,
+                                    "color": associativeArray[key]['domain']['color'],
+                                    "Category": associativeArray[key]['domain']['category'],
+                                    "visitTime": associativeArray[key]['visitTime']
+                                };
                                 ////alert('test2f');
                                 ////alert(link['source']);
 
@@ -296,15 +382,19 @@ function buildDirectedGraphOfVisitedUrlsAndReferers() {
 
                                     } else {
                                         //alert(dump(limit_sources));
-                                        links.push(link);
+                                        //alert(startTime);
+                                        //alert(endTime);
+                                        if (link["visitTime"] >= startTime && link["visitTime"] <= endTime) {
+                                            links.push(link);
+                                        }
                                     }
                                 }
 
 
-                                ////alert(dump(links));
+                                //alert(dump(links));
                                 //i++;
                             }
-
+                            //alert(dump(links));
                             //console.log(dump(links));
 
                             sourceRepetitionCount = {};
@@ -336,6 +426,9 @@ function buildDirectedGraphOfVisitedUrlsAndReferers() {
                                     sourceRepetitionCount[links[l]['source']]['targets'][links[l]['target']]['numTarget'] = Object.keys(sourceRepetitionCount[links[l]['source']]['targets']).length;
                                 }
                             }
+
+                            //alert(dump(links));
+                            $("#graphofvisitedurlsandrefererscontent").html("");
 
                             var nodes = {};
 

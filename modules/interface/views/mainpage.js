@@ -72,9 +72,26 @@ function start() {
             dataType: 'html',
             success: function (DirectedGraphOfUrlsAndReferers) {
                 $("#page-wrapper").html(DirectedGraphOfUrlsAndReferers);
+
+                document.getElementById("filter").addEventListener("click", function () {
+                    //alert('test');
+                    if ($("#startTimeInput").val()){
+                        startTime = $("#startTimeInput").val();
+                    }else {
+                        startTime = -1;
+                    }
+                    if ($("#endTimeInput").val()){
+                        endTime = $("#endTimeInput").val();
+                    }else {
+                        endTime = -1;
+                    }
+                    //alert(startTime);
+                    //alert(endTime);
+                    buildDirectedGraphOfVisitedUrlsAndReferers(startTime, endTime);
+                });
             }
         });
-        buildDirectedGraphOfVisitedUrlsAndReferers();
+        buildDirectedGraphOfVisitedUrlsAndReferers(-1, -1);
     });
 
     document.getElementById("chartofvisitfrequencylink").addEventListener("click", function () {
@@ -84,8 +101,26 @@ function start() {
             dataType: 'html',
             success: function (ChartOfVisitTime) {
                 $("#page-wrapper").html(ChartOfVisitTime);
+                document.getElementById("filter").addEventListener("click", function () {
+                    //alert('test');
+                    if ($("#startTimeInput").val()){
+                        startTime = $("#startTimeInput").val();
+                    }else {
+                        startTime = -1;
+                    }
+                    if ($("#endTimeInput").val()){
+                        endTime = $("#endTimeInput").val();
+                    }else {
+                        endTime = -1;
+                    }
+                    //alert(startTime);
+                    //alert(endTime);
+                    //buildDirectedGraphOfVisitedUrlsAndReferers(startTime, endTime);
+                    init_highlight();
+                    set_data(startTime, endTime);
+                });
                 init_highlight();
-                set_data();
+                set_data(-1, -1);
             }
         });
     });
@@ -94,6 +129,10 @@ function start() {
         //alert('bubble_chart no get');
         document.getElementById("bubblechartlink").click();
     }
+
+    document.getElementById("navbar-brand").addEventListener("click", function () {
+        window.location.href = window.location.href.split(/[?#]/)[0];
+    });
 }
 
 document.addEventListener('DOMContentLoaded', function () {
